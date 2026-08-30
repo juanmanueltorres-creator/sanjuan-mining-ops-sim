@@ -1,0 +1,22 @@
+{
+  "type": "Feature",
+  "properties": {
+    "schemaVersion": "sanjuan.corridor-geometry/v1",
+    "id": "los-azules",
+    "geometryClass": "RECONSTRUCTED_ACCESS",
+    "evidenceRefs": ["argentina-calingasta-road-chain", "mcewen-los-azules-access", "los-azules-route-reconstruction"]
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [-68.5364, -31.5375],
+      [-68.63929, -31.09887],
+      [-69.05, -31.15],
+      [-69.427381783, -31.335410441],
+      [-69.65, -31.3],
+      [-69.9, -31.2],
+      [-70.18, -31.13],
+      [-70.22138, -31.11277]
+    ]
+  }
+}
