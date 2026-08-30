@@ -4,12 +4,22 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      task:
+        description: Manual task to run on the selected ref
+        required: true
+        default: ci
+        type: choice
+        options:
+          - ci
+          - acquire-veladero-road-sources
 
 permissions:
   contents: read
 
 jobs:
   test-build:
+    if: github.event_name == 'pull_request' || inputs.task == 'ci'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -46,3 +56,29 @@ jobs:
           name: visual-qa
           path: artifacts/visual-qa/*.png
           if-no-files-found: ignore
+
+  acquire-veladero-road-sources:
+    if: github.event_name == 'workflow_dispatch' && inputs.task == 'acquire-veladero-road-sources'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Acquire Veladero road sources
+        run: node scripts/acquire-road-sources.mjs veladero
+
+      - name: Upload acquisition artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: veladero-road-sources
+          path: artifacts/road-geometry-acquisition/
+          if-no-files-found: error
