@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "sanjuan.route-samples/v1",
+  "corridorId": "los-azules",
+  "samples": [
+    {"distanceKm":0,"lon":-68.5364,"lat":-31.5375,"elevationM":650,"segmentId":"los-azules-01"},
+    {"distanceKm":50,"lon":-68.63929,"lat":-31.09887,"elevationM":940,"segmentId":"los-azules-02"},
+    {"distanceKm":120,"lon":-69.05,"lat":-31.15,"elevationM":1150,"segmentId":"los-azules-03"},
+    {"distanceKm":164,"lon":-69.427381783,"lat":-31.335410441,"elevationM":1370,"segmentId":"los-azules-04"},
+    {"distanceKm":189,"lon":-69.65,"lat":-31.3,"elevationM":1900,"segmentId":"los-azules-05"},
+    {"distanceKm":230,"lon":-69.9,"lat":-31.2,"elevationM":2700,"segmentId":"los-azules-05"},
+    {"distanceKm":271,"lon":-70.18,"lat":-31.13,"elevationM":3450,"segmentId":"los-azules-06"},
+    {"distanceKm":276,"lon":-70.22138,"lat":-31.11277,"elevationM":3500,"segmentId":"los-azules-06"}
+  ]
+}
