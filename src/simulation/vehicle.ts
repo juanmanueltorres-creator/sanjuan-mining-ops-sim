@@ -1,6 +1,7 @@
 import type {
   CorridorDefinition,
   CorridorSegment,
+  PlannedStop,
   VehicleDefinition,
   VehicleSnapshot,
   VehicleType,
@@ -32,6 +33,14 @@ function routeEndKm(corridor: CorridorDefinition): number {
   const last = corridor.routeSamples.at(-1);
   if (!last) throw new Error(`Corridor ${corridor.id} has no route samples`);
   return last.distanceKm;
+}
+
+function normalizedNonProjectStops(vehicle: VehicleDefinition, corridor: CorridorDefinition): PlannedStop[] {
+  const totalKm = routeEndKm(corridor);
+  return vehicle.plannedStops
+    .filter((stop) => stop.type !== 'PROJECT')
+    .map((stop) => ({ ...stop, distanceKm: Math.min(totalKm, Math.max(0, stop.distanceKm)) }))
+    .sort((a, b) => a.distanceKm - b.distanceKm);
 }
 
 function travelMinutesBetween(
@@ -103,6 +112,42 @@ function distanceAfterReturnTravel(
   return 0;
 }
 
+export interface VehicleTiming {
+  departureMinute: number;
+  projectArrivalMinute: number;
+  returnStartMinute: number;
+  baseArrivalMinute: number;
+}
+
+export function getVehicleTiming(vehicle: VehicleDefinition, corridor: CorridorDefinition): VehicleTiming {
+  const departureMinute = parseMinuteOfDay(vehicle.departureTime);
+  const totalKm = routeEndKm(corridor);
+  const stops = normalizedNonProjectStops(vehicle, corridor);
+  const projectDwell = vehicle.plannedStops.find((stop) => stop.type === 'PROJECT')?.dwellMinutes ?? 0;
+  const outboundTravelMinutes = travelMinutesBetween(corridor, vehicle.type, 0, totalKm);
+  const outboundStopMinutes = stops.reduce((sum, stop) => sum + stop.dwellMinutes, 0);
+  const projectArrivalMinute = departureMinute + outboundTravelMinutes + outboundStopMinutes;
+  const returnStartMinute = projectArrivalMinute + projectDwell;
+  const baseArrivalMinute = returnStartMinute + travelMinutesBetween(corridor, vehicle.type, 0, totalKm);
+
+  return { departureMinute, projectArrivalMinute, returnStartMinute, baseArrivalMinute };
+}
+
+export function outboundPassageMinuteAtDistance(
+  vehicle: VehicleDefinition,
+  corridor: CorridorDefinition,
+  requestedDistanceKm: number,
+): number {
+  const totalKm = routeEndKm(corridor);
+  const distanceKm = Math.min(totalKm, Math.max(0, requestedDistanceKm));
+  const departureMinute = parseMinuteOfDay(vehicle.departureTime);
+  const dwellBeforePassage = normalizedNonProjectStops(vehicle, corridor)
+    .filter((stop) => stop.distanceKm < distanceKm)
+    .reduce((sum, stop) => sum + stop.dwellMinutes, 0);
+
+  return departureMinute + travelMinutesBetween(corridor, vehicle.type, 0, distanceKm) + dwellBeforePassage;
+}
+
 function makeSnapshot(
   vehicle: VehicleDefinition,
   corridor: CorridorDefinition,
@@ -131,39 +176,29 @@ export function snapshotVehicle(
   corridor: CorridorDefinition,
   simMinute: number,
 ): VehicleSnapshot {
-  const departureMinute = parseMinuteOfDay(vehicle.departureTime);
+  const timing = getVehicleTiming(vehicle, corridor);
   const totalKm = routeEndKm(corridor);
-  const nonProjectStops = vehicle.plannedStops
-    .filter((stop) => stop.type !== 'PROJECT')
-    .map((stop) => ({ ...stop, distanceKm: Math.min(totalKm, Math.max(0, stop.distanceKm)) }))
-    .sort((a, b) => a.distanceKm - b.distanceKm);
-  const projectDwell = vehicle.plannedStops.find((stop) => stop.type === 'PROJECT')?.dwellMinutes ?? 0;
-  const outboundTravelMinutes = travelMinutesBetween(corridor, vehicle.type, 0, totalKm);
-  const outboundStopMinutes = nonProjectStops.reduce((sum, stop) => sum + stop.dwellMinutes, 0);
-  const projectArrivalMinute = departureMinute + outboundTravelMinutes + outboundStopMinutes;
-  const returnStartMinute = projectArrivalMinute + projectDwell;
-  const returnTravelMinutes = travelMinutesBetween(corridor, vehicle.type, 0, totalKm);
-  const baseArrivalMinute = returnStartMinute + returnTravelMinutes;
+  const nonProjectStops = normalizedNonProjectStops(vehicle, corridor);
 
-  if (simMinute < departureMinute) {
-    return makeSnapshot(vehicle, corridor, 0, 'AT_BASE', 'TO_PROJECT', projectArrivalMinute);
+  if (simMinute < timing.departureMinute) {
+    return makeSnapshot(vehicle, corridor, 0, 'AT_BASE', 'TO_PROJECT', timing.projectArrivalMinute);
   }
 
-  let elapsed = simMinute - departureMinute;
+  let elapsed = simMinute - timing.departureMinute;
   let currentKm = 0;
 
   for (const stop of nonProjectStops) {
     const travelMinutes = travelMinutesBetween(corridor, vehicle.type, currentKm, stop.distanceKm);
     if (elapsed < travelMinutes) {
       const distanceKm = distanceAfterOutboundTravel(corridor, vehicle.type, currentKm, stop.distanceKm, elapsed);
-      return makeSnapshot(vehicle, corridor, distanceKm, 'EN_ROUTE', 'TO_PROJECT', projectArrivalMinute);
+      return makeSnapshot(vehicle, corridor, distanceKm, 'EN_ROUTE', 'TO_PROJECT', timing.projectArrivalMinute);
     }
 
     elapsed -= travelMinutes;
     currentKm = stop.distanceKm;
 
     if (elapsed < stop.dwellMinutes) {
-      return makeSnapshot(vehicle, corridor, currentKm, 'AT_STOP', 'TO_PROJECT', projectArrivalMinute);
+      return makeSnapshot(vehicle, corridor, currentKm, 'AT_STOP', 'TO_PROJECT', timing.projectArrivalMinute);
     }
     elapsed -= stop.dwellMinutes;
   }
@@ -171,17 +206,17 @@ export function snapshotVehicle(
   const finalOutboundMinutes = travelMinutesBetween(corridor, vehicle.type, currentKm, totalKm);
   if (elapsed < finalOutboundMinutes) {
     const distanceKm = distanceAfterOutboundTravel(corridor, vehicle.type, currentKm, totalKm, elapsed);
-    return makeSnapshot(vehicle, corridor, distanceKm, 'EN_ROUTE', 'TO_PROJECT', projectArrivalMinute);
+    return makeSnapshot(vehicle, corridor, distanceKm, 'EN_ROUTE', 'TO_PROJECT', timing.projectArrivalMinute);
   }
 
-  if (simMinute < returnStartMinute) {
-    return makeSnapshot(vehicle, corridor, totalKm, 'AT_PROJECT', 'RETURN_TO_BASE', baseArrivalMinute);
+  if (simMinute < timing.returnStartMinute) {
+    return makeSnapshot(vehicle, corridor, totalKm, 'AT_PROJECT', 'RETURN_TO_BASE', timing.baseArrivalMinute);
   }
 
-  if (simMinute < baseArrivalMinute) {
-    const returnElapsed = simMinute - returnStartMinute;
+  if (simMinute < timing.baseArrivalMinute) {
+    const returnElapsed = simMinute - timing.returnStartMinute;
     const distanceKm = distanceAfterReturnTravel(corridor, vehicle.type, totalKm, returnElapsed);
-    return makeSnapshot(vehicle, corridor, distanceKm, 'RETURNING', 'RETURN_TO_BASE', baseArrivalMinute);
+    return makeSnapshot(vehicle, corridor, distanceKm, 'RETURNING', 'RETURN_TO_BASE', timing.baseArrivalMinute);
   }
 
   return makeSnapshot(vehicle, corridor, 0, 'DONE', 'RETURN_TO_BASE', null);
