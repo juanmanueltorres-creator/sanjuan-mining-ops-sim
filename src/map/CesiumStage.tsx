@@ -252,6 +252,7 @@ export function CesiumStage({
   const backgroundSinkRef = useRef<VehicleEntitySink | null>(null);
   const staticTerritoryReadyRef = useRef(false);
   const onVehicleSelectRef = useRef(onVehicleSelect);
+  const [mapAvailable, setMapAvailable] = useState(canUseWebGl);
   const [instruments, setInstruments] = useState<MapInstrumentState>({
     headingDeg: REGIONAL_VIEW.headingDeg,
     scaleLabel: null,
@@ -262,23 +263,34 @@ export function CesiumStage({
   onVehicleSelectRef.current = onVehicleSelect;
 
   useEffect(() => {
-    if (!containerRef.current || !canUseWebGl()) return;
+    if (!containerRef.current || !canUseWebGl()) {
+      setMapAvailable(false);
+      return;
+    }
 
-    const viewer = new Viewer(containerRef.current, {
-      animation: false,
-      baseLayer: false,
-      baseLayerPicker: false,
-      fullscreenButton: false,
-      geocoder: false,
-      homeButton: false,
-      infoBox: false,
-      navigationHelpButton: false,
-      sceneModePicker: false,
-      selectionIndicator: false,
-      timeline: false,
-      scene3DOnly: true,
-    });
+    let viewer: Viewer;
+    try {
+      viewer = new Viewer(containerRef.current, {
+        animation: false,
+        baseLayer: false,
+        baseLayerPicker: false,
+        fullscreenButton: false,
+        geocoder: false,
+        homeButton: false,
+        infoBox: false,
+        navigationHelpButton: false,
+        sceneModePicker: false,
+        selectionIndicator: false,
+        timeline: false,
+        scene3DOnly: true,
+      });
+    } catch (error) {
+      console.warn('Cesium WebGL initialization failed; continuing with the non-map operational fallback.', error);
+      setMapAvailable(false);
+      return;
+    }
 
+    setMapAvailable(true);
     viewer.scene.requestRenderMode = true;
     viewer.scene.maximumRenderTimeChange = Number.POSITIVE_INFINITY;
     viewer.scene.globe.baseColor = Color.fromCssColorString('#1a252b');
@@ -401,19 +413,17 @@ export function CesiumStage({
     viewer.scene.requestRender();
   }, [backgroundTraffic, backgroundIds, data]);
 
-  const webGlAvailable = canUseWebGl();
-
   return (
     <section className="map-stage" role="region" aria-label="3D operational map">
       <div ref={containerRef} className="cesium-host" aria-hidden="true" />
-      {!webGlAvailable && <div className="map-fallback">3D MAP · WEBGL PREVIEW UNAVAILABLE</div>}
+      {!mapAvailable && <div className="map-fallback">3D MAP · WEBGL PREVIEW UNAVAILABLE</div>}
 
       <MapInstrumentation
         headingDeg={instruments.headingDeg}
         scaleLabel={instruments.scaleLabel}
         scaleWidthPx={instruments.scaleWidthPx}
         cursorText={instruments.cursorText}
-        webGlAvailable={webGlAvailable}
+        webGlAvailable={mapAvailable}
         onRegionalView={() => {
           const viewer = viewerRef.current;
           if (viewer) setRegionalView(viewer);
