@@ -4,6 +4,9 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const CORRIDORS = ['hualilan', 'veladero', 'los-azules'];
 const GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH', 'PROJECT_LOCATION']);
+const SOURCE_STATES = new Set(['READY', 'STALE', 'PARTIAL', 'UNAVAILABLE']);
+const MODEL_KINDS = new Set(['FORECAST', 'HISTORICAL_REFERENCE']);
+const TIMEZONE = 'America/Argentina/San_Juan';
 const EPS = 1e-6;
 
 async function readJson(relativePath) {
@@ -38,6 +41,7 @@ for (const project of projectDoc.projects) {
 }
 
 let evidenceCount = projectEvidence.size;
+const corridorTotals = new Map();
 
 for (const corridorId of CORRIDORS) {
   const base = `public/data/corridors/${corridorId}`;
@@ -80,6 +84,7 @@ for (const corridorId of CORRIDORS) {
     }
   }
   assert(Math.abs(segments.at(-1).endKm - metadata.totalDistanceKm) <= EPS, `${corridorId}: segments do not end at totalDistanceKm`);
+  corridorTotals.set(corridorId, metadata.totalDistanceKm);
 
   assert(Array.isArray(profile.samples) && profile.samples.length >= 2, `${corridorId}: elevation profile requires >=2 samples`);
   assert(Math.abs(profile.samples[0].distanceKm) <= EPS, `${corridorId}: elevation profile must start at 0`);
@@ -98,4 +103,53 @@ for (const corridorId of CORRIDORS) {
   assert(Math.abs(routeSamples.at(-1).distanceKm - metadata.totalDistanceKm) <= EPS, `${corridorId}: final route sample must equal totalDistanceKm`);
 }
 
-console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${evidenceCount} evidence records.`);
+const [environment, run] = await Promise.all([
+  readJson('public/data/environment/environment-sj-20260830.json'),
+  readJson('public/data/runs/sanjuan-v0-run.v1.json'),
+]);
+
+assert(environment.schemaVersion === 'sanjuan.environment/v1', 'environment: unsupported schemaVersion');
+assert(environment.id === run.environmentSnapshotId, `runtime: environment ${environment.id} does not match run ${run.environmentSnapshotId}`);
+assert(environment.targetDate === run.targetDate, 'runtime: targetDate mismatch');
+assert(environment.timezone === TIMEZONE && run.timezone === TIMEZONE, 'runtime: timezone mismatch');
+assert(run.mode === 'SIMULATED', `run: unsupported mode ${run.mode}`);
+assert(typeof run.seed === 'string' || typeof run.seed === 'number', 'run: deterministic seed required');
+assert(String(run.seed).length > 0, 'run: deterministic seed cannot be empty');
+assert(SOURCE_STATES.has(environment.sourceState), `environment: invalid sourceState ${environment.sourceState}`);
+assert(environment.sourceState !== 'UNAVAILABLE', 'environment: checked-in V0 snapshot cannot be UNAVAILABLE');
+assert(MODEL_KINDS.has(environment.modelKind), `environment: invalid modelKind ${environment.modelKind}`);
+assert(typeof environment.provider === 'string' && environment.provider.length > 0, 'environment: provider required');
+assert(Array.isArray(environment.evidenceRefs) && environment.evidenceRefs.length > 0, 'environment: evidenceRefs required');
+assert(Array.isArray(run.provenance) && run.provenance.length > 0, 'run: provenance required');
+for (const evidenceRef of environment.evidenceRefs) {
+  assert(run.provenance.includes(evidenceRef), `run: missing environment provenance ${evidenceRef}`);
+}
+
+assert(Array.isArray(environment.nodes), 'environment: nodes must be an array');
+assert(environment.nodes.length === CORRIDORS.length * 4, `environment: expected ${CORRIDORS.length * 4} route-tied nodes, found ${environment.nodes.length}`);
+
+for (const corridorId of CORRIDORS) {
+  const nodes = environment.nodes
+    .filter((node) => node.corridorId === corridorId)
+    .sort((a, b) => a.distanceKm - b.distanceKm);
+  const totalDistanceKm = corridorTotals.get(corridorId);
+  assert(nodes.length === 4, `environment/${corridorId}: expected 4 nodes, found ${nodes.length}`);
+  assert(Math.abs(nodes[0].distanceKm) <= EPS, `environment/${corridorId}: first node must be at 0 km`);
+  assert(Math.abs(nodes.at(-1).distanceKm - totalDistanceKm) <= 0.01, `environment/${corridorId}: last node must reach corridor end`);
+
+  for (let i = 0; i < nodes.length; i += 1) {
+    const node = nodes[i];
+    assert(Number.isFinite(node.lat) && Number.isFinite(node.lon) && Number.isFinite(node.elevationM), `environment/${node.id}: invalid location/elevation`);
+    assert(node.distanceKm >= -EPS && node.distanceKm <= totalDistanceKm + EPS, `environment/${node.id}: distance outside corridor`);
+    if (i > 0) assert(node.distanceKm > nodes[i - 1].distanceKm, `environment/${corridorId}: node distances must increase`);
+    assert(Array.isArray(node.hourly) && node.hourly.length >= 24, `environment/${node.id}: hourly series incomplete`);
+    for (const hour of node.hourly) {
+      assert(typeof hour.time === 'string' && hour.time.startsWith(environment.targetDate), `environment/${node.id}: hourly timestamp outside target date`);
+      for (const field of ['temperatureC', 'precipitationMm', 'snowfallCm', 'windSpeedKmh', 'windGustKmh', 'windDirectionDeg']) {
+        assert(hour[field] === null || Number.isFinite(hour[field]), `environment/${node.id}: invalid ${field}`);
+      }
+    }
+  }
+}
+
+console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, one immutable run, ${evidenceCount} territorial evidence records.`);
