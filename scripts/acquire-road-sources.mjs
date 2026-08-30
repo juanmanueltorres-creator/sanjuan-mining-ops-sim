@@ -235,6 +235,17 @@ function selectDatasetGeoJsonResource(resources, descriptor) {
 
 export async function resolveCkanResource(resource, fetcher = fetch) {
   const descriptor = asRecord(resource, 'Official resource descriptor');
+  const hasDirectUrl = typeof descriptor.url === 'string' && descriptor.url.length > 0;
+  if (hasDirectUrl) {
+    if (typeof descriptor.format !== 'string' || descriptor.format.length === 0) {
+      throw new Error('Direct official resource format required');
+    }
+    return {
+      ...descriptor,
+      name: typeof descriptor.name === 'string' && descriptor.name.length > 0 ? descriptor.name : descriptor.id,
+    };
+  }
+
   const hasResourceId = typeof descriptor.resourceId === 'string' && descriptor.resourceId.length > 0;
   const hasDatasetId = typeof descriptor.datasetId === 'string' && descriptor.datasetId.length > 0;
   if (!hasResourceId && !hasDatasetId) throw new Error('Official resource id or dataset id required');
