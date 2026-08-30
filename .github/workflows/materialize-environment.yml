@@ -1,0 +1,39 @@
+name: Materialize environment snapshot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/build-environment.mjs
+      - .github/workflows/materialize-environment.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-environment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build versioned environment snapshot
+        run: node scripts/build-environment.mjs --target-date 2026-08-30 --out /tmp/environment-sj-20260830.json
+
+      - name: Print snapshot checksum
+        run: sha256sum /tmp/environment-sj-20260830.json
+
+      - name: Upload snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: environment-sj-20260830
+          path: /tmp/environment-sj-20260830.json
+          if-no-files-found: error
+          retention-days: 1
