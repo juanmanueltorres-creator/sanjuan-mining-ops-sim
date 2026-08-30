@@ -7,17 +7,22 @@ import type {
 import {
   loadStaticOperationData,
   loadStaticRunArtifacts,
+  loadTrafficCalibration,
   type StaticOperationData,
   type StaticRunArtifacts,
+  type StaticTrafficCalibration,
 } from '../data/loadOperation';
 import { CesiumStage } from '../map/CesiumStage';
+import { backgroundTrafficAt } from '../simulation/backgroundTraffic';
 import { advanceClock, createClock, END_MINUTE, type Playback } from '../simulation/clock';
 import { getOperationalSnapshot } from '../simulation/engine';
 import { buildV0Schedule } from '../simulation/schedule';
+import { AnalysisDrawer } from '../ui/AnalysisDrawer';
 import { CommandHud } from '../ui/CommandHud';
 import { IntroOverlay } from '../ui/IntroOverlay';
 import { Timeline } from '../ui/Timeline';
 import { VehiclePanel } from '../ui/VehiclePanel';
+import '../ui/task9.css';
 import './app.css';
 
 const EMPTY_SNAPSHOT: OperationalSnapshot = {
@@ -41,7 +46,11 @@ const SYNTHETIC_PLAN_EVIDENCE: EvidenceRef = {
   ],
 };
 
-function buildOperationSpec(data: StaticOperationData, seed: string | number): SanJuanOperationSpec {
+function buildOperationSpec(
+  data: StaticOperationData,
+  seed: string | number,
+  traffic: StaticTrafficCalibration,
+): SanJuanOperationSpec {
   return {
     schemaVersion: 'sanjuan.operation/v1',
     scenarioId: 'sanjuan-mining-ops-v0',
@@ -56,8 +65,8 @@ function buildOperationSpec(data: StaticOperationData, seed: string | number): S
       defaultPlayback: 300,
       playbackOptions: [60, 120, 300, 600],
     },
-    calibration: { evidenceRefs: [] },
-    provenance: [...data.evidence, SYNTHETIC_PLAN_EVIDENCE],
+    calibration: { evidenceRefs: traffic.evidenceRefs },
+    provenance: [...data.evidence, ...traffic.evidence, SYNTHETIC_PLAN_EVIDENCE],
   };
 }
 
@@ -65,10 +74,12 @@ export function App() {
   const [started, setStarted] = useState(false);
   const [data, setData] = useState<StaticOperationData | null>(null);
   const [runArtifacts, setRunArtifacts] = useState<StaticRunArtifacts | null>(null);
+  const [trafficCalibration, setTrafficCalibration] = useState<StaticTrafficCalibration | null>(null);
   const [dataError, setDataError] = useState<string | null>(null);
   const [clock, setClock] = useState(createClock);
   const [playback, setPlayback] = useState<Playback>(300);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -77,11 +88,13 @@ export function App() {
     void Promise.all([
       loadStaticOperationData(fetcher),
       loadStaticRunArtifacts(fetcher),
+      loadTrafficCalibration(fetcher),
     ])
-      .then(([loadedData, loadedRunArtifacts]) => {
+      .then(([loadedData, loadedRunArtifacts, loadedTrafficCalibration]) => {
         if (cancelled) return;
         setData(loadedData);
         setRunArtifacts(loadedRunArtifacts);
+        setTrafficCalibration(loadedTrafficCalibration);
         setDataError(null);
       })
       .catch((error: unknown) => {
@@ -95,8 +108,12 @@ export function App() {
   }, []);
 
   const spec = useMemo(
-    () => (data && runArtifacts ? buildOperationSpec(data, runArtifacts.run.seed) : null),
-    [data, runArtifacts],
+    () => (
+      data && runArtifacts && trafficCalibration
+        ? buildOperationSpec(data, runArtifacts.run.seed, trafficCalibration)
+        : null
+    ),
+    [data, runArtifacts, trafficCalibration],
   );
   const snapshot = useMemo(
     () => (
@@ -108,6 +125,21 @@ export function App() {
   );
 
   const fleetIds = useMemo(() => spec?.fleet.map((vehicle) => vehicle.id) ?? [], [spec]);
+  const backgroundIds = useMemo(
+    () => trafficCalibration
+      ? Array.from({ length: trafficCalibration.maxVisibleVehicles }, (_, index) => `BG-${String(index + 1).padStart(3, '0')}`)
+      : [],
+    [trafficCalibration],
+  );
+  const backgroundTraffic = useMemo(
+    () => (
+      trafficCalibration && runArtifacts
+        ? backgroundTrafficAt(runArtifacts.run.seed, clock.minuteOfDay, trafficCalibration)
+        : []
+    ),
+    [trafficCalibration, runArtifacts, clock.minuteOfDay],
+  );
+
   const selectedVehicle = useMemo(
     () => snapshot.vehicles.find((vehicle) => vehicle.id === selectedVehicleId) ?? null,
     [snapshot, selectedVehicleId],
@@ -155,6 +187,8 @@ export function App() {
         data={data}
         snapshot={snapshot}
         fleetIds={fleetIds}
+        backgroundIds={backgroundIds}
+        backgroundTraffic={backgroundTraffic}
         onVehicleSelect={setSelectedVehicleId}
       />
 
@@ -173,8 +207,13 @@ export function App() {
           <div className="map-status" role="status">
             {data ? <span>10 projects · 3 operational corridors · 24 synthetic units</span> : null}
             {runArtifacts ? <span>MODELLED WEATHER · {runArtifacts.environment.sourceState}</span> : null}
-            {!data && !runArtifacts && <span>{dataError ? 'Operational data unavailable' : 'Loading operational data…'}</span>}
+            {trafficCalibration ? <span>BACKGROUND TRAFFIC · SYNTHETIC</span> : null}
+            {!data && !runArtifacts && !trafficCalibration && (
+              <span>{dataError ? 'Operational data unavailable' : 'Loading operational data…'}</span>
+            )}
           </div>
+
+          <button className="sources-button" type="button" onClick={() => setSourcesOpen(true)}>Sources</button>
 
           <VehiclePanel vehicle={selectedVehicle} corridorName={selectedCorridorName} />
           <Timeline
@@ -183,6 +222,14 @@ export function App() {
           />
         </div>
       )}
+
+      <AnalysisDrawer
+        open={started && sourcesOpen}
+        onClose={() => setSourcesOpen(false)}
+        operation={data}
+        runArtifacts={runArtifacts}
+        traffic={trafficCalibration}
+      />
 
       {!started && <IntroOverlay onStart={() => setStarted(true)} />}
     </main>
