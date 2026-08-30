@@ -8,6 +8,9 @@
     "build": "tsc -b && vite build",
     "test": "vitest",
     "validate:data": "node scripts/validate-data.mjs",
+    "acquire:road-sources": "node scripts/acquire-road-sources.mjs",
+    "build:road-geometry": "node scripts/build-road-geometry.mjs",
+    "validate:road-geometry": "node scripts/validate-road-geometry.mjs",
     "qa:visual": "node scripts/visual-qa.mjs",
     "audit:claims": "node scripts/audit-claims.mjs"
   },
