@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadStaticOperationData, loadStaticRunArtifacts } from './loadOperation';
+import { loadStaticOperationData, loadStaticRunArtifacts, loadTrafficCalibration } from './loadOperation';
 
 const evidence = (id: string) => ({
   id,
@@ -125,6 +125,39 @@ function makeRunFetcher(environmentOverride = environmentFixture, runOverride = 
   };
 }
 
+const trafficEvidence = [
+  { id: 'dnv', role: 'CALIBRATION', sourceName: 'DNV', retrievedAt: '2026-08-30', limitations: [] },
+  { id: 'pncv', role: 'ANALOGUE', sourceName: 'PNCV', retrievedAt: '2026-08-30', limitations: [] },
+  { id: 'shape', role: 'SYNTHETIC_ASSUMPTION', sourceName: 'Scenario', retrievedAt: '2026-08-30', limitations: [] },
+];
+
+const trafficFixture = {
+  schemaVersion: 'sanjuan.traffic-calibration/v1',
+  id: 'traffic-calibration-v1',
+  baseVisibleVehicles: 20,
+  maxVisibleVehicles: 24,
+  timeBands: [
+    { startMinute: 360, endMinute: 540, relativeIntensity: 0.65 },
+    { startMinute: 540, endMinute: 720, relativeIntensity: 1 },
+    { startMinute: 720, endMinute: 960, relativeIntensity: 0.8 },
+    { startMinute: 960, endMinute: 1201, relativeIntensity: 0.55 },
+  ],
+  corridorWeights: [
+    { corridorId: 'hualilan', weight: 0.34 },
+    { corridorId: 'veladero', weight: 0.33 },
+    { corridorId: 'los-azules', weight: 0.33 },
+  ],
+  evidenceRefs: ['dnv', 'pncv', 'shape'],
+  limitations: ['Not live traffic.'],
+  evidence: trafficEvidence,
+};
+
+function makeTrafficFetcher(override = trafficFixture) {
+  return async (url: string) => url === '/data/calibration/traffic.v1.json'
+    ? { ok: true, json: async () => override }
+    : { ok: false, json: async () => ({}) };
+}
+
 describe('loadStaticOperationData', () => {
   it('loads exactly 10 projects and the three active corridor bundles', async () => {
     const data = await loadStaticOperationData(makeFetcher());
@@ -150,5 +183,27 @@ describe('loadStaticRunArtifacts', () => {
   it('fails closed when the run references a different environment artifact', async () => {
     const brokenEnvironment = { ...environmentFixture, id: 'environment-other' };
     await expect(loadStaticRunArtifacts(makeRunFetcher(brokenEnvironment))).rejects.toThrow(/does not match run artifact/i);
+  });
+});
+
+describe('loadTrafficCalibration', () => {
+  it('loads the versioned synthetic background traffic calibration with evidence', async () => {
+    const calibration = await loadTrafficCalibration(makeTrafficFetcher());
+    expect(calibration.id).toBe('traffic-calibration-v1');
+    expect(calibration.baseVisibleVehicles).toBe(20);
+    expect(calibration.evidence).toHaveLength(3);
+  });
+
+  it('fails closed when traffic time bands contain a gap', async () => {
+    const broken = {
+      ...trafficFixture,
+      timeBands: trafficFixture.timeBands.map((band, index) => index === 1 ? { ...band, startMinute: 550 } : band),
+    };
+    await expect(loadTrafficCalibration(makeTrafficFetcher(broken))).rejects.toThrow(/time bands/i);
+  });
+
+  it('fails closed when traffic calibration references missing evidence', async () => {
+    const broken = { ...trafficFixture, evidenceRefs: [...trafficFixture.evidenceRefs, 'missing'] };
+    await expect(loadTrafficCalibration(makeTrafficFetcher(broken))).rejects.toThrow(/missing evidence refs/i);
   });
 });
