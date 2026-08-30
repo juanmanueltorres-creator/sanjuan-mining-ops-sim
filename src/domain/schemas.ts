@@ -23,6 +23,11 @@ const geometryEvidenceClassSchema = z.enum([
   'APPROXIMATE_APPROACH',
   'PROJECT_LOCATION',
 ]);
+const roadGeometryEvidenceClassSchema = z.enum([
+  'PUBLIC_ROAD',
+  'RECONSTRUCTED_ACCESS',
+  'APPROXIMATE_APPROACH',
+]);
 const vehicleTypeSchema = z.enum(['PERSONNEL', 'FIELD', 'LOGISTICS']);
 const vehicleDirectionSchema = z.enum(['TO_PROJECT', 'RETURN_TO_BASE']);
 
@@ -69,6 +74,9 @@ const routeSampleSchema = z.object({
   lat: z.number().finite(),
   elevationM: z.number().finite(),
   segmentId: z.string().min(1),
+  geometryChainageKm: z.number().nonnegative().optional(),
+  geometrySegmentId: z.string().min(1).optional(),
+  geometryClass: roadGeometryEvidenceClassSchema.optional(),
 });
 
 const corridorNodeSchema = locationRefSchema.extend({
@@ -92,6 +100,25 @@ const corridorSegmentSchema = z.object({
 });
 
 const coordinateSchema = z.tuple([z.number().finite(), z.number().finite()]);
+const roadCoordinateSchema = z.tuple([
+  z.number().min(-180).max(180),
+  z.number().min(-90).max(90),
+]);
+const roadGeometrySegmentSchema = z.object({
+  id: z.string().min(1),
+  corridorId: z.string().min(1),
+  geometryClass: roadGeometryEvidenceClassSchema,
+  geometry: z.object({
+    type: z.literal('LineString'),
+    coordinates: z.array(roadCoordinateSchema).min(2),
+  }),
+  sourceFeatureIds: z.array(z.string().min(1)).min(1),
+  evidenceRefs: z.array(z.string().min(1)).min(1),
+  sourceDatasetId: z.string().min(1),
+  sourceRetrievedAt: z.string().min(1),
+  sourceLicense: z.string().min(1).optional(),
+  limitations: z.array(z.string()),
+});
 const corridorGeometrySchema = z.union([
   z.object({
     type: z.literal('LineString'),
@@ -110,6 +137,7 @@ const corridorSchema = z.object({
   destination: locationRefSchema,
   geometry: corridorGeometrySchema,
   geometryClass: geometryEvidenceClassSchema,
+  geometrySegments: z.array(roadGeometrySegmentSchema).min(1).optional(),
   segments: z.array(corridorSegmentSchema).min(1),
   nodes: z.array(corridorNodeSchema),
   elevationProfile: elevationProfileSchema,
