@@ -3,14 +3,12 @@ name: CI
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   test-build:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -50,29 +48,3 @@ jobs:
           name: visual-qa
           path: artifacts/visual-qa/*.png
           if-no-files-found: ignore
-
-  acquire-veladero-road-sources:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Acquire Veladero road sources
-        run: npm run acquire:road-sources -- veladero
-
-      - name: Upload acquisition artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: veladero-road-sources
-          path: artifacts/road-geometry-acquisition/
-          if-no-files-found: error
