@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "sanjuan.elevation-profile/v1",
+  "source": "Public Calingasta corridor anchors and McEwen Los Azules elevation context",
+  "resolution": "anchor-based analytical profile",
+  "method": "Public locality/project elevation context mapped to the versioned reconstructed route axis with interpolation between anchors.",
+  "samples": [
+    {"distanceKm":0,"elevationM":650},
+    {"distanceKm":50,"elevationM":940},
+    {"distanceKm":120,"elevationM":1150},
+    {"distanceKm":164,"elevationM":1370},
+    {"distanceKm":189,"elevationM":1900},
+    {"distanceKm":230,"elevationM":2700},
+    {"distanceKm":271,"elevationM":3450},
+    {"distanceKm":276,"elevationM":3500}
+  ],
+  "evidenceRefs": ["mcewen-los-azules-location", "calingasta-public-locality", "los-azules-profile-derived"],
+  "limitations": [
+    "Analytical aid only; intermediate elevations are interpolated and are not an engineering-grade terrain survey.",
+    "The project elevation is approximate public context (~3,500 m), not a surveyed route endpoint elevation.",
+    "Do not use for navigation, engineering, occupational-health or road-safety decisions."
+  ]
+}
