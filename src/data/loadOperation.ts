@@ -1,11 +1,28 @@
-import type { CorridorDefinition, EvidenceRef, ProjectDefinition, SanJuanOperationSpec } from '../domain/contracts';
+import type {
+  CorridorDefinition,
+  EnvironmentSnapshot,
+  EvidenceRef,
+  OperationalRun,
+  ProjectDefinition,
+  SanJuanOperationSpec,
+} from '../domain/contracts';
 import { assertEvidenceRefsExist } from '../domain/evidence';
-import { parseCorridor, parseOperationSpec } from '../domain/schemas';
+import {
+  parseCorridor,
+  parseEnvironmentSnapshot,
+  parseOperationSpec,
+  parseOperationalRun,
+} from '../domain/schemas';
 
 export interface StaticOperationData {
   projects: ProjectDefinition[];
   corridors: CorridorDefinition[];
   evidence: EvidenceRef[];
+}
+
+export interface StaticRunArtifacts {
+  run: OperationalRun;
+  environment: EnvironmentSnapshot;
 }
 
 export type JsonFetcher = (url: string) => Promise<{ ok: boolean; json: () => Promise<unknown> }>;
@@ -53,6 +70,28 @@ function parseRegistry(projects: unknown[], evidence: unknown[]): Pick<SanJuanOp
 
 function parseEvidenceList(input: unknown): EvidenceRef[] {
   return parseRegistry([], asArray(input, 'evidence')).provenance;
+}
+
+export async function loadStaticRunArtifacts(fetcher: JsonFetcher): Promise<StaticRunArtifacts> {
+  const [runRaw, environmentRaw] = await Promise.all([
+    fetchJson(fetcher, '/data/runs/sanjuan-v0-run.v1.json'),
+    fetchJson(fetcher, '/data/environment/environment-sj-20260830.json'),
+  ]);
+
+  const run = parseOperationalRun(runRaw);
+  const environment = parseEnvironmentSnapshot(environmentRaw);
+
+  if (environment.id !== run.environmentSnapshotId) {
+    throw new Error(`Environment snapshot ${environment.id} does not match run artifact ${run.environmentSnapshotId}`);
+  }
+  if (environment.targetDate !== run.targetDate) {
+    throw new Error(`Environment target date ${environment.targetDate} does not match run ${run.targetDate}`);
+  }
+  if (environment.timezone !== run.timezone) {
+    throw new Error(`Environment timezone ${environment.timezone} does not match run ${run.timezone}`);
+  }
+
+  return { run, environment };
 }
 
 export async function loadStaticOperationData(fetcher: JsonFetcher): Promise<StaticOperationData> {
