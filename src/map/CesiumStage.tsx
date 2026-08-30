@@ -10,6 +10,7 @@ import {
   EllipsoidTerrainProvider,
   Entity,
   Math as CesiumMath,
+  PolylineDashMaterialProperty,
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
   UrlTemplateImageryProvider,
@@ -26,6 +27,7 @@ import {
   type VehicleEntitySink,
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
+import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
 
 export interface CesiumStageProps {
   data: StaticOperationData | null;
@@ -172,20 +174,36 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
 
   const corridorColors = ['#70c8d7', '#e3aa54', '#97b99a'];
   data.corridors.forEach((corridor, index) => {
-    const positions = corridor.routeSamples.map((sample) =>
-      Cartesian3.fromDegrees(sample.lon, sample.lat, Math.max(0, sample.elevationM + 3)),
-    );
-    if (positions.length < 2) return;
+    const baseColor = Color.fromCssColorString(corridorColors[index % corridorColors.length]);
+    const renderLines = buildCorridorRenderLines(corridor);
+    const isV2 = Boolean(corridor.geometrySegments?.length);
 
-    dataSource.entities.add({
-      id: `corridor:${corridor.id}`,
-      name: corridor.name,
-      polyline: {
-        positions,
-        width: 3,
-        material: Color.fromCssColorString(corridorColors[index % corridorColors.length]).withAlpha(0.9),
-      },
-    });
+    for (const line of renderLines) {
+      const positions = line.points.map((point) =>
+        Cartesian3.fromDegrees(point.lon, point.lat, Math.max(0, point.elevationM + 3)),
+      );
+      if (positions.length < 2) continue;
+
+      const style = routeGeometryStyle(line.geometryClass);
+      const color = baseColor.withAlpha(style.alpha);
+      const material = style.pattern === 'solid'
+        ? color
+        : new PolylineDashMaterialProperty({
+            color,
+            dashLength: style.dashLength,
+            dashPattern: style.dashPattern,
+          });
+
+      dataSource.entities.add({
+        id: isV2 ? `corridor:${corridor.id}:${line.id}` : `corridor:${corridor.id}`,
+        name: isV2 ? `${corridor.name} · ${line.geometryClass}` : corridor.name,
+        polyline: {
+          positions,
+          width: style.width,
+          material,
+        },
+      });
+    }
   });
 }
 
