@@ -59,9 +59,12 @@ describe('V0 checked-in replay acceptance', () => {
     expect(firstPass).toEqual(secondPass);
   });
 
-  it('resolves every fleet, calibration, context-rule, and emitted context evidence reference', async () => {
+  it('resolves every scenario, run, environment, and emitted context evidence reference', async () => {
     const { spec, artifacts, traffic } = await loadCheckedInScenario();
-    const known = new Set(spec.provenance.map((evidence) => evidence.id));
+    const known = new Set([
+      ...spec.provenance.map((evidence) => evidence.id),
+      ...artifacts.evidence.map((evidence) => evidence.id),
+    ]);
 
     const declaredRefs = [
       ...spec.calibration.evidenceRefs,
@@ -70,6 +73,8 @@ describe('V0 checked-in replay acceptance', () => {
         ...vehicle.plannedStops.flatMap((stop) => stop.evidenceRefs),
       ]),
       ...V0_CONTEXT_RULES.flatMap((rule) => rule.evidenceRefs),
+      ...artifacts.environment.evidenceRefs,
+      ...artifacts.run.provenance,
     ];
 
     expect([...new Set(declaredRefs.filter((id) => !known.has(id)))]).toEqual([]);
