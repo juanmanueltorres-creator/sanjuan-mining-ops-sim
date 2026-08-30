@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Cartesian2,
   Cartesian3,
+  Cartographic,
   Color,
   ConstantPositionProperty,
   CustomDataSource,
+  EllipsoidTerrainProvider,
   Entity,
   Math as CesiumMath,
   ScreenSpaceEventHandler,
@@ -22,6 +24,21 @@ export interface CesiumStageProps {
   fleetIds: string[];
   onVehicleSelect?: (vehicleId: string) => void;
 }
+
+interface MapInstrumentState {
+  headingDeg: number;
+  scaleLabel: string | null;
+  scaleWidthPx: number | null;
+  cursorText: string | null;
+}
+
+const REGIONAL_VIEW = {
+  lon: -69.25,
+  lat: -30.65,
+  heightM: 760_000,
+  headingDeg: 2,
+  pitchDeg: -53,
+};
 
 function canUseWebGl(): boolean {
   return typeof window !== 'undefined' && typeof WebGLRenderingContext !== 'undefined';
@@ -120,6 +137,69 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
   });
 }
 
+function setRegionalView(viewer: Viewer): void {
+  viewer.camera.setView({
+    destination: Cartesian3.fromDegrees(REGIONAL_VIEW.lon, REGIONAL_VIEW.lat, REGIONAL_VIEW.heightM),
+    orientation: {
+      heading: CesiumMath.toRadians(REGIONAL_VIEW.headingDeg),
+      pitch: CesiumMath.toRadians(REGIONAL_VIEW.pitchDeg),
+      roll: 0,
+    },
+  });
+  viewer.scene.requestRender();
+}
+
+function pickGlobe(viewer: Viewer, position: Cartesian2): Cartesian3 | null {
+  const ray = viewer.camera.getPickRay(position);
+  if (!ray) return null;
+  return viewer.scene.globe.pick(ray, viewer.scene) ?? null;
+}
+
+function niceScaleDistance(maxDistanceM: number): number | null {
+  if (!Number.isFinite(maxDistanceM) || maxDistanceM <= 0) return null;
+  const magnitude = 10 ** Math.floor(Math.log10(maxDistanceM));
+  for (const multiplier of [5, 2, 1]) {
+    const candidate = multiplier * magnitude;
+    if (candidate <= maxDistanceM) return candidate;
+  }
+  return magnitude / 2;
+}
+
+function formatScale(distanceM: number): string {
+  if (distanceM >= 1000) {
+    const km = distanceM / 1000;
+    return `${Number.isInteger(km) ? km.toFixed(0) : km.toFixed(1)} km`;
+  }
+  return `${Math.round(distanceM)} m`;
+}
+
+function formatCoordinate(value: number, positive: string, negative: string): string {
+  const hemisphere = value >= 0 ? positive : negative;
+  return `${Math.abs(value).toFixed(4)}° ${hemisphere}`;
+}
+
+function measureScale(viewer: Viewer): Pick<MapInstrumentState, 'scaleLabel' | 'scaleWidthPx'> {
+  const canvas = viewer.scene.canvas;
+  const sampleWidthPx = Math.min(120, Math.max(60, canvas.clientWidth * 0.12));
+  const centerX = canvas.clientWidth / 2;
+  const y = Math.max(1, canvas.clientHeight - 90);
+  const left = pickGlobe(viewer, new Cartesian2(centerX - sampleWidthPx / 2, y));
+  const right = pickGlobe(viewer, new Cartesian2(centerX + sampleWidthPx / 2, y));
+  if (!left || !right) return { scaleLabel: null, scaleWidthPx: null };
+
+  const measuredDistanceM = Cartesian3.distance(left, right);
+  const metersPerPixel = measuredDistanceM / sampleWidthPx;
+  const niceDistanceM = niceScaleDistance(metersPerPixel * 100);
+  if (!niceDistanceM || !Number.isFinite(metersPerPixel) || metersPerPixel <= 0) {
+    return { scaleLabel: null, scaleWidthPx: null };
+  }
+
+  return {
+    scaleLabel: formatScale(niceDistanceM),
+    scaleWidthPx: Math.max(32, Math.min(120, niceDistanceM / metersPerPixel)),
+  };
+}
+
 export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: CesiumStageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerRef = useRef<Viewer | null>(null);
@@ -127,6 +207,12 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
   const adapterRef = useRef<OperationalMapAdapter | null>(null);
   const staticTerritoryReadyRef = useRef(false);
   const onVehicleSelectRef = useRef(onVehicleSelect);
+  const [instruments, setInstruments] = useState<MapInstrumentState>({
+    headingDeg: REGIONAL_VIEW.headingDeg,
+    scaleLabel: null,
+    scaleWidthPx: null,
+    cursorText: null,
+  });
 
   onVehicleSelectRef.current = onVehicleSelect;
 
@@ -164,15 +250,13 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
 
     const dataSource = new CustomDataSource('san-juan-mining-operations');
     void viewer.dataSources.add(dataSource);
+    setRegionalView(viewer);
 
-    viewer.camera.setView({
-      destination: Cartesian3.fromDegrees(-69.25, -30.65, 760_000),
-      orientation: {
-        heading: CesiumMath.toRadians(2),
-        pitch: CesiumMath.toRadians(-53),
-        roll: 0,
-      },
-    });
+    const updateCameraInstruments = () => {
+      const scale = measureScale(viewer);
+      const headingDeg = ((CesiumMath.toDegrees(viewer.camera.heading) % 360) + 360) % 360;
+      setInstruments((current) => ({ ...current, headingDeg, ...scale }));
+    };
 
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction((movement: { position: Cartesian2 }) => {
@@ -182,10 +266,36 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
       onVehicleSelectRef.current?.(pickedEntity.id.slice('vehicle:'.length));
     }, ScreenSpaceEventType.LEFT_CLICK);
 
+    handler.setInputAction((movement: { endPosition: Cartesian2 }) => {
+      const position = pickGlobe(viewer, movement.endPosition);
+      if (!position) {
+        setInstruments((current) => ({ ...current, cursorText: null }));
+        return;
+      }
+
+      const cartographic = Cartographic.fromCartesian(position);
+      const lon = CesiumMath.toDegrees(cartographic.longitude);
+      const lat = CesiumMath.toDegrees(cartographic.latitude);
+      const hasTerrain = !(viewer.terrainProvider instanceof EllipsoidTerrainProvider);
+      const terrainHeight = hasTerrain ? viewer.scene.globe.getHeight(cartographic) : undefined;
+      const elevation = Number.isFinite(terrainHeight) ? `${Math.round(terrainHeight as number).toLocaleString('en-US')} m` : '—';
+      setInstruments((current) => ({
+        ...current,
+        cursorText: `${formatCoordinate(lat, 'N', 'S')} · ${formatCoordinate(lon, 'E', 'W')} · ELEV ${elevation}`,
+      }));
+    }, ScreenSpaceEventType.MOUSE_MOVE);
+
+    viewer.camera.percentageChanged = 0.01;
+    viewer.camera.changed.addEventListener(updateCameraInstruments);
+    window.addEventListener('resize', updateCameraInstruments);
+    updateCameraInstruments();
+
     viewerRef.current = viewer;
     dataSourceRef.current = dataSource;
 
     return () => {
+      window.removeEventListener('resize', updateCameraInstruments);
+      viewer.camera.changed.removeEventListener(updateCameraInstruments);
       handler.destroy();
       adapterRef.current = null;
       staticTerritoryReadyRef.current = false;
@@ -220,10 +330,52 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
     viewer.scene.requestRender();
   }, [snapshot]);
 
+  const webGlAvailable = canUseWebGl();
+
   return (
     <section className="map-stage" role="region" aria-label="3D operational map">
       <div ref={containerRef} className="cesium-host" aria-hidden="true" />
-      {!canUseWebGl() && <div className="map-fallback">3D MAP · WEBGL PREVIEW UNAVAILABLE</div>}
+      {!webGlAvailable && <div className="map-fallback">3D MAP · WEBGL PREVIEW UNAVAILABLE</div>}
+
+      <div className="map-instruments" aria-label="Cartographic instruments">
+        <div className="north-indicator" aria-label="Map orientation">
+          <span
+            className="north-arrow"
+            aria-hidden="true"
+            style={{ transform: `rotate(${-instruments.headingDeg}deg)` }}
+          >
+            ↑
+          </span>
+          <strong>N</strong>
+        </div>
+
+        <div className="scale-indicator" aria-label="Map scale">
+          {webGlAvailable && instruments.scaleLabel && instruments.scaleWidthPx ? (
+            <>
+              <span className="scale-line" style={{ width: `${instruments.scaleWidthPx}px` }} aria-hidden="true" />
+              <span>{instruments.scaleLabel}</span>
+            </>
+          ) : (
+            <span>SCALE UNAVAILABLE</span>
+          )}
+        </div>
+
+        <div className="cursor-readout" aria-label="Cursor coordinates and elevation">
+          {webGlAvailable && instruments.cursorText ? instruments.cursorText : 'CURSOR · TERRAIN UNAVAILABLE'}
+        </div>
+
+        <button
+          className="regional-view-button"
+          type="button"
+          aria-label="Regional view"
+          onClick={() => {
+            const viewer = viewerRef.current;
+            if (viewer) setRegionalView(viewer);
+          }}
+        >
+          REGIONAL VIEW
+        </button>
+      </div>
     </section>
   );
 }
