@@ -116,11 +116,22 @@ const environmentFixture = {
   }],
 };
 
-function makeRunFetcher(environmentOverride = environmentFixture, runOverride = runFixture) {
+const environmentEvidenceFixture = {
+  schemaVersion: 'sanjuan.environment-evidence/v1',
+  environmentSnapshotId: 'environment-sj-20260830-v1',
+  evidence: [evidence('open-meteo-forecast-20260830')],
+};
+
+function makeRunFetcher(
+  environmentOverride = environmentFixture,
+  runOverride = runFixture,
+  evidenceOverride = environmentEvidenceFixture,
+) {
   return async (url: string) => {
     const body = url === '/data/runs/sanjuan-v0-run.v1.json' ? runOverride
       : url === '/data/environment/environment-sj-20260830.json' ? environmentOverride
-        : null;
+        : url === '/data/environment/environment-sj-20260830.evidence.v1.json' ? evidenceOverride
+          : null;
     return body ? { ok: true, json: async () => body } : { ok: false, json: async () => ({}) };
   };
 }
@@ -173,16 +184,19 @@ describe('loadStaticOperationData', () => {
 });
 
 describe('loadStaticRunArtifacts', () => {
-  it('loads the exact versioned run and environment snapshot together', async () => {
+  it('loads the exact versioned run, environment snapshot, and environment evidence together', async () => {
     const artifacts = await loadStaticRunArtifacts(makeRunFetcher());
     expect(artifacts.run.seed).toBe('sanjuan-v0-20260830');
     expect(artifacts.environment.id).toBe(artifacts.run.environmentSnapshotId);
     expect(artifacts.environment.sourceState).toBe('READY');
+    expect(artifacts.evidence.map((item) => item.id)).toEqual(['open-meteo-forecast-20260830']);
   });
 
   it('fails closed when the run references a different environment artifact', async () => {
     const brokenEnvironment = { ...environmentFixture, id: 'environment-other' };
-    await expect(loadStaticRunArtifacts(makeRunFetcher(brokenEnvironment))).rejects.toThrow(/does not match run artifact/i);
+    const matchingBrokenEvidence = { ...environmentEvidenceFixture, environmentSnapshotId: 'environment-other' };
+    await expect(loadStaticRunArtifacts(makeRunFetcher(brokenEnvironment, runFixture, matchingBrokenEvidence)))
+      .rejects.toThrow(/does not match run artifact/i);
   });
 });
 
