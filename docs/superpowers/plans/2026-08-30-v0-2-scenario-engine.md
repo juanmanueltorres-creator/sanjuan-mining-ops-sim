@@ -13,30 +13,29 @@
 ## Global Constraints
 
 - Implementation branch: `feat/v0.2-scenario-engine`, created from `main` **only after V0.1 Road Geometry is merged and accepted**.
-- Before Task 1, copy the approved spec and this plan from `design/v0.2-scenario-engine` onto the implementation branch; do not implement on the design branch.
+- Before Task 1, carry the approved spec and this plan from `design/v0.2-scenario-engine` onto the implementation branch; never implement on the design branch.
 - Veladero only. Hualilán and Los Azules remain operationally unchanged.
-- Baseline run id remains `sanjuan-v0-run-20260830-v1` unless V0.1 deliberately changes the immutable run artifact; if that id or its seed changes, stop and reconcile the spec/plan before implementation.
-- Baseline seed remains `sanjuan-v0-20260830`; every V0.2 `ScenarioDefinition.seed` must exactly equal `OperationalRun.seed` and `SanJuanOperationSpec.seed`.
-- V0.1 must preserve operational segment `veladero-05` as `260–340 km`. Scenario C targets that exact segment. If the final merged V0.1 asset does not satisfy this invariant, stop rather than selecting a “nearest” segment.
-- Scenario B adds a **synthetic REST stop at operational km 205 with 15 minutes dwell**. It is not a real checkpoint claim.
+- Baseline run id is `sanjuan-v0-run-20260830-v1` and baseline seed is `sanjuan-v0-20260830`. If accepted V0.1 intentionally changes either artifact, stop and reconcile the design before implementation.
+- V0.1 preserves operational segment `veladero-05` as `260–340 km`; Scenario C targets that exact segment.
+- Scenario A: `DEPARTURE_OFFSET +60` for all highlighted Veladero synthetic vehicles.
+- Scenario B: one authored synthetic `REST` stop at operational km `205`, dwell `15` minutes, for all highlighted Veladero synthetic vehicles. It is not a real checkpoint claim.
+- Scenario C: `SEGMENT_SPEED_MULTIPLIER ×0.80` on `veladero-05`. Because V0.2 has no direction dimension, the multiplier applies **every time a vehicle traverses that segment, outbound and return**.
 - Supported rule vocabulary is closed: `DEPARTURE_OFFSET`, `ADD_PLANNED_STOP`, `SEGMENT_SPEED_MULTIPLIER` only.
-- Scenario A applies `+60` departure minutes to all Veladero highlighted synthetic vehicles.
-- Scenario C applies `×0.80` to baseline synthetic speed on `veladero-05` only.
-- `weather describes context but does not automatically alter movement` remains an invariant.
+- `weather describes context but does not automatically alter movement` remains invariant.
 - `simulation != real operation`; `road geometry != road condition`; `modelled != observed`; `missing != zero`; `candidate != diagnosis`; `proximity != impact`.
-- No prediction, recommendation, ranking, risk/safety score, road-status inference, optimization, RL, Monte Carlo, telemetry, dispatch/FMS integration, route alternatives or Territorial Score implementation.
-- No runtime provider calls are introduced. Scenario definitions and evidence are checked-in static artifacts.
-- One active scenario is rendered at a time. No second Cesium Viewer and no simultaneous Baseline/Scenario vehicle overlays in V0.2.
-- Switching scenarios preserves the current simulation clock. Existing Reset semantics do not silently reset the selected scenario.
+- No prediction, recommendation, ranking, risk/safety score, road-status inference, optimization, RL, Monte Carlo, telemetry, dispatch/FMS integration, route alternatives, or Territorial Score implementation.
+- No runtime provider calls are introduced. Scenario definitions/evidence are checked-in static artifacts.
+- One active scenario is rendered at a time. No second Cesium Viewer and no simultaneous Baseline/Scenario vehicle overlays.
+- Switching scenarios preserves the current simulation clock. Existing Reset semantics do not silently reset scenario selection.
 - Baseline with `rules: []` must reproduce existing V0/V0.1 operational snapshots/events exactly.
-- Missing environment context remains `UNAVAILABLE`; never substitute zero, previous values or invented data.
+- Missing environment context remains `UNAVAILABLE`; never substitute zero, previous values, or invented data.
 - Every scenario/rule evidence reference resolves fail-closed to `SYNTHETIC_ASSUMPTION` evidence.
-- Full final gate on one HEAD: tests → data validation → claim audit → build → visual QA.
-- Do not merge the final V0.2 PR without explicit human approval.
+- Final gate on one HEAD: `npm test -- --run` → `npm run validate:data` → `npm run audit:claims` → `npm run build` → `npm run qa:visual`.
+- Do not merge V0.2 without explicit human approval.
 
 ## Execution Preflight
 
-Before Task 1, verify the implementation base really is the accepted V0.1 state:
+Before Task 1:
 
 ```bash
 git switch main
@@ -45,13 +44,12 @@ git switch -c feat/v0.2-scenario-engine
 git checkout design/v0.2-scenario-engine -- \
   docs/superpowers/specs/2026-08-30-v0-2-scenario-engine-design.md \
   docs/superpowers/plans/2026-08-30-v0-2-scenario-engine.md
-
 git add docs/superpowers/specs/2026-08-30-v0-2-scenario-engine-design.md \
         docs/superpowers/plans/2026-08-30-v0-2-scenario-engine.md
 git commit -m "docs: carry approved V0.2 scenario design"
 ```
 
-Then run:
+Verify the accepted V0.1 base contract:
 
 ```bash
 node - <<'NODE'
@@ -60,23 +58,23 @@ const metadataPath = fs.existsSync('public/data/corridors/veladero/metadata.v2.j
   ? 'public/data/corridors/veladero/metadata.v2.json'
   : 'public/data/corridors/veladero/metadata.v1.json';
 const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
-const target = metadata.segments.find((segment) => segment.id === 'veladero-05');
-if (!target || target.startKm !== 260 || target.endKm !== 340) {
-  throw new Error('V0.2 preflight failed: expected veladero-05 to remain 260–340 km');
+const segment = metadata.segments.find((item) => item.id === 'veladero-05');
+if (!segment || segment.startKm !== 260 || segment.endKm !== 340) {
+  throw new Error('Expected veladero-05 to remain exactly 260–340 km');
 }
 const run = JSON.parse(fs.readFileSync('public/data/runs/sanjuan-v0-run.v1.json', 'utf8'));
 if (run.id !== 'sanjuan-v0-run-20260830-v1' || run.seed !== 'sanjuan-v0-20260830') {
-  throw new Error(`V0.2 preflight failed: baseline run drifted to ${run.id}/${run.seed}`);
+  throw new Error(`Baseline run drift: ${run.id}/${run.seed}`);
 }
-console.log(`V0.2 preflight OK: ${metadataPath}, ${target.id}, ${run.id}`);
+console.log(`V0.2 preflight OK: ${metadataPath}; ${segment.id}; ${run.id}`);
 NODE
 ```
 
-Expected: `V0.2 preflight OK`. If it fails, stop and update the approved design before writing code.
+Expected: `V0.2 preflight OK`. Any failure is a design/base-contract drift; stop rather than adapting silently.
 
 ---
 
-### Task 1: Scenario Input Contracts, Schemas, and Catalog Integrity
+### Task 1: Scenario Input Contracts and Fail-Closed Schemas
 
 **Files:**
 - Create: `src/scenario/contracts.ts`
@@ -85,18 +83,18 @@ Expected: `V0.2 preflight OK`. If it fails, stop and update the approved design 
 - Modify: `src/domain/schemas.ts`
 
 **Interfaces:**
-- Consumes: existing `EvidenceRef` from `src/domain/contracts.ts` and existing Zod evidence shape from `src/domain/schemas.ts`.
+- Consumes: existing `EvidenceRef` and evidence Zod shape.
 - Produces: `ScenarioRule`, `ScenarioDefinition`, `ScenarioCatalog`, `parseScenarioDefinition(input)`, `parseScenarioCatalog(input)`.
 
-- [ ] **Step 1: Write RED tests for the closed rule vocabulary and catalog integrity**
+- [ ] **Step 1: Write RED schema tests**
 
-Create `src/scenario/schemas.test.ts` with tests equivalent to:
+Create `src/scenario/schemas.test.ts`:
 
 ```ts
 import { describe, expect, it } from 'vitest';
 import { parseScenarioCatalog, parseScenarioDefinition } from './schemas';
 
-const base = {
+const baseline = {
   schemaVersion: 'sanjuan.scenario/v1',
   id: 'veladero-baseline-v1',
   label: 'Baseline',
@@ -110,80 +108,87 @@ const base = {
   limitations: ['Synthetic scenario wrapper only.'],
 };
 
-it('parses the three supported scenario transformation rules', () => {
-  const definition = parseScenarioDefinition({
-    ...base,
+const evidence = (id: string) => ({
+  id,
+  role: 'SYNTHETIC_ASSUMPTION',
+  sourceName: 'San Juan Mining Ops Sim — authored scenario rule',
+  retrievedAt: '2026-08-30',
+  method: 'Explicit scenario assumption.',
+  limitations: ['Not observed operator behavior.'],
+});
+
+it('parses the closed three-rule vocabulary', () => {
+  const parsed = parseScenarioDefinition({
+    ...baseline,
     id: 'combined-v1',
     rules: [
       {
-        id: 'departure-plus-60-v1',
-        type: 'DEPARTURE_OFFSET',
+        id: 'departure-plus-60-v1', type: 'DEPARTURE_OFFSET',
         target: { corridorId: 'veladero', scope: 'ALL_CORRIDOR_VEHICLES' },
-        offsetMinutes: 60,
-        evidenceRefs: ['departure-rule-evidence'],
+        offsetMinutes: 60, evidenceRefs: ['departure-evidence'],
       },
       {
-        id: 'stop-km205-v1',
-        type: 'ADD_PLANNED_STOP',
+        id: 'stop-km205-v1', type: 'ADD_PLANNED_STOP',
         target: { corridorId: 'veladero', scope: 'ALL_CORRIDOR_VEHICLES' },
         stop: { id: 'scenario-stop-km205-v1', distanceKm: 205, dwellMinutes: 15 },
-        evidenceRefs: ['stop-rule-evidence'],
+        evidenceRefs: ['stop-evidence'],
       },
       {
-        id: 'speed-veladero-05-v1',
-        type: 'SEGMENT_SPEED_MULTIPLIER',
+        id: 'speed-veladero-05-v1', type: 'SEGMENT_SPEED_MULTIPLIER',
         target: { corridorId: 'veladero', segmentId: 'veladero-05', scope: 'ALL_CORRIDOR_VEHICLES' },
-        multiplier: 0.8,
-        evidenceRefs: ['speed-rule-evidence'],
+        multiplier: 0.8, evidenceRefs: ['speed-evidence'],
       },
     ],
   });
-  expect(definition.rules.map((rule) => rule.type)).toEqual([
-    'DEPARTURE_OFFSET',
-    'ADD_PLANNED_STOP',
-    'SEGMENT_SPEED_MULTIPLIER',
+  expect(parsed.rules.map((rule) => rule.type)).toEqual([
+    'DEPARTURE_OFFSET', 'ADD_PLANNED_STOP', 'SEGMENT_SPEED_MULTIPLIER',
   ]);
 });
 
-it('rejects unknown rule types and multipliers outside the authoring guard', () => {
+it('rejects unsupported rule types and multiplier authoring mistakes', () => {
   expect(() => parseScenarioDefinition({
-    ...base,
-    rules: [{ id: 'x', type: 'PREDICT_DELAY', target: { corridorId: 'veladero', scope: 'ALL_CORRIDOR_VEHICLES' }, evidenceRefs: ['e'] }],
+    ...baseline,
+    rules: [{ id: 'x', type: 'PREDICT_DELAY', evidenceRefs: ['x'] }],
   })).toThrow();
-
   expect(() => parseScenarioDefinition({
-    ...base,
+    ...baseline,
     rules: [{
-      id: 'x',
-      type: 'SEGMENT_SPEED_MULTIPLIER',
+      id: 'x', type: 'SEGMENT_SPEED_MULTIPLIER',
       target: { corridorId: 'veladero', segmentId: 'veladero-05', scope: 'ALL_CORRIDOR_VEHICLES' },
-      multiplier: 80,
-      evidenceRefs: ['e'],
+      multiplier: 80, evidenceRefs: ['x'],
     }],
   })).toThrow();
 });
 
-it('requires catalog rule evidence to resolve to SYNTHETIC_ASSUMPTION records', () => {
+it('requires exactly one empty-rule Baseline and resolvable synthetic evidence', () => {
+  const good = parseScenarioCatalog({
+    schemaVersion: 'sanjuan.scenario-catalog/v1', id: 'veladero-what-if-v1', corridorId: 'veladero',
+    scenarios: [baseline], evidence: [evidence('what-if-baseline-v1')], limitations: [],
+  });
+  expect(good.scenarios).toHaveLength(1);
+
   expect(() => parseScenarioCatalog({
-    schemaVersion: 'sanjuan.scenario-catalog/v1',
-    id: 'veladero-what-if-v1',
-    corridorId: 'veladero',
-    scenarios: [{ ...base, evidenceRefs: ['missing'] }],
-    evidence: [],
-    limitations: [],
+    schemaVersion: 'sanjuan.scenario-catalog/v1', id: 'veladero-what-if-v1', corridorId: 'veladero',
+    scenarios: [{ ...baseline, evidenceRefs: ['missing'] }], evidence: [], limitations: [],
   })).toThrow(/missing/i);
+
+  expect(() => parseScenarioCatalog({
+    schemaVersion: 'sanjuan.scenario-catalog/v1', id: 'veladero-what-if-v1', corridorId: 'veladero',
+    scenarios: [baseline, { ...baseline, id: 'second-baseline' }],
+    evidence: [evidence('what-if-baseline-v1')], limitations: [],
+  })).toThrow(/baseline/i);
 });
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/schemas.test.ts
 ```
 
-Expected: FAIL because the scenario module does not exist.
+Expected: FAIL because scenario modules do not exist.
 
-- [ ] **Step 3: Add the exact serializable scenario contracts**
+- [ ] **Step 3: Add exact serializable contracts**
 
 Create `src/scenario/contracts.ts`:
 
@@ -199,7 +204,6 @@ export interface DepartureOffsetRule {
   offsetMinutes: number;
   evidenceRefs: string[];
 }
-
 export interface AddPlannedStopRule {
   id: string;
   type: 'ADD_PLANNED_STOP';
@@ -207,7 +211,6 @@ export interface AddPlannedStopRule {
   stop: { id: string; distanceKm: number; dwellMinutes: number };
   evidenceRefs: string[];
 }
-
 export interface SegmentSpeedMultiplierRule {
   id: string;
   type: 'SEGMENT_SPEED_MULTIPLIER';
@@ -215,7 +218,6 @@ export interface SegmentSpeedMultiplierRule {
   multiplier: number;
   evidenceRefs: string[];
 }
-
 export type ScenarioRule = DepartureOffsetRule | AddPlannedStopRule | SegmentSpeedMultiplierRule;
 
 export interface ScenarioDefinition {
@@ -242,25 +244,13 @@ export interface ScenarioCatalog {
 }
 ```
 
-- [ ] **Step 4: Export the existing evidence Zod schema without changing its behavior**
+- [ ] **Step 4: Export the existing evidence Zod schema**
 
-In `src/domain/schemas.ts`, change only:
+In `src/domain/schemas.ts`, change only `const evidenceRefSchema` to `export const evidenceRefSchema`; do not alter validation semantics.
 
-```ts
-const evidenceRefSchema = z.object({
-```
+- [ ] **Step 5: Implement Zod schemas and catalog cross-reference checks**
 
-to:
-
-```ts
-export const evidenceRefSchema = z.object({
-```
-
-Run the existing domain schema tests immediately after this mechanical change.
-
-- [ ] **Step 5: Implement strict Zod parsing and cross-reference integrity**
-
-Create `src/scenario/schemas.ts` using a `z.discriminatedUnion('type', ...)`. Exact numeric guards:
+Use `z.discriminatedUnion('type', ...)` with exact guards:
 
 ```ts
 offsetMinutes: z.number().int().finite(),
@@ -269,126 +259,83 @@ dwellMinutes: z.number().nonnegative().finite(),
 multiplier: z.number().min(0.1).max(2).finite(),
 ```
 
-Use literals for:
+Use literal values for schema versions, `veladero`, `ALL_CORRIDOR_VEHICLES`, `what-if-v0.1`, and `scenario-rules-v1`.
 
-```text
-sanjuan.scenario/v1
-sanjuan.scenario-catalog/v1
-veladero
-ALL_CORRIDOR_VEHICLES
-what-if-v0.1
-scenario-rules-v1
-```
+`parseScenarioCatalog` additionally rejects duplicate scenario ids, duplicate evidence ids, duplicate rule ids in a scenario, missing evidence refs, referenced evidence whose role is not `SYNTHETIC_ASSUMPTION`, and anything other than exactly one empty-rule Baseline.
 
-`parseScenarioCatalog` must additionally reject:
-
-- duplicate scenario ids;
-- duplicate evidence ids;
-- duplicate rule ids inside one scenario;
-- any scenario/rule evidence ref missing from `catalog.evidence`;
-- any referenced scenario evidence whose role is not `SYNTHETIC_ASSUMPTION`;
-- zero or more than one empty-rule Baseline definition.
-
-- [ ] **Step 6: GREEN and compatibility check**
+- [ ] **Step 6: GREEN and commit**
 
 ```bash
 npm test -- --run src/scenario/schemas.test.ts src/domain/schemas.test.ts
 npm run build
-```
-
-Expected: PASS.
-
-- [ ] **Step 7: Commit**
-
-```bash
 git add src/scenario/contracts.ts src/scenario/schemas.ts src/scenario/schemas.test.ts src/domain/schemas.ts
 git commit -m "feat: add scenario input contracts and schemas"
 ```
 
 ---
 
-### Task 2: Canonicalization and Deterministic Scenario Fingerprints
+### Task 2: Canonicalization and Deterministic Fingerprints
 
 **Files:**
 - Create: `src/scenario/canonicalize.ts`
 - Create: `src/scenario/canonicalize.test.ts`
 
 **Interfaces:**
-- Consumes: `ScenarioDefinition`, `ScenarioRule` from Task 1.
+- Consumes: `ScenarioDefinition`, `ScenarioRule`.
 - Produces: `canonicalizeScenarioRules(rules)`, `scenarioFingerprint(definition)`.
 
-- [ ] **Step 1: Write RED tests for rule-order invariance**
+- [ ] **Step 1: Write RED tests**
 
 ```ts
 import { describe, expect, it } from 'vitest';
-import { canonicalizeScenarioRules, scenarioFingerprint } from './canonicalize';
 import type { ScenarioDefinition, ScenarioRule } from './contracts';
+import { canonicalizeScenarioRules, scenarioFingerprint } from './canonicalize';
 
 const departure: ScenarioRule = {
-  id: 'departure-plus-60-v1',
-  type: 'DEPARTURE_OFFSET',
+  id: 'departure-plus-60-v1', type: 'DEPARTURE_OFFSET',
   target: { corridorId: 'veladero', scope: 'ALL_CORRIDOR_VEHICLES' },
-  offsetMinutes: 60,
-  evidenceRefs: ['departure-evidence'],
+  offsetMinutes: 60, evidenceRefs: ['departure-evidence'],
 };
 const stop: ScenarioRule = {
-  id: 'stop-km205-v1',
-  type: 'ADD_PLANNED_STOP',
+  id: 'stop-km205-v1', type: 'ADD_PLANNED_STOP',
   target: { corridorId: 'veladero', scope: 'ALL_CORRIDOR_VEHICLES' },
   stop: { id: 'scenario-stop-km205-v1', distanceKm: 205, dwellMinutes: 15 },
   evidenceRefs: ['stop-evidence'],
 };
+const definition = (rules: ScenarioRule[]): ScenarioDefinition => ({
+  schemaVersion: 'sanjuan.scenario/v1', id: 'combined-v1', label: 'Combined', corridorId: 'veladero',
+  baseRunId: 'sanjuan-v0-run-20260830-v1', scenarioVersion: 'what-if-v0.1',
+  ruleSetVersion: 'scenario-rules-v1', seed: 'sanjuan-v0-20260830', rules,
+  evidenceRefs: ['scenario-evidence'], limitations: [],
+});
 
-function definition(rules: ScenarioRule[]): ScenarioDefinition {
-  return {
-    schemaVersion: 'sanjuan.scenario/v1',
-    id: 'combined-v1',
-    label: 'Combined',
-    corridorId: 'veladero',
-    baseRunId: 'sanjuan-v0-run-20260830-v1',
-    scenarioVersion: 'what-if-v0.1',
-    ruleSetVersion: 'scenario-rules-v1',
-    seed: 'sanjuan-v0-20260830',
-    rules,
-    evidenceRefs: ['scenario-evidence'],
-    limitations: [],
-  };
-}
-
-it('canonicalizes reordered rules identically', () => {
+it('makes rule order semantically irrelevant', () => {
   expect(canonicalizeScenarioRules([departure, stop])).toEqual(canonicalizeScenarioRules([stop, departure]));
-});
-
-it('produces the same fingerprint for reordered rules and a different one for changed parameters', () => {
   expect(scenarioFingerprint(definition([departure, stop]))).toBe(scenarioFingerprint(definition([stop, departure])));
-  expect(scenarioFingerprint(definition([{ ...departure, offsetMinutes: 61 }, stop])))
-    .not.toBe(scenarioFingerprint(definition([departure, stop])));
 });
 
-it('does not change model identity when only the presentation label changes', () => {
-  const a = definition([departure]);
-  const b = { ...a, label: 'Different display label' };
-  expect(scenarioFingerprint(a)).toBe(scenarioFingerprint(b));
+it('changes identity when a model parameter changes but not when display label changes', () => {
+  const original = definition([departure]);
+  expect(scenarioFingerprint({ ...original, label: 'Other label' })).toBe(scenarioFingerprint(original));
+  expect(scenarioFingerprint(definition([{ ...departure, offsetMinutes: 61 }]))).not.toBe(scenarioFingerprint(original));
 });
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/canonicalize.test.ts
 ```
 
-Expected: FAIL because canonicalization does not exist.
+- [ ] **Step 3: Implement stable canonical JSON and FNV-1a 64-bit**
 
-- [ ] **Step 3: Implement stable canonical JSON and a non-cryptographic FNV-1a 64-bit fingerprint**
-
-Use a recursive stable serializer that sorts object keys and sorts `evidenceRefs`. Canonical rule ordering must be by:
+Sort object keys recursively, sort every `evidenceRefs` array, and sort rules by:
 
 ```text
-type → target corridor → target segment (or empty string) → rule id
+type → target.corridorId → target.segmentId-or-empty → id
 ```
 
-Fingerprint payload is exactly:
+Fingerprint exactly this payload:
 
 ```ts
 {
@@ -400,26 +347,19 @@ Fingerprint payload is exactly:
 }
 ```
 
-Implement FNV-1a 64-bit with `BigInt` and return a 16-character lowercase hex string. Do not use `Date.now()`, `Math.random()`, browser state or async crypto.
+Use deterministic FNV-1a 64-bit with `BigInt`, returning a lowercase 16-character hex string. No timestamp, randomness, browser state, or async provider dependency.
 
-- [ ] **Step 4: GREEN**
+- [ ] **Step 4: GREEN and commit**
 
 ```bash
 npm test -- --run src/scenario/canonicalize.test.ts
-```
-
-Expected: PASS.
-
-- [ ] **Step 5: Commit**
-
-```bash
 git add src/scenario/canonicalize.ts src/scenario/canonicalize.test.ts
 git commit -m "feat: add deterministic scenario fingerprints"
 ```
 
 ---
 
-### Task 3: Centralize Deterministic Simulation Time Utilities
+### Task 3: Centralize Simulation Time Semantics
 
 **Files:**
 - Create: `src/simulation/time.ts`
@@ -429,71 +369,49 @@ git commit -m "feat: add deterministic scenario fingerprints"
 - Modify: `src/simulation/engine.ts`
 
 **Interfaces:**
-- Produces: `parseMinuteOfDay(value)`, `formatMinuteOfDay(minute)`, `isoAtSimulationMinute(targetDate, simMinute)`.
-- Later tasks use the same parse/format semantics for scenario compilation and environment-at-passage summaries.
+- Produces: `parseMinuteOfDay`, `formatMinuteOfDay`, `isoAtSimulationMinute`.
 
-- [ ] **Step 1: Write RED utility tests from current behavior**
+- [ ] **Step 1: RED tests**
 
 ```ts
 import { describe, expect, it } from 'vitest';
 import { formatMinuteOfDay, isoAtSimulationMinute, parseMinuteOfDay } from './time';
 
-it('round-trips valid local clock values', () => {
+it('round-trips valid local time', () => {
   expect(parseMinuteOfDay('07:05')).toBe(425);
   expect(formatMinuteOfDay(425)).toBe('07:05');
 });
-
-it('rejects invalid clock values', () => {
+it('rejects invalid clocks', () => {
   expect(() => parseMinuteOfDay('24:00')).toThrow(/Invalid departureTime/);
-  expect(() => parseMinuteOfDay('07:60')).toThrow(/Invalid departureTime/);
+  expect(() => formatMinuteOfDay(1440)).toThrow(/minute/i);
 });
-
-it('converts simulation minute to the fixed San Juan run offset format', () => {
+it('builds the existing fixed-offset passage timestamp', () => {
   expect(isoAtSimulationMinute('2026-08-30', 425)).toBe('2026-08-30T07:05:00-03:00');
 });
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/simulation/time.test.ts
 ```
 
-Expected: FAIL because `time.ts` does not exist.
+- [ ] **Step 3: Move existing semantics, not behavior**
 
-- [ ] **Step 3: Move the existing semantics into the new pure helpers**
+Move `parseMinuteOfDay` from `vehicle.ts`, `formatMinuteOfDay` from `schedule.ts`, and `isoAtSimulationMinute`/clock parsing from `engine.ts` into `time.ts`. `formatMinuteOfDay` rejects non-integers and values outside `0..1439` rather than wrapping them.
 
-Move, without semantic changes:
-
-- `parseMinuteOfDay` from `vehicle.ts`;
-- `formatMinuteOfDay` from `schedule.ts`;
-- `isoAtSimulationMinute` and minute parsing in `engine.ts`.
-
-`formatMinuteOfDay` must reject non-integer values outside `0..1439`; it must not silently wrap scenario authoring errors.
-
-- [ ] **Step 4: Replace local helper copies with imports**
-
-Ensure `vehicle.ts`, `schedule.ts`, and `engine.ts` all use `src/simulation/time.ts`.
-
-- [ ] **Step 5: GREEN regression**
+- [ ] **Step 4: GREEN baseline regression and commit**
 
 ```bash
 npm test -- --run src/simulation/time.test.ts src/simulation/vehicle.test.ts src/simulation/engine.test.ts src/simulation/events.test.ts src/qa/v0Acceptance.test.ts
 npm run build
-```
-
-Expected: all existing behavior remains green.
-
-- [ ] **Step 6: Commit**
-
-```bash
 git add src/simulation/time.ts src/simulation/time.test.ts src/simulation/vehicle.ts src/simulation/schedule.ts src/simulation/engine.ts
 git commit -m "refactor: centralize deterministic simulation time"
 ```
 
 ---
 
-### Task 4: Inject a Speed Resolver Without Baseline Drift
+### Task 4: Inject a Movement Speed Policy Without Baseline Drift
 
 **Files:**
 - Create: `src/simulation/speed.ts`
@@ -505,41 +423,33 @@ git commit -m "refactor: centralize deterministic simulation time"
 - Modify: `src/qa/v0Acceptance.test.ts`
 
 **Interfaces:**
-- Produces: `SpeedResolver`, `MovementPolicy`, `baselineSpeedResolver`, `BASELINE_MOVEMENT_POLICY`.
-- Changes existing simulation functions only by adding optional/defaulted speed-policy inputs; existing callers remain source-compatible.
+- Produces: `SpeedResolver`, `MovementPolicy`, `baselineSpeedResolver`, `BASELINE_MOVEMENT_POLICY`, `segmentTravelMinutes`.
 
-- [ ] **Step 1: Write RED tests for the baseline resolver**
-
-Create `src/simulation/speed.test.ts`:
+- [ ] **Step 1: RED resolver tests**
 
 ```ts
 import { describe, expect, it } from 'vitest';
-import { baselineSpeedResolver } from './speed';
 import type { CorridorSegment, VehicleDefinition } from '../domain/contracts';
+import { baselineSpeedResolver } from './speed';
 
 const vehicle = { id: 'V', type: 'LOGISTICS', corridorId: 'veladero' } as VehicleDefinition;
 const segment = { id: 'veladero-05', roadClass: 'highMountain' } as CorridorSegment;
 
-it('reproduces the existing logistics high-mountain synthetic speed', () => {
+it('preserves current synthetic speed assumptions', () => {
   expect(baselineSpeedResolver(vehicle, segment)).toBe(25);
 });
-
-it('fails closed on an unsupported synthetic road class', () => {
+it('fails closed on unsupported road class', () => {
   expect(() => baselineSpeedResolver(vehicle, { ...segment, roadClass: 'unknown' })).toThrow(/Unsupported synthetic road class/);
 });
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/simulation/speed.test.ts
 ```
 
-Expected: FAIL because `speed.ts` does not exist.
-
 - [ ] **Step 3: Move speed-profile responsibility into `speed.ts`**
-
-Create:
 
 ```ts
 export type SyntheticRoadClass = 'pavedLowland' | 'mountainRoad' | 'highMountain' | 'approach';
@@ -557,65 +467,25 @@ export const baselineSpeedResolver: SpeedResolver = (vehicle, segment) => {
   if (!speed) throw new Error(`Unsupported synthetic road class: ${segment.roadClass}`);
   return speed;
 };
-
 export const BASELINE_MOVEMENT_POLICY: MovementPolicy = { speedResolver: baselineSpeedResolver };
 ```
 
-`src/simulation/schedule.ts` may re-export `SPEED_PROFILES` and `SyntheticRoadClass` for compatibility, but vehicle movement must import the resolver from `speed.ts`.
+`schedule.ts` may re-export `SPEED_PROFILES`/`SyntheticRoadClass` for compatibility.
 
-- [ ] **Step 4: Thread the resolver through movement/event functions with baseline defaults**
+- [ ] **Step 4: Thread the resolver through all timing/movement paths**
 
-Change signatures to:
-
-```ts
-export function travelMinutesBetween(
-  corridor: CorridorDefinition,
-  vehicle: VehicleDefinition,
-  startKm: number,
-  endKm: number,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): number;
-
-export function segmentTravelMinutes(
-  vehicle: VehicleDefinition,
-  segment: CorridorSegment,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): number;
-
-export function getVehicleTiming(
-  vehicle: VehicleDefinition,
-  corridor: CorridorDefinition,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): VehicleTiming;
-
-export function outboundPassageMinuteAtDistance(
-  vehicle: VehicleDefinition,
-  corridor: CorridorDefinition,
-  requestedDistanceKm: number,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): number;
-
-export function snapshotVehicle(
-  vehicle: VehicleDefinition,
-  corridor: CorridorDefinition,
-  simMinute: number,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): VehicleSnapshot;
-```
-
-Use `speedResolver(vehicle, segment)` everywhere movement previously read `SPEED_PROFILES` directly.
-
-Update:
+Use these signatures:
 
 ```ts
-export function deriveOperationalEvents(
-  vehicle: VehicleDefinition,
-  corridor: CorridorDefinition,
-  speedResolver: SpeedResolver = baselineSpeedResolver,
-): OperationalEvent[];
+export function travelMinutesBetween(corridor: CorridorDefinition, vehicle: VehicleDefinition, startKm: number, endKm: number, speedResolver: SpeedResolver = baselineSpeedResolver): number;
+export function segmentTravelMinutes(vehicle: VehicleDefinition, segment: CorridorSegment, speedResolver: SpeedResolver = baselineSpeedResolver): number;
+export function getVehicleTiming(vehicle: VehicleDefinition, corridor: CorridorDefinition, speedResolver: SpeedResolver = baselineSpeedResolver): VehicleTiming;
+export function outboundPassageMinuteAtDistance(vehicle: VehicleDefinition, corridor: CorridorDefinition, requestedDistanceKm: number, speedResolver: SpeedResolver = baselineSpeedResolver): number;
+export function snapshotVehicle(vehicle: VehicleDefinition, corridor: CorridorDefinition, simMinute: number, speedResolver: SpeedResolver = baselineSpeedResolver): VehicleSnapshot;
+export function deriveOperationalEvents(vehicle: VehicleDefinition, corridor: CorridorDefinition, speedResolver: SpeedResolver = baselineSpeedResolver): OperationalEvent[];
 ```
 
-Add the fifth engine parameter:
+Update engine signature:
 
 ```ts
 export function getOperationalSnapshot(
@@ -627,29 +497,20 @@ export function getOperationalSnapshot(
 ): OperationalSnapshot;
 ```
 
-- [ ] **Step 5: Add the explicit no-drift acceptance assertion**
+- [ ] **Step 5: Add explicit no-drift acceptance**
 
-In `src/qa/v0Acceptance.test.ts`, at the existing checkpoints compare default execution to explicit baseline policy:
+At every existing `CHECKPOINTS` minute in `src/qa/v0Acceptance.test.ts`:
 
 ```ts
-for (const minuteOfDay of CHECKPOINTS) {
-  expect(getOperationalSnapshot(spec, artifacts.run, minuteOfDay, artifacts.environment, BASELINE_MOVEMENT_POLICY))
-    .toEqual(getOperationalSnapshot(spec, artifacts.run, minuteOfDay, artifacts.environment));
-}
+expect(getOperationalSnapshot(spec, artifacts.run, minuteOfDay, artifacts.environment, BASELINE_MOVEMENT_POLICY))
+  .toEqual(getOperationalSnapshot(spec, artifacts.run, minuteOfDay, artifacts.environment));
 ```
 
-- [ ] **Step 6: GREEN**
+- [ ] **Step 6: GREEN and commit**
 
 ```bash
 npm test -- --run src/simulation/speed.test.ts src/simulation/vehicle.test.ts src/simulation/events.test.ts src/simulation/engine.test.ts src/qa/v0Acceptance.test.ts
 npm run build
-```
-
-Expected: exact Baseline compatibility.
-
-- [ ] **Step 7: Commit**
-
-```bash
 git add src/simulation/speed.ts src/simulation/speed.test.ts src/simulation/schedule.ts src/simulation/vehicle.ts src/simulation/events.ts src/simulation/engine.ts src/qa/v0Acceptance.test.ts
 git commit -m "refactor: inject deterministic movement speed policy"
 ```
@@ -663,37 +524,100 @@ git commit -m "refactor: inject deterministic movement speed policy"
 - Create: `src/scenario/compiler.test.ts`
 
 **Interfaces:**
-- Consumes: `ScenarioDefinition`, `EvidenceRef`, `SanJuanOperationSpec`, `OperationalRun`, `MovementPolicy`.
 - Produces: `ScenarioCompilation`, `compileScenario(definition, baselineSpec, run, scenarioEvidence)`.
 
-- [ ] **Step 1: Write RED compiler tests using the checked-in V0/V0.1 baseline**
+- [ ] **Step 1: Write a concrete checked-in baseline loader inside the test**
 
-Use the same filesystem `JsonFetcher` pattern as `src/qa/v0Acceptance.test.ts` to load the real operation/run/traffic artifacts, then build `baselineSpec` through `buildV0OperationSpec()`.
-
-Required tests:
+At top of `compiler.test.ts`:
 
 ```ts
-it('compiles an empty Baseline without mutating the baseline spec', () => { /* JSON snapshot before/after remains identical */ });
-it('applies +60 minutes only to Veladero departures', () => { /* non-Veladero vehicles deep-equal baseline */ });
-it('adds one synthetic REST stop at km 205 with 15 minutes dwell', () => { /* evidence refs are rule refs */ });
-it('builds a speed policy that multiplies only veladero-05 by 0.80', () => { /* other segments use baseline speed */ });
-it('rejects a baseRunId or seed that differs from the immutable run', () => { /* fail closed */ });
-it('rejects duplicate departure rules and duplicate speed rules on the same segment', () => { /* no precedence */ });
-it('rejects an unknown segment, an out-of-range stop, duplicate stop id, or departure outside the 06:00–20:00 schedule', () => { /* fail closed */ });
-it('rejects unresolved or non-SYNTHETIC_ASSUMPTION rule evidence', () => { /* fail closed */ });
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { buildV0OperationSpec } from '../data/buildOperationSpec';
+import { loadStaticOperationData, loadStaticRunArtifacts, loadTrafficCalibration, type JsonFetcher } from '../data/loadOperation';
+
+const fileFetcher: JsonFetcher = async (url) => {
+  try {
+    const body = JSON.parse(await readFile(path.join(process.cwd(), 'public', url.replace(/^\//, '')), 'utf8'));
+    return { ok: true, json: async () => body };
+  } catch {
+    return { ok: false, json: async () => ({}) };
+  }
+};
+
+async function checkedInBaseline() {
+  const [operation, artifacts, traffic] = await Promise.all([
+    loadStaticOperationData(fileFetcher), loadStaticRunArtifacts(fileFetcher), loadTrafficCalibration(fileFetcher),
+  ]);
+  return { spec: buildV0OperationSpec(operation, artifacts.run.seed, traffic), run: artifacts.run };
+}
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: RED compiler tests with executable assertions**
+
+Use a helper that returns one `SYNTHETIC_ASSUMPTION` evidence record per requested id. Then test:
+
+```ts
+it('keeps an empty Baseline immutable', async () => {
+  const { spec, run } = await checkedInBaseline();
+  const before = JSON.stringify(spec);
+  const definition = baselineDefinition(run.id, run.seed);
+  const compilation = compileScenario(definition, spec, run, scenarioEvidence(definition));
+  expect(compilation.appliedRuleIds).toEqual([]);
+  expect(compilation.effectiveSpec).toEqual(spec);
+  expect(JSON.stringify(spec)).toBe(before);
+});
+
+it('adds +60 only to Veladero departures', async () => {
+  const { spec, run } = await checkedInBaseline();
+  const definition = departureDefinition(run.id, run.seed, 60);
+  const compilation = compileScenario(definition, spec, run, scenarioEvidence(definition));
+  for (let i = 0; i < spec.fleet.length; i += 1) {
+    const before = spec.fleet[i];
+    const after = compilation.effectiveSpec.fleet[i];
+    if (before.corridorId === 'veladero') {
+      expect(parseMinuteOfDay(after.departureTime) - parseMinuteOfDay(before.departureTime)).toBe(60);
+    } else {
+      expect(after).toEqual(before);
+    }
+  }
+});
+
+it('adds the exact synthetic REST stop at km 205', async () => {
+  const { spec, run } = await checkedInBaseline();
+  const definition = stopDefinition(run.id, run.seed);
+  const compilation = compileScenario(definition, spec, run, scenarioEvidence(definition));
+  const veladero = compilation.effectiveSpec.fleet.filter((vehicle) => vehicle.corridorId === 'veladero');
+  expect(veladero.length).toBeGreaterThan(0);
+  for (const vehicle of veladero) {
+    expect(vehicle.plannedStops).toContainEqual(expect.objectContaining({
+      id: 'veladero-simulated-stop-km205-v1', type: 'REST', distanceKm: 205, dwellMinutes: 15, synthetic: true,
+    }));
+  }
+});
+
+it('multiplies only veladero-05 on every traversal', async () => {
+  const { spec, run } = await checkedInBaseline();
+  const definition = speedDefinition(run.id, run.seed);
+  const compilation = compileScenario(definition, spec, run, scenarioEvidence(definition));
+  const vehicle = compilation.effectiveSpec.fleet.find((item) => item.corridorId === 'veladero')!;
+  const corridor = spec.corridors.find((item) => item.id === 'veladero')!;
+  const target = corridor.segments.find((item) => item.id === 'veladero-05')!;
+  const other = corridor.segments.find((item) => item.id === 'veladero-04')!;
+  expect(compilation.movementPolicy.speedResolver(vehicle, target)).toBeCloseTo(baselineSpeedResolver(vehicle, target) * 0.8, 10);
+  expect(compilation.movementPolicy.speedResolver(vehicle, other)).toBe(baselineSpeedResolver(vehicle, other));
+});
+```
+
+Also add explicit `toThrow` tests for mismatched `baseRunId`, mismatched seed, duplicate departure rules, two speed rules on `veladero-05`, unknown segment, stop distance beyond corridor end, duplicate stop id, departure outside `360..1200`, unresolved evidence, and evidence role other than `SYNTHETIC_ASSUMPTION`.
+
+- [ ] **Step 3: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/compiler.test.ts
 ```
 
-Expected: FAIL because compiler does not exist.
-
-- [ ] **Step 3: Define the runtime compilation boundary**
-
-In `src/scenario/compiler.ts`:
+- [ ] **Step 4: Define and implement compilation**
 
 ```ts
 export interface ScenarioCompilation {
@@ -715,40 +639,19 @@ export function compileScenario(
 ): ScenarioCompilation;
 ```
 
-- [ ] **Step 4: Implement identity and conflict validation before transformation**
-
-Require exact equality:
+Validate before transformation:
 
 ```text
 definition.baseRunId === run.id
 definition.seed === run.seed
 baselineSpec.seed === run.seed
-definition.corridorId === 'veladero'
+definition.corridorId === veladero
+all referenced scenario evidence exists and role === SYNTHETIC_ASSUMPTION
 ```
 
-Require the target corridor to exist. Validate all definition/rule evidence against `scenarioEvidence` and require role `SYNTHETIC_ASSUMPTION`.
+Reject duplicate rule ids; multiple departure offsets on the all-Veladero target; multiple speed multipliers on the same segment; duplicate added-stop ids; collisions with existing planned-stop ids; unknown segments; stop outside `0..corridorEnd`; and transformed departures outside `spec.schedule.startMinute..endMinute`.
 
-Conflict rules:
-
-- duplicate rule ids fail;
-- more than one `DEPARTURE_OFFSET` for the Veladero all-vehicles target fails;
-- more than one `SEGMENT_SPEED_MULTIPLIER` for the same segment fails;
-- duplicate added stop ids fail, including collision with an existing planned-stop id;
-- different added-stop ids may compose deterministically.
-
-- [ ] **Step 5: Implement pure transformations**
-
-For `DEPARTURE_OFFSET`:
-
-```ts
-const departureMinute = parseMinuteOfDay(vehicle.departureTime) + rule.offsetMinutes;
-if (departureMinute < baselineSpec.schedule.startMinute || departureMinute > baselineSpec.schedule.endMinute) {
-  throw new Error(...);
-}
-const departureTime = formatMinuteOfDay(departureMinute);
-```
-
-For `ADD_PLANNED_STOP`, materialize:
+Apply canonical rules from Task 2. Departure changes use Task 3 time helpers. Added stop materializes exactly:
 
 ```ts
 {
@@ -761,43 +664,20 @@ For `ADD_PLANNED_STOP`, materialize:
 }
 ```
 
-Insert the stop into Veladero vehicles only. Never label it a real checkpoint.
+Speed policy wraps `baselineSpeedResolver`; multiplier is selected by `segment.id`, so return travel through `veladero-05` receives the same ×0.80 rule. Keep `effectiveSpec.scenarioId` equal to Baseline; scenario identity lives in `ScenarioCompilation`.
 
-For `SEGMENT_SPEED_MULTIPLIER`, build a scenario `SpeedResolver` around `baselineSpeedResolver`:
-
-```ts
-const base = baselineSpeedResolver(vehicle, segment);
-if (vehicle.corridorId !== 'veladero') return base;
-return base * (multiplierBySegmentId.get(segment.id) ?? 1);
-```
-
-Keep `effectiveSpec.scenarioId` unchanged from Baseline; scenario identity belongs to `ScenarioCompilation`, not the baseline domain object.
-
-- [ ] **Step 6: Canonicalize before application and fingerprinting**
-
-Use Task 2 canonical rules for both conflict evaluation/application order and `scenarioFingerprint(definition)`.
-
-`appliedRuleIds` must be canonical and stable.
-
-- [ ] **Step 7: GREEN**
+- [ ] **Step 5: GREEN and commit**
 
 ```bash
 npm test -- --run src/scenario/compiler.test.ts src/simulation/vehicle.test.ts src/qa/v0Acceptance.test.ts
 npm run build
-```
-
-Expected: PASS.
-
-- [ ] **Step 8: Commit**
-
-```bash
 git add src/scenario/compiler.ts src/scenario/compiler.test.ts
 git commit -m "feat: add pure Veladero scenario compiler"
 ```
 
 ---
 
-### Task 6: Versioned Baseline/A/B/C Scenario Catalog and Loader
+### Task 6: Versioned Baseline/A/B/C Catalog and Loader
 
 **Files:**
 - Create: `public/data/scenarios/veladero-scenarios.v1.json`
@@ -805,71 +685,64 @@ git commit -m "feat: add pure Veladero scenario compiler"
 - Create: `src/scenario/loadScenarioCatalog.test.ts`
 
 **Interfaces:**
-- Consumes: `ScenarioCatalog`, `parseScenarioCatalog`, existing `JsonFetcher` shape.
 - Produces: `SCENARIO_CATALOG_URL`, `loadScenarioCatalog(fetcher)`.
 
-- [ ] **Step 1: Write RED loader tests**
+- [ ] **Step 1: RED loader test with a complete inline catalog**
 
 ```ts
 import { describe, expect, it } from 'vitest';
 import { loadScenarioCatalog, SCENARIO_CATALOG_URL } from './loadScenarioCatalog';
 
-it('loads and parses the Veladero catalog from the versioned static path', async () => {
-  const fetcher = async (url: string) => ({
-    ok: url === SCENARIO_CATALOG_URL,
-    json: async () => validCatalogFixture,
-  });
-  const catalog = await loadScenarioCatalog(fetcher);
-  expect(catalog.scenarios.map((scenario) => scenario.id)).toEqual([
-    'veladero-baseline-v1',
-    'veladero-departure-plus-60-v1',
-    'veladero-stop-km205-plus-15-v1',
-    'veladero-speed-veladero-05-x080-v1',
-  ]);
+it('loads a parsed versioned catalog', async () => {
+  const doc = {
+    schemaVersion: 'sanjuan.scenario-catalog/v1', id: 'veladero-what-if-v1', corridorId: 'veladero',
+    scenarios: [{
+      schemaVersion: 'sanjuan.scenario/v1', id: 'veladero-baseline-v1', label: 'Baseline', corridorId: 'veladero',
+      baseRunId: 'sanjuan-v0-run-20260830-v1', scenarioVersion: 'what-if-v0.1', ruleSetVersion: 'scenario-rules-v1',
+      seed: 'sanjuan-v0-20260830', rules: [], evidenceRefs: ['what-if-baseline-v1'], limitations: [],
+    }],
+    evidence: [{
+      id: 'what-if-baseline-v1', role: 'SYNTHETIC_ASSUMPTION', sourceName: 'Scenario baseline', retrievedAt: '2026-08-30',
+      method: 'No-op baseline wrapper.', limitations: ['Not observed operator behavior.'],
+    }], limitations: [],
+  };
+  const catalog = await loadScenarioCatalog(async (url) => ({ ok: url === SCENARIO_CATALOG_URL, json: async () => doc }));
+  expect(catalog.id).toBe('veladero-what-if-v1');
+  expect(catalog.scenarios[0].rules).toEqual([]);
 });
 
-it('fails closed on missing or invalid catalog data', async () => {
-  await expect(loadScenarioCatalog(async () => ({ ok: false, json: async () => ({}) }))).rejects.toThrow();
+it('fails closed when the static resource is unavailable', async () => {
+  await expect(loadScenarioCatalog(async () => ({ ok: false, json: async () => ({}) }))).rejects.toThrow(/unavailable/i);
 });
 ```
 
-- [ ] **Step 2: Run RED**
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/loadScenarioCatalog.test.ts
 ```
 
-Expected: FAIL because loader/catalog do not exist.
+- [ ] **Step 3: Check in exact production scenario definitions**
 
-- [ ] **Step 3: Check in the exact four reference definitions**
-
-`public/data/scenarios/veladero-scenarios.v1.json` must contain these ids and transformations:
+The catalog contains exactly:
 
 ```text
 veladero-baseline-v1
-  rules = []
+  rules=[]
 
 veladero-departure-plus-60-v1
-  DEPARTURE_OFFSET +60
+  DEPARTURE_OFFSET offsetMinutes=60
 
 veladero-stop-km205-plus-15-v1
-  ADD_PLANNED_STOP id=veladero-simulated-stop-km205-v1 distanceKm=205 dwellMinutes=15
+  ADD_PLANNED_STOP stop.id=veladero-simulated-stop-km205-v1 distanceKm=205 dwellMinutes=15
 
 veladero-speed-veladero-05-x080-v1
-  SEGMENT_SPEED_MULTIPLIER segmentId=veladero-05 multiplier=0.80
+  SEGMENT_SPEED_MULTIPLIER segmentId=veladero-05 multiplier=0.8
 ```
 
-All four definitions use:
+All use `baseRunId=sanjuan-v0-run-20260830-v1`, `scenarioVersion=what-if-v0.1`, `ruleSetVersion=scenario-rules-v1`, `seed=sanjuan-v0-20260830`, `corridorId=veladero`.
 
-```text
-baseRunId = sanjuan-v0-run-20260830-v1
-scenarioVersion = what-if-v0.1
-ruleSetVersion = scenario-rules-v1
-seed = sanjuan-v0-20260830
-corridorId = veladero
-```
-
-Add four scenario evidence records, all `SYNTHETIC_ASSUMPTION`:
+Evidence records are exactly:
 
 ```text
 what-if-baseline-v1
@@ -878,9 +751,9 @@ what-if-stop-km205-plus-15-v1
 what-if-speed-veladero-05-x080-v1
 ```
 
-Each limitation must explicitly state that the rule/result is synthetic and is not observed operator behavior, road condition, safety/transitability policy or recommendation. Scenario B evidence must say the km 205 stop is an authored simulated REST stop, not a real checkpoint.
+All are `SYNTHETIC_ASSUMPTION`. Each limitation explicitly says the scenario is authored/synthetic and not observed operator behavior, road condition, safety/transitability policy, or recommendation. The stop evidence says km 205 is a simulated REST stop, not a real checkpoint.
 
-- [ ] **Step 4: Implement the static loader**
+- [ ] **Step 4: Implement loader**
 
 ```ts
 export const SCENARIO_CATALOG_URL = '/data/scenarios/veladero-scenarios.v1.json';
@@ -892,167 +765,114 @@ export async function loadScenarioCatalog(fetcher: JsonFetcher): Promise<Scenari
 }
 ```
 
-Follow existing loader error conventions rather than using browser-global `fetch` inside the parser.
-
-- [ ] **Step 5: GREEN**
+- [ ] **Step 5: GREEN and commit**
 
 ```bash
 npm test -- --run src/scenario/loadScenarioCatalog.test.ts src/scenario/schemas.test.ts
 npm run build
-```
-
-- [ ] **Step 6: Commit**
-
-```bash
 git add public/data/scenarios/veladero-scenarios.v1.json src/scenario/loadScenarioCatalog.ts src/scenario/loadScenarioCatalog.test.ts
 git commit -m "feat: add versioned Veladero what-if scenarios"
 ```
 
 ---
 
-### Task 7: Scenario Results, Passage Context, and Neutral Comparison
+### Task 7: Deterministic Scenario Results and Neutral Comparison
 
 **Files:**
 - Create: `src/scenario/results.ts`
 - Create: `src/scenario/results.test.ts`
 
 **Interfaces:**
-- Consumes: `ScenarioCompilation`, `OperationalRun`, `EnvironmentSnapshot`, movement timing helpers.
-- Produces: `ScenarioResult`, `ScenarioComparison`, `buildScenarioResult(...)`, `compareScenarioResults(...)`.
+- Produces: `ScenarioResult`, `ScenarioComparison`, `buildScenarioResult`, `compareScenarioResults`.
 
-- [ ] **Step 1: Write RED result/comparison tests**
+- [ ] **Step 1: Define RED behavioral assertions against Baseline/A/B/C**
 
-Using the checked-in catalog and baseline artifacts, compile Baseline/A/B/C and assert:
+Use the real checked-in catalog with the same filesystem-fetch pattern as Task 5. Compile all four definitions. Assert:
 
 ```ts
-expect(resultA.corridorSummary.lastProjectArrivalMinute - baseline.corridorSummary.lastProjectArrivalMinute).toBe(60);
-expect(resultA.vehicleTimings.every((timing, i) => timing.totalCycleMinutes === baseline.vehicleTimings[i].totalCycleMinutes)).toBe(true);
+const baselineResult = buildScenarioResult(baselineCompilation, run, environment);
+const aResult = buildScenarioResult(aCompilation, run, environment);
+const bResult = buildScenarioResult(bCompilation, run, environment);
+const cResult = buildScenarioResult(cCompilation, run, environment);
 
-expect(comparisonB.vehicleDeltas.every((delta) => delta.dwellDeltaMinutes === 15)).toBe(true);
-expect(comparisonB.vehicleDeltas.every((delta) => delta.projectArrivalDeltaMinutes === 15)).toBe(true);
+expect(aResult.corridorSummary.lastProjectArrivalMinute - baselineResult.corridorSummary.lastProjectArrivalMinute).toBe(60);
+expect(aResult.vehicleTimings.map((item) => item.totalCycleMinutes)).toEqual(baselineResult.vehicleTimings.map((item) => item.totalCycleMinutes));
 
-expect(comparisonC.vehicleDeltas.every((delta) =>
-  delta.segmentTimeDeltas.filter((segment) => segment.deltaMinutes !== 0).every((segment) => segment.segmentId === 'veladero-05'),
+const bComparison = compareScenarioResults(baselineResult, bResult);
+expect(bComparison.vehicleDeltas.every((item) => item.dwellDeltaMinutes === 15)).toBe(true);
+expect(bComparison.vehicleDeltas.every((item) => item.projectArrivalDeltaMinutes === 15)).toBe(true);
+
+const cComparison = compareScenarioResults(baselineResult, cResult);
+expect(cComparison.vehicleDeltas.every((item) =>
+  item.segmentTimeDeltas.filter((segment) => Math.abs(segment.deltaMinutes) > 1e-9)
+    .every((segment) => segment.segmentId === 'veladero-05'),
 )).toBe(true);
+expect(cComparison.vehicleDeltas.every((item) => item.baseArrivalDeltaMinutes > item.projectArrivalDeltaMinutes)).toBe(true);
 ```
 
-Also require two independent `buildScenarioResult()` calls from identical inputs to deep-equal exactly.
+The final assertion proves Scenario C also affects the return traversal of the target segment.
 
-- [ ] **Step 2: Run RED**
+Also assert two independent builds and comparisons deep-equal exactly.
+
+- [ ] **Step 2: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/results.test.ts
 ```
 
-Expected: FAIL because result/comparison layer does not exist.
-
-- [ ] **Step 3: Define exact result types**
-
-In `src/scenario/results.ts`:
+- [ ] **Step 3: Implement exact result contracts**
 
 ```ts
-export interface ScenarioSegmentTiming {
-  segmentId: string;
-  minutes: number;
-}
-
+export interface ScenarioSegmentTiming { segmentId: string; minutes: number }
 export interface ScenarioVehicleTiming {
-  vehicleId: string;
-  type: VehicleType;
-  departureMinute: number;
-  projectArrivalMinute: number;
-  returnStartMinute: number;
-  baseArrivalMinute: number;
-  totalCycleMinutes: number;
-  plannedDwellMinutes: number;
-  segmentTimings: ScenarioSegmentTiming[];
+  vehicleId: string; type: VehicleType; departureMinute: number; projectArrivalMinute: number;
+  returnStartMinute: number; baseArrivalMinute: number; totalCycleMinutes: number;
+  plannedDwellMinutes: number; segmentTimings: ScenarioSegmentTiming[];
 }
-
 export interface ScenarioPassageContext {
-  vehicleId: string;
-  nodeId: string;
-  passageMinute: number;
-  environment: EnvironmentContext;
+  vehicleId: string; nodeId: string; passageMinute: number; environment: EnvironmentContext;
 }
-
 export interface ScenarioCorridorSummary {
-  corridorId: 'veladero';
-  vehicleCount: number;
-  firstDepartureMinute: number;
-  lastProjectArrivalMinute: number;
-  lastBaseArrivalMinute: number;
-  totalPlannedDwellMinutes: number;
-  maxElevationM: number;
+  corridorId: 'veladero'; vehicleCount: number; firstDepartureMinute: number;
+  lastProjectArrivalMinute: number; lastBaseArrivalMinute: number;
+  totalPlannedDwellMinutes: number; maxElevationM: number;
 }
-
 export interface ScenarioResult {
-  scenarioId: string;
-  baseRunId: string;
-  corridorId: 'veladero';
-  environmentSnapshotId: string;
-  seed: string | number;
-  fingerprint: string;
-  appliedRuleIds: string[];
-  vehicleTimings: ScenarioVehicleTiming[];
-  corridorSummary: ScenarioCorridorSummary;
-  passageContexts: ScenarioPassageContext[];
-  evidenceRefs: string[];
-  limitations: string[];
+  scenarioId: string; baseRunId: string; corridorId: 'veladero'; environmentSnapshotId: string;
+  seed: string | number; fingerprint: string; appliedRuleIds: string[];
+  vehicleTimings: ScenarioVehicleTiming[]; corridorSummary: ScenarioCorridorSummary;
+  passageContexts: ScenarioPassageContext[]; evidenceRefs: string[]; limitations: string[];
 }
 ```
 
 Comparison types:
 
 ```ts
-export interface ScenarioSegmentTimeDelta {
-  segmentId: string;
-  baselineMinutes: number;
-  scenarioMinutes: number;
-  deltaMinutes: number;
-}
-
+export interface ScenarioSegmentTimeDelta { segmentId: string; baselineMinutes: number; scenarioMinutes: number; deltaMinutes: number }
 export interface ScenarioVehicleDelta {
-  vehicleId: string;
-  departureDeltaMinutes: number;
-  projectArrivalDeltaMinutes: number;
-  baseArrivalDeltaMinutes: number;
-  totalCycleDeltaMinutes: number;
-  dwellDeltaMinutes: number;
+  vehicleId: string; departureDeltaMinutes: number; projectArrivalDeltaMinutes: number;
+  baseArrivalDeltaMinutes: number; totalCycleDeltaMinutes: number; dwellDeltaMinutes: number;
   segmentTimeDeltas: ScenarioSegmentTimeDelta[];
 }
-
 export interface ScenarioCorridorDelta {
-  firstDepartureDeltaMinutes: number;
-  lastProjectArrivalDeltaMinutes: number;
-  lastBaseArrivalDeltaMinutes: number;
-  totalPlannedDwellDeltaMinutes: number;
+  firstDepartureDeltaMinutes: number; lastProjectArrivalDeltaMinutes: number;
+  lastBaseArrivalDeltaMinutes: number; totalPlannedDwellDeltaMinutes: number;
 }
-
 export interface PassageContextChange {
-  vehicleId: string;
-  nodeId: string;
-  baselinePassageMinute: number;
-  scenarioPassageMinute: number;
-  baseline: EnvironmentContext;
-  scenario: EnvironmentContext;
+  vehicleId: string; nodeId: string; baselinePassageMinute: number; scenarioPassageMinute: number;
+  baseline: EnvironmentContext; scenario: EnvironmentContext;
 }
-
 export interface ScenarioComparison {
-  baselineScenarioId: string;
-  comparedScenarioId: string;
-  corridorDelta: ScenarioCorridorDelta;
-  vehicleDeltas: ScenarioVehicleDelta[];
-  passageContextChanges: PassageContextChange[];
+  baselineScenarioId: string; comparedScenarioId: string; corridorDelta: ScenarioCorridorDelta;
+  vehicleDeltas: ScenarioVehicleDelta[]; passageContextChanges: PassageContextChange[];
   unchangedTerritorialDimensions: Array<'corridorGeometry' | 'elevationProfile' | 'environmentSnapshot' | 'seed'>;
   appliedRuleIds: string[];
 }
 ```
 
-There are deliberately no score/rank/recommendation/probability fields.
+No score/ranking/recommendation/probability fields.
 
-- [ ] **Step 4: Implement deterministic result building**
-
-Export:
+- [ ] **Step 4: Implement result calculation**
 
 ```ts
 export function buildScenarioResult(
@@ -1062,76 +882,47 @@ export function buildScenarioResult(
 ): ScenarioResult;
 ```
 
-Validate `compilation.baseRunId === run.id` and `environment.id === run.environmentSnapshotId`.
+Validate compilation/run/environment identity. Filter effective fleet to Veladero. For each vehicle use `getVehicleTiming(..., resolver)`, sum planned dwell, and calculate every operational segment with `segmentTravelMinutes(vehicle, segment, resolver)`.
 
-For Veladero vehicles only:
-
-- call `getVehicleTiming(vehicle, corridor, compilation.movementPolicy.speedResolver)`;
-- `totalCycleMinutes = baseArrivalMinute - departureMinute`;
-- `plannedDwellMinutes = sum(vehicle.plannedStops.map(stop => stop.dwellMinutes))`;
-- `segmentTimings = corridor.segments.map(segment => ({ segmentId, minutes: segmentTravelMinutes(vehicle, segment, resolver) }))`.
-
-For each existing `corridor.nodes` entry and each Veladero vehicle:
+For each existing Veladero corridor node:
 
 ```ts
 const passageMinute = outboundPassageMinuteAtDistance(vehicle, corridor, node.distanceKm, resolver);
-const time = isoAtSimulationMinute(run.targetDate, passageMinute);
-const context = environmentAtPassage(environment, corridor.id, node.distanceKm, time);
+const context = environmentAtPassage(
+  environment, corridor.id, node.distanceKm, isoAtSimulationMinute(run.targetDate, passageMinute),
+);
 ```
 
-Keep `UNAVAILABLE` context exactly as returned by `environmentAtPassage`.
+Preserve `UNAVAILABLE` as-is.
 
-`corridorSummary` uses fleet-level neutral extrema/totals only: first departure, last project arrival, last base arrival, total planned dwell, max route-sample elevation.
-
-- [ ] **Step 5: Implement pure comparison with identity guards**
-
-Export:
+- [ ] **Step 5: Implement pure comparison**
 
 ```ts
-export function compareScenarioResults(
-  baseline: ScenarioResult,
-  scenario: ScenarioResult,
-): ScenarioComparison;
+export function compareScenarioResults(baseline: ScenarioResult, scenario: ScenarioResult): ScenarioComparison;
 ```
 
-Reject comparisons unless baseRunId, corridorId, environmentSnapshotId, seed and vehicle-id sets match.
-
-Pair passage contexts by `vehicleId + nodeId`. Preserve `UNAVAILABLE` objects rather than manufacturing numeric deltas.
-
-Set:
+Reject mismatched baseRunId, corridorId, environmentSnapshotId, seed, or vehicle-id sets. Pair passage contexts by `vehicleId + nodeId`. Set held constants to:
 
 ```ts
-unchangedTerritorialDimensions: [
-  'corridorGeometry',
-  'elevationProfile',
-  'environmentSnapshot',
-  'seed',
-]
+['corridorGeometry', 'elevationProfile', 'environmentSnapshot', 'seed']
 ```
 
-because compilation is constrained to one immutable baseline and V0.2 has no route/environment transformation rule.
+- [ ] **Step 6: Environment boundary test**
 
-- [ ] **Step 6: Add the environment boundary regression**
+Deep-clone the same environment artifact, change numeric weather values while keeping identity/timestamps, rebuild results, and assert all `vehicleTimings` deep-equal while at least one available `passageContexts[].environment` value differs.
 
-Clone the environment snapshot and alter numeric weather values while preserving identity/timestamps. Rebuild timing results and assert **all vehicle timing fields remain equal**; only passage-context values may differ.
-
-- [ ] **Step 7: GREEN**
+- [ ] **Step 7: GREEN and commit**
 
 ```bash
 npm test -- --run src/scenario/results.test.ts src/environment/lookup.test.ts src/simulation/vehicle.test.ts
 npm run build
-```
-
-- [ ] **Step 8: Commit**
-
-```bash
 git add src/scenario/results.ts src/scenario/results.test.ts
 git commit -m "feat: add deterministic scenario comparison results"
 ```
 
 ---
 
-### Task 8: Scenario Runtime Adapter and Map-First UI
+### Task 8: Runtime Adapter and Map-First Scenario UI
 
 **Files:**
 - Create: `src/scenario/runtime.ts`
@@ -1141,29 +932,24 @@ git commit -m "feat: add deterministic scenario comparison results"
 - Create: `src/ui/ScenarioComparisonDrawer.tsx`
 - Create: `src/ui/ScenarioComparisonDrawer.test.tsx`
 - Create: `src/ui/scenario.css`
+- Create: `src/app/App.scenario.test.tsx`
 - Modify: `src/app/App.tsx`
 
 **Interfaces:**
-- Produces: `getScenarioSnapshot(compilation, run, simMinute, environment)` as the one adapter from compiled scenario to the existing engine.
-- UI consumes parsed catalog definitions and pure `ScenarioComparison`; it does not implement model rules.
+- Produces: `getScenarioSnapshot(compilation, run, simMinute, environment)`.
+- UI consumes parsed scenario/result/comparison data only; no model rule is implemented in React.
 
-- [ ] **Step 1: Write RED runtime adapter test**
+- [ ] **Step 1: RED runtime adapter test**
 
 ```ts
-it('delegates to the existing engine with effectiveSpec and movementPolicy', () => {
-  const actual = getScenarioSnapshot(compilation, run, 630, environment);
-  const expected = getOperationalSnapshot(
-    compilation.effectiveSpec,
-    run,
-    630,
-    environment,
-    compilation.movementPolicy,
+it('delegates to the existing engine with effective spec and movement policy', () => {
+  expect(getScenarioSnapshot(compilation, run, 630, environment)).toEqual(
+    getOperationalSnapshot(compilation.effectiveSpec, run, 630, environment, compilation.movementPolicy),
   );
-  expect(actual).toEqual(expected);
 });
 ```
 
-- [ ] **Step 2: Implement the tiny adapter**
+- [ ] **Step 2: Implement the adapter exactly**
 
 ```ts
 export function getScenarioSnapshot(
@@ -1172,45 +958,23 @@ export function getScenarioSnapshot(
   simMinute: number,
   environment: EnvironmentSnapshot,
 ): OperationalSnapshot {
-  return getOperationalSnapshot(
-    compilation.effectiveSpec,
-    run,
-    simMinute,
-    environment,
-    compilation.movementPolicy,
-  );
+  return getOperationalSnapshot(compilation.effectiveSpec, run, simMinute, environment, compilation.movementPolicy);
 }
 ```
 
-No React/Cesium imports.
+- [ ] **Step 3: RED component tests**
 
-- [ ] **Step 3: Write RED component tests**
+`ScenarioSelector.test.tsx` renders four supplied definitions and asserts the selected id reaches `onChange`. It also asserts rendered text does not match `/prediction|recommended|optimal/i`.
 
-`ScenarioSelector.test.tsx` must verify:
+`ScenarioComparisonDrawer.test.tsx` renders a concrete `ScenarioComparison` fixture and asserts visible text includes `AUTHORED CHANGE`, `MODEL RESULT`, `WHY THIS CHANGED`, `HELD CONSTANT`, signed minute deltas, and `SCENARIO RULE`; an `UNAVAILABLE` passage context displays `UNAVAILABLE` and never `0`. Assert absence of `/best|recommended|safe|risk score/i`.
 
-- exactly Baseline/A/B/C options from props;
-- active value changes through `onChange`;
-- no wording such as `Prediction`, `Recommended`, `Optimal`.
-
-`ScenarioComparisonDrawer.test.tsx` must verify:
-
-- `AUTHORED CHANGE`, `MODEL RESULT`, `WHY THIS CHANGED`, `HELD CONSTANT` sections;
-- neutral signed minute deltas;
-- applied rule ids/labels are visible;
-- unavailable passage context renders `UNAVAILABLE`, not `0`;
-- no `best`, `recommended`, `safe`, `risk score` output.
-
-- [ ] **Step 4: Run RED UI tests**
+- [ ] **Step 4: Verify RED**
 
 ```bash
 npm test -- --run src/scenario/runtime.test.ts src/ui/ScenarioSelector.test.tsx src/ui/ScenarioComparisonDrawer.test.tsx
 ```
 
-Expected: FAIL because components do not exist.
-
-- [ ] **Step 5: Implement compact scenario controls**
-
-`ScenarioSelector` props:
+- [ ] **Step 5: Implement compact components**
 
 ```ts
 export interface ScenarioSelectorProps {
@@ -1221,9 +985,7 @@ export interface ScenarioSelectorProps {
 }
 ```
 
-Render a compact labelled `<select aria-label="Scenario">` with `.scenario-selector` class.
-
-`ScenarioComparisonDrawer` props:
+Render `.scenario-selector` with `<select aria-label="Scenario">`.
 
 ```ts
 export interface ScenarioComparisonDrawerProps {
@@ -1236,74 +998,66 @@ export interface ScenarioComparisonDrawerProps {
 }
 ```
 
-Use `.scenario-comparison-drawer` and `.scenario-comparison-scroll`. Keep the drawer max width consistent with the existing Sources drawer pattern (`min(420px, viewport - 20px)`).
+Use `.scenario-comparison-drawer` and `.scenario-comparison-scroll`; width max `min(420px, viewport - 20px)`. Show fleet-level last project arrival, last base arrival, affected vehicles, per-vehicle delta range, changed segment delta ranges, applied rule identity, and held constants. Delta styling stays semantically neutral.
 
-Fleet-level primary rows:
+- [ ] **Step 6: Add executable App integration tests**
 
-```text
-LAST PROJECT ARRIVAL
-LAST BASE ARRIVAL
-AFFECTED VEHICLES
-```
-
-Show per-vehicle delta range for project arrival/cycle/dwell when values differ by vehicle type. For changed segments, group non-zero `segmentTimeDeltas` by segment id and show neutral min…max minute delta across affected vehicles. Do not label positive/negative as good/bad.
-
-- [ ] **Step 6: Integrate scenarios into `App.tsx` without blocking the Baseline if the scenario catalog is unavailable**
-
-Keep existing operation/run/traffic loading unchanged. Add separate scenario-catalog state/error loading through the same `resolveRuntimeAssetUrl` fetch wrapper.
-
-Required derived state:
+In `App.scenario.test.tsx`, mock existing static fetch responses plus the scenario catalog and assert:
 
 ```ts
-const baselineScenario = catalog?.scenarios.find((scenario) => scenario.rules.length === 0) ?? null;
-const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
+expect(await screen.findByLabelText('Scenario')).toHaveValue('veladero-baseline-v1');
+await user.selectOptions(screen.getByLabelText('Scenario'), 'veladero-departure-plus-60-v1');
+expect(screen.getByLabelText('Scenario')).toHaveValue('veladero-departure-plus-60-v1');
+expect(screen.getByRole('button', { name: 'COMPARE' })).toBeInTheDocument();
 ```
 
-When a valid catalog first loads, initialize `selectedScenarioId` to `baselineScenario.id` only if no scenario has been selected yet.
+Capture displayed command time before selection and assert the same text afterward. Click Reset and assert the selected scenario remains `veladero-departure-plus-60-v1`.
 
-Compile definitions with:
+Add a second test where scenario catalog fetch returns `ok:false`; assert the existing operational UI remains usable and text contains `SCENARIOS · UNAVAILABLE` while A/B/C options are not rendered.
+
+- [ ] **Step 7: Integrate in `App.tsx` with a fail-closed scenario layer**
+
+Load the catalog separately from operation/run/traffic so catalog failure cannot take down Baseline.
+
+Build a pure memoized compilation state:
 
 ```ts
-compileScenario(definition, spec, runArtifacts.run, catalog.evidence)
+const compiledScenarios = useMemo(() => {
+  if (!catalog || !spec || !runArtifacts) return { items: new Map<string, ScenarioCompilation>(), error: null as string | null };
+  try {
+    return {
+      items: new Map(catalog.scenarios.map((definition) => [
+        definition.id,
+        compileScenario(definition, spec, runArtifacts.run, catalog.evidence),
+      ])),
+      error: null,
+    };
+  } catch (error) {
+    return { items: new Map<string, ScenarioCompilation>(), error: error instanceof Error ? error.message : 'Scenario compilation unavailable' };
+  }
+}, [catalog, spec, runArtifacts]);
 ```
 
-The active snapshot uses `getScenarioSnapshot(...)`. If the scenario catalog is unavailable/invalid, keep the existing Baseline simulation usable but surface `SCENARIOS · UNAVAILABLE`; do not silently present A/B/C as valid.
+When catalog first loads, initialize `selectedScenarioId` to its unique empty-rule Baseline only if selection is still null. Scenario selection never calls `setClock`; Reset never calls `setSelectedScenarioId`.
 
-Scenario switching must **not** call `setClock`.
+If a valid active compilation exists, snapshot uses `getScenarioSnapshot`. If catalog/compilation is unavailable, use the existing Baseline `getOperationalSnapshot(...)` path and surface `SCENARIOS · UNAVAILABLE`.
 
-Existing Reset must **not** call `setSelectedScenarioId`.
+Background traffic remains unchanged and continues from the immutable run seed.
 
-Background traffic remains unchanged and continues to use the immutable baseline run seed.
+Precompute Baseline/active `ScenarioResult` and `ScenarioComparison`. Render `COMPARE` only for a non-empty-rule active scenario. Do not implement the optional four-column A/B/C table in this slice.
 
-- [ ] **Step 7: Add comparison action only for non-Baseline scenarios**
-
-Precompute `ScenarioResult` for Baseline and the selected scenario with `buildScenarioResult()`, then `compareScenarioResults()`.
-
-Render `COMPARE` only when the selected definition has at least one rule. Baseline has no comparison button.
-
-Do not implement the optional four-column Baseline/A/B/C summary table in V0.2 unless it can be added without expanding scope; the approved spec marks that table optional.
-
-- [ ] **Step 8: GREEN component/runtime tests**
+- [ ] **Step 8: GREEN and commit**
 
 ```bash
-npm test -- --run src/scenario/runtime.test.ts src/ui/ScenarioSelector.test.tsx src/ui/ScenarioComparisonDrawer.test.tsx src/app/App.test.tsx
+npm test -- --run src/scenario/runtime.test.ts src/ui/ScenarioSelector.test.tsx src/ui/ScenarioComparisonDrawer.test.tsx src/app/App.scenario.test.tsx
 npm run build
-```
-
-If `src/app/App.test.tsx` does not exist on the post-V0.1 base, add focused integration coverage in `src/app/App.scenario.test.tsx` rather than creating unrelated app tests.
-
-- [ ] **Step 9: Commit**
-
-```bash
 git add src/scenario/runtime.ts src/scenario/runtime.test.ts src/ui/ScenarioSelector.tsx src/ui/ScenarioSelector.test.tsx src/ui/ScenarioComparisonDrawer.tsx src/ui/ScenarioComparisonDrawer.test.tsx src/ui/scenario.css src/app/App.tsx src/app/App.scenario.test.tsx
 git commit -m "feat: add map-first what-if scenario experience"
 ```
 
-If the existing app test path is used instead of `App.scenario.test.tsx`, stage that actual file path rather than a nonexistent one.
-
 ---
 
-### Task 9: V0.2 Acceptance Replay, Static Data Validation, Claims Audit, and Visual QA
+### Task 9: Checked-In Acceptance, Data Validation, Claims Audit, and Visual QA
 
 **Files:**
 - Create: `src/qa/v02ScenarioAcceptance.test.ts`
@@ -1312,54 +1066,32 @@ If the existing app test path is used instead of `App.scenario.test.tsx`, stage 
 - Modify: `scripts/visual-qa.mjs`
 
 **Interfaces:**
-- Acceptance consumes the canonical checked-in Baseline/A/B/C catalog; it does not build ad-hoc scenario definitions that can drift from production.
+- Acceptance uses the same checked-in catalog used by production; no hand-built alternate scenario definitions.
 
-- [ ] **Step 1: Write RED checked-in V0.2 acceptance tests**
+- [ ] **Step 1: Add full V0.2 acceptance replay**
 
-`src/qa/v02ScenarioAcceptance.test.ts` loads operation/run/environment/traffic/catalog from `public/`, builds the canonical baseline spec, compiles all four scenarios and requires:
+Load the checked-in operation/run/environment/traffic/catalog. Compile all four scenarios. At existing checkpoints `360, 540, 720, 960, 1200`, require empty-rule Baseline snapshots/events to deep-equal the existing default engine path.
 
-```text
-Baseline: empty-rule scenario snapshots/events deep-equal existing engine Baseline at 360, 540, 720, 960, 1200.
-A: all Veladero departures +60; non-Veladero vehicles unchanged; driving/segment durations unchanged.
-B: all Veladero vehicles gain one synthetic REST stop at km 205 and exactly +15 downstream minutes.
-C: only veladero-05 speed changes; earlier segment times remain equal; downstream times inherit deterministic deltas.
-Determinism: compile + result + comparison repeated twice deep-equal exactly.
-Environment boundary: changing only modelled weather values cannot change vehicle timings.
-Provenance: every scenario/rule evidence ref resolves to catalog SYNTHETIC_ASSUMPTION evidence.
+Also assert:
+
+```ts
+expect(aVeladero.every((after, index) => parseMinuteOfDay(after.departureTime) - parseMinuteOfDay(baseVeladero[index].departureTime) === 60)).toBe(true);
+expect(nonVeladeroAfter).toEqual(nonVeladeroBefore);
+expect(bComparison.vehicleDeltas.every((item) => item.dwellDeltaMinutes === 15 && item.projectArrivalDeltaMinutes === 15)).toBe(true);
+expect(cComparison.vehicleDeltas.every((item) => item.projectArrivalDeltaMinutes > 0)).toBe(true);
+expect(cComparison.vehicleDeltas.every((item) => item.baseArrivalDeltaMinutes > item.projectArrivalDeltaMinutes)).toBe(true);
+expect(JSON.stringify(firstReplay)).toBe(JSON.stringify(secondReplay));
 ```
 
-- [ ] **Step 2: Run RED acceptance**
+Resolve every scenario/rule evidence id against catalog evidence and assert role `SYNTHETIC_ASSUMPTION`.
 
-```bash
-npm test -- --run src/qa/v02ScenarioAcceptance.test.ts
-```
+- [ ] **Step 2: Extend `validate:data` with exact catalog invariants**
 
-Expected: at least one missing validation/QA requirement fails before the next steps are implemented.
+Load `public/data/scenarios/veladero-scenarios.v1.json`; require exact four scenario ids, one empty Baseline, every `baseRunId===run.id`, every `seed===run.seed`, every evidence ref resolved with `SYNTHETIC_ASSUMPTION`, Scenario A offset `60`, Scenario B stop `205/15`, Scenario C target `veladero-05` multiplier `0.8`, and loaded Veladero operational segment `veladero-05` exactly `260–340`.
 
-- [ ] **Step 3: Extend static `validate:data` with the checked-in scenario catalog**
+- [ ] **Step 3: Extend claim-audit vocabulary**
 
-Load `public/data/scenarios/veladero-scenarios.v1.json` and require:
-
-```text
-schemaVersion = sanjuan.scenario-catalog/v1
-corridorId = veladero
-exact scenario ids = baseline/A/B/C ids from Task 6
-exactly one rules=[] Baseline
-all scenario baseRunId values equal run.id
-all scenario seeds equal run.seed
-all evidence refs resolve
-all referenced evidence roles = SYNTHETIC_ASSUMPTION
-Scenario A offset = 60
-Scenario B distanceKm = 205 and dwellMinutes = 15
-Scenario C segmentId = veladero-05 and multiplier = 0.8
-veladero-05 exists in the loaded corridor operational segments at 260–340 km
-```
-
-The script must fail rather than normalize/repair invalid values.
-
-- [ ] **Step 4: Extend the claim-audit pattern**
-
-Add case-insensitive matches for:
+Add these case-insensitive terms to the existing pattern:
 
 ```text
 recommended scenario
@@ -1374,31 +1106,17 @@ operator rule
 real speed restriction
 ```
 
-Retain existing terms. The audit remains a human-review listing, not a blind keyword failure threshold.
+The script still lists findings for human review; it is not converted into a naive zero-match gate.
 
-- [ ] **Step 5: Extend browser visual QA for scenario controls and comparison drawer**
+- [ ] **Step 4: Extend browser visual QA**
 
-After `START SHIFT`, require `.scenario-selector` to exist, be visible, inside viewport and have no uncontrolled horizontal overflow.
+After `START SHIFT`, include `.scenario-selector` in core layout inspection. Read `.command-time` text, programmatically select `veladero-speed-veladero-05-x080-v1`, dispatch bubbling `change`, and assert `.command-time` text did not change.
 
-Programmatically select `veladero-speed-veladero-05-x080-v1` through the `<select>` and dispatch a bubbling `change` event. Verify the displayed clock text remains unchanged across the selection.
+Click `COMPARE`; require `.scenario-comparison-drawer` and `.scenario-comparison-scroll`. Apply the same contained-drawer rules as Sources: viewport-contained, width ≤ `min(420px, viewport-20px)`, internal vertical scroll, no uncontrolled horizontal overflow, z-index above operational overlays. Require drawer text to contain `AUTHORED CHANGE`, `MODEL RESULT`, `SCENARIO RULE`.
 
-Click `COMPARE`, require `.scenario-comparison-drawer`, and run a generalized contained-drawer inspection equivalent to the Sources drawer rules:
+Run at `1440×900`, `1024×768`, `390×844`. No QA requirement for the optional A/B/C summary table because it is not implemented in Task 8.
 
-```text
-inside viewport
-max width <= min(420px, viewport - 20px)
-internal vertical scrolling
-no uncontrolled horizontal overflow
-z-index above operational overlays
-```
-
-Require drawer text to include `AUTHORED CHANGE`, `MODEL RESULT`, and `SCENARIO RULE`.
-
-Do this at all existing viewports: `1440×900`, `1024×768`, `390×844`.
-
-The optional Baseline/A/B/C summary table has no QA requirement unless Task 8 actually implements it.
-
-- [ ] **Step 6: GREEN acceptance and static gates**
+- [ ] **Step 5: Run complete task gate and review claims**
 
 ```bash
 npm test -- --run src/qa/v02ScenarioAcceptance.test.ts
@@ -1408,9 +1126,9 @@ npm run build
 npm run qa:visual
 ```
 
-Review every new claim-audit match. Positive prediction/recommendation/safety/operator-policy wording must be corrected before continuing.
+Every new claim-audit match must be negative/explanatory or an explicit limitation. Positive prediction/recommendation/safety/operator-policy wording must be changed.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add src/qa/v02ScenarioAcceptance.test.ts scripts/validate-data.mjs scripts/audit-claims.mjs scripts/visual-qa.mjs
@@ -1419,33 +1137,29 @@ git commit -m "test: add V0.2 scenario acceptance gates"
 
 ---
 
-### Task 10: Documentation, Final Verification, and Merge Candidate
+### Task 10: Documentation, Final Gate, and Merge Candidate
 
 **Files:**
 - Create: `docs/qa/v0-2-acceptance.md`
 - Modify: `README.md`
-- Modify if needed: `docs/data-sources.md`
+- Modify only if it indexes runtime artifacts: `docs/data-sources.md`
 
 **Interfaces:**
-- Documents only behavior proven by the final implementation/acceptance output.
+- Documentation records only behavior proved by final execution.
 
-- [ ] **Step 1: Update README from “future WHAT_IF” to implemented V0.2 capability**
+- [ ] **Step 1: Update README**
 
-Add a concise section explaining:
+Add the implemented chain:
 
 ```text
-Baseline + explicit authored scenario rule → deterministic model result → neutral comparison
+Baseline + explicit authored scenario rule
+→ deterministic model result
+→ neutral comparison
 ```
 
-Name the three reference scenarios and state that the environment remains descriptive. Preserve the public boundary that this is not prediction, safety/transitability evaluation, optimization, real dispatch or a validated digital twin.
+Name A/B/C. State explicitly that modelled weather remains descriptive, and the feature is not prediction, optimization, recommendation, safety/transitability evaluation, real dispatch, or a validated digital twin. Do not market V0.2 as `digital twin`.
 
-Do not market the feature as `digital twin`.
-
-- [ ] **Step 2: Update data/source documentation only where scenario artifacts need provenance indexing**
-
-If `docs/data-sources.md` indexes checked-in runtime artifacts, add the scenario catalog and explain its evidence records are `SYNTHETIC_ASSUMPTION`, not territorial/provider evidence. Do not duplicate the full design spec.
-
-- [ ] **Step 3: Run the complete final gate on one HEAD**
+- [ ] **Step 2: Run full gate on one candidate HEAD**
 
 ```bash
 npm test -- --run
@@ -1455,37 +1169,19 @@ npm run build
 npm run qa:visual
 ```
 
-Expected: all five commands PASS on the same commit candidate. Record the exact test-file/test counts and any Vite bundle warning from this actual run; do not predeclare counts.
+Capture the actual test-file/test counts and any build warning from this run; do not invent planned counts.
 
-- [ ] **Step 4: Write the acceptance record from actual final-gate evidence**
+- [ ] **Step 3: Write `docs/qa/v0-2-acceptance.md` from actual evidence**
 
-Create `docs/qa/v0-2-acceptance.md` containing:
+Record the final branch/HEAD, exact five-command sequence, actual test counts, Baseline exact regression, A/B/C semantics, environment-context-only result, provenance/fail-closed result, three viewport results, existing headless-WebGL limitation, and explicit no-prediction/no-recommendation/no-safety conclusion. Do not use `TBD` fields.
 
-- final branch and HEAD SHA;
-- exact automated command sequence above;
-- actual test-file/test counts from Step 3;
-- Baseline exact-regression result;
-- A/B/C behavioral acceptance statements;
-- scenario provenance/fail-closed result;
-- environment-context-only result;
-- responsive viewport results;
-- the existing GitHub-hosted headless-WebGL limitation, without representing fallback rendering as a Cesium 3D visual pass;
-- explicit statement that no prediction/recommendation/safety/transitability claim is accepted.
+If `docs/data-sources.md` indexes checked-in runtime artifacts, add `veladero-scenarios.v1.json` there and identify its evidence as `SYNTHETIC_ASSUMPTION`; otherwise leave that file unchanged.
 
-Use actual values produced in Step 3. Do not write `TBD` fields.
-
-- [ ] **Step 5: Re-run claim audit after documentation**
+- [ ] **Step 4: Commit docs and re-run the full gate**
 
 ```bash
-npm run audit:claims
-```
-
-Review all added documentation matches as negative/explanatory limitations.
-
-- [ ] **Step 6: Commit documentation and re-run full final gate**
-
-```bash
-git add README.md docs/data-sources.md docs/qa/v0-2-acceptance.md
+git add README.md docs/qa/v0-2-acceptance.md
+if git diff --quiet -- docs/data-sources.md; then :; else git add docs/data-sources.md; fi
 git commit -m "docs: record V0.2 scenario engine acceptance"
 
 npm test -- --run
@@ -1495,53 +1191,40 @@ npm run build
 npm run qa:visual
 ```
 
-If `docs/data-sources.md` required no change, omit it from `git add`.
+Expected: all five commands PASS on the same documentation-inclusive HEAD.
 
-- [ ] **Step 7: Create/update the V0.2 PR as a merge candidate, but do not merge**
+- [ ] **Step 5: Create/update a draft merge-candidate PR; do not merge**
 
-PR title:
+Title:
 
 ```text
 feat: add Veladero what-if Scenario Engine V0.2
 ```
 
-PR body must summarize:
+Body must report immutable Baseline + A/B/C rules, deterministic compiler/fingerprint, existing-engine reuse through movement policy, context-only environment boundary, neutral comparison/no ranking, fail-closed provenance, final gate evidence, and headless-WebGL limitation.
 
-```text
-- immutable Baseline plus A/B/C explicit authored rules
-- deterministic compiler/fingerprint
-- existing-engine reuse through injected movement policy
-- modelled environment remains context-only
-- neutral comparison/no ranking or recommendation
-- fail-closed scenario provenance
-- final test/validate/audit/build/visual gate evidence
-- headless WebGL limitation
-```
-
-Leave merge for explicit human approval.
+Stop for explicit human merge approval.
 
 ---
 
 ## Final Acceptance Checklist
 
-Before requesting merge approval, verify all of the following on the final HEAD:
-
 ```text
-[ ] V0.1 accepted base confirmed
-[ ] veladero-05 is still 260–340 km
-[ ] Baseline run/seed identity unchanged
-[ ] rules=[] Baseline exact-regression passes
-[ ] Scenario A changes departure only
-[ ] Scenario B adds only the explicit synthetic km205 +15m REST stop
-[ ] Scenario C changes only veladero-05 synthetic speed ×0.80
-[ ] non-Veladero highlighted vehicles remain unchanged
-[ ] background traffic remains unchanged
-[ ] environment can change context-at-passage but cannot alter timing by itself
+[ ] accepted V0.1 base confirmed
+[ ] veladero-05 remains exactly 260–340 km
+[ ] baseline run/seed identity unchanged
+[ ] rules=[] Baseline exact regression passes
+[ ] Scenario A changes Veladero departures only
+[ ] Scenario B adds only synthetic km205 +15m REST dwell
+[ ] Scenario C changes only veladero-05 speed ×0.80 on outbound and return traversal
+[ ] non-Veladero highlighted vehicles unchanged
+[ ] background traffic unchanged
+[ ] environment changes context-at-passage but cannot alter timing by itself
 [ ] missing modelled context remains UNAVAILABLE
-[ ] same logical scenario + same inputs produces same fingerprint/result
+[ ] same logical inputs produce same fingerprint/result
 [ ] reordered rules produce same fingerprint/result
 [ ] conflicting/invalid rules fail closed
-[ ] every scenario/rule evidence ref resolves to SYNTHETIC_ASSUMPTION
+[ ] every scenario/rule ref resolves to SYNTHETIC_ASSUMPTION
 [ ] comparison exposes neutral deltas only
 [ ] no prediction/recommendation/risk/safety/transitability/operator-policy claim
 [ ] one active scenario / one Cesium world
