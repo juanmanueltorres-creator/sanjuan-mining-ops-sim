@@ -63,6 +63,7 @@ const run: OperationalRun = {
   mode: 'SIMULATED',
   modelVersion: 'engine-v0',
   scenarioVersion: 'fixture-v1',
+  seed: 'fixture-seed',
   environmentSnapshotId: 'fixture-environment',
   provenance: [],
 };
