@@ -6,6 +6,7 @@ import type { CorridorDefinition } from '../domain/contracts';
 const loaders = vi.hoisted(() => ({
   loadStaticOperationData: vi.fn(),
   loadStaticRunArtifacts: vi.fn(),
+  loadTrafficCalibration: vi.fn(),
 }));
 
 vi.mock('../data/loadOperation', async () => {
@@ -14,6 +15,7 @@ vi.mock('../data/loadOperation', async () => {
     ...actual,
     loadStaticOperationData: loaders.loadStaticOperationData,
     loadStaticRunArtifacts: loaders.loadStaticRunArtifacts,
+    loadTrafficCalibration: loaders.loadTrafficCalibration,
   };
 });
 
@@ -81,11 +83,36 @@ const runArtifacts = {
   },
 };
 
+const trafficCalibration = {
+  id: 'traffic-calibration-v1',
+  baseVisibleVehicles: 20,
+  maxVisibleVehicles: 24,
+  timeBands: [
+    { startMinute: 360, endMinute: 540, relativeIntensity: 0.65 },
+    { startMinute: 540, endMinute: 720, relativeIntensity: 1 },
+    { startMinute: 720, endMinute: 960, relativeIntensity: 0.8 },
+    { startMinute: 960, endMinute: 1201, relativeIntensity: 0.55 },
+  ],
+  corridorWeights: [
+    { corridorId: 'hualilan' as const, weight: 0.34 },
+    { corridorId: 'veladero' as const, weight: 0.33 },
+    { corridorId: 'los-azules' as const, weight: 0.33 },
+  ],
+  evidenceRefs: ['dnv-tmda-2017'],
+  limitations: ['Synthetic background traffic only; not live San Juan traffic.'],
+  evidence: [{
+    id: 'dnv-tmda-2017', role: 'CALIBRATION' as const, sourceName: 'DNV TMDA historical traffic', retrievedAt: '2026-08-30',
+    limitations: ['Historical reference; not live traffic.'],
+  }],
+};
+
 beforeEach(() => {
   loaders.loadStaticOperationData.mockReset();
   loaders.loadStaticRunArtifacts.mockReset();
+  loaders.loadTrafficCalibration.mockReset();
   loaders.loadStaticOperationData.mockResolvedValue(operationData);
   loaders.loadStaticRunArtifacts.mockResolvedValue(runArtifacts);
+  loaders.loadTrafficCalibration.mockResolvedValue(trafficCalibration);
 });
 
 describe('App', () => {
@@ -111,6 +138,18 @@ describe('App', () => {
 
     expect(await screen.findByText('MODELLED WEATHER · READY')).toBeVisible();
     expect(loaders.loadStaticRunArtifacts).toHaveBeenCalledTimes(1);
+  });
+
+  it('loads synthetic background calibration and exposes its provenance drawer', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: /start shift/i }));
+
+    expect(await screen.findByText('BACKGROUND TRAFFIC · SYNTHETIC')).toBeVisible();
+    expect(loaders.loadTrafficCalibration).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole('button', { name: /sources/i }));
+    expect(screen.getByRole('complementary', { name: /sources and limitations/i })).toBeVisible();
+    expect(screen.getByText(/not live San Juan traffic/i)).toBeVisible();
   });
 
   it('keeps compact cartographic instruments visible and fails closed without WebGL cursor data', async () => {
