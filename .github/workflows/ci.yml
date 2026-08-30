@@ -4,22 +4,13 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      task:
-        description: Manual task to run on the selected ref
-        required: true
-        default: ci
-        type: choice
-        options:
-          - ci
-          - acquire-veladero-road-sources
 
 permissions:
   contents: read
 
 jobs:
   test-build:
-    if: github.event_name == 'pull_request' || inputs.task == 'ci'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -58,7 +49,7 @@ jobs:
           if-no-files-found: ignore
 
   acquire-veladero-road-sources:
-    if: github.event_name == 'workflow_dispatch' && inputs.task == 'acquire-veladero-road-sources'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
