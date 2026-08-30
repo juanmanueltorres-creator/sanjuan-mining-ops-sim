@@ -5,6 +5,7 @@ import {
   Cartographic,
   Color,
   ConstantPositionProperty,
+  Credit,
   CustomDataSource,
   EllipsoidTerrainProvider,
   Entity,
@@ -17,6 +18,7 @@ import {
 import type { OperationalSnapshot } from '../domain/contracts';
 import type { StaticOperationData } from '../data/loadOperation';
 import type { BackgroundTrafficVehicle } from '../simulation/backgroundTraffic';
+import { MapInstrumentation } from '../ui/MapInstrumentation';
 import {
   createOperationalAdapter,
   resolveBackgroundTrafficPoint,
@@ -287,7 +289,10 @@ export function CesiumStage({
       new UrlTemplateImageryProvider({
         url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         maximumLevel: 18,
-        credit: '© OpenStreetMap contributors',
+        credit: new Credit(
+          '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors · ODbL</a>',
+          true,
+        ),
       }),
     );
 
@@ -403,45 +408,17 @@ export function CesiumStage({
       <div ref={containerRef} className="cesium-host" aria-hidden="true" />
       {!webGlAvailable && <div className="map-fallback">3D MAP · WEBGL PREVIEW UNAVAILABLE</div>}
 
-      <div className="map-instruments" aria-label="Cartographic instruments">
-        <div className="north-indicator" aria-label="Map orientation">
-          <span
-            className="north-arrow"
-            aria-hidden="true"
-            style={{ transform: `rotate(${-instruments.headingDeg}deg)` }}
-          >
-            ↑
-          </span>
-          <strong>N</strong>
-        </div>
-
-        <div className="scale-indicator" aria-label="Map scale">
-          {webGlAvailable && instruments.scaleLabel && instruments.scaleWidthPx ? (
-            <>
-              <span className="scale-line" style={{ width: `${instruments.scaleWidthPx}px` }} aria-hidden="true" />
-              <span>{instruments.scaleLabel}</span>
-            </>
-          ) : (
-            <span>SCALE UNAVAILABLE</span>
-          )}
-        </div>
-
-        <div className="cursor-readout" aria-label="Cursor coordinates and elevation">
-          {webGlAvailable && instruments.cursorText ? instruments.cursorText : 'CURSOR · TERRAIN UNAVAILABLE'}
-        </div>
-
-        <button
-          className="regional-view-button"
-          type="button"
-          aria-label="Regional view"
-          onClick={() => {
-            const viewer = viewerRef.current;
-            if (viewer) setRegionalView(viewer);
-          }}
-        >
-          REGIONAL VIEW
-        </button>
-      </div>
+      <MapInstrumentation
+        headingDeg={instruments.headingDeg}
+        scaleLabel={instruments.scaleLabel}
+        scaleWidthPx={instruments.scaleWidthPx}
+        cursorText={instruments.cursorText}
+        webGlAvailable={webGlAvailable}
+        onRegionalView={() => {
+          const viewer = viewerRef.current;
+          if (viewer) setRegionalView(viewer);
+        }}
+      />
     </section>
   );
 }
