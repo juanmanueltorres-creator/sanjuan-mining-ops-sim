@@ -40,6 +40,7 @@ describe('AnalysisDrawer', () => {
 
     expect(screen.getByRole('complementary', { name: /sources and limitations/i })).toBeVisible();
     expect(screen.getByText('MODELLED WEATHER')).toBeVisible();
+    expect(screen.getByText('Versioned modelled weather fixture.')).toBeVisible();
     expect(screen.getByText('SYNTHETIC BACKGROUND TRAFFIC')).toBeVisible();
     expect(screen.getByText(/not live San Juan traffic/i)).toBeVisible();
     expect(screen.getByText(/limitations/i)).toBeVisible();
