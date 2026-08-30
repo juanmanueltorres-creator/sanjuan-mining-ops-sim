@@ -2,8 +2,12 @@ import type {
   CorridorDefinition,
   EnvironmentSnapshot,
   EvidenceRef,
+  GeometrySourceFormat,
+  GeometrySourceRecord,
+  GeometrySourceRole,
   OperationalRun,
   ProjectDefinition,
+  RoadGeometrySegment,
   SanJuanOperationSpec,
 } from '../domain/contracts';
 import { assertEvidenceRefsExist } from '../domain/evidence';
@@ -19,6 +23,7 @@ export interface StaticOperationData {
   projects: ProjectDefinition[];
   corridors: CorridorDefinition[];
   evidence: EvidenceRef[];
+  geometrySources: GeometrySourceRecord[];
 }
 
 export interface StaticRunArtifacts {
@@ -37,6 +42,18 @@ export interface StaticTrafficCalibration extends TrafficCalibration {
 export type JsonFetcher = (url: string) => Promise<{ ok: boolean; json: () => Promise<unknown> }>;
 
 const CORRIDOR_IDS = ['hualilan', 'veladero', 'los-azules'] as const;
+export type CorridorId = typeof CORRIDOR_IDS[number];
+export type CorridorAssetVersion = 'v1' | 'v2';
+export type CorridorAssetOverrides = Partial<Record<CorridorId, CorridorAssetVersion>>;
+
+export const DEFAULT_CORRIDOR_ASSET_VERSIONS: Record<CorridorId, CorridorAssetVersion> = {
+  hualilan: 'v1',
+  veladero: 'v2',
+  'los-azules': 'v1',
+};
+
+const GEOMETRY_SOURCE_ROLES = new Set<GeometrySourceRole>(['PRIMARY', 'CORROBORATION', 'FALLBACK']);
+const GEOMETRY_SOURCE_FORMATS = new Set<GeometrySourceFormat>(['GeoJSON', 'Shapefile', 'WMS', 'OSM']);
 
 function asRecord(input: unknown, label: string): Record<string, unknown> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
@@ -48,6 +65,15 @@ function asRecord(input: unknown, label: string): Record<string, unknown> {
 function asArray(input: unknown, label: string): unknown[] {
   if (!Array.isArray(input)) throw new Error(`${label} must be an array`);
   return input;
+}
+
+function asString(input: unknown, label: string): string {
+  if (typeof input !== 'string' || input.length === 0) throw new Error(`${label} must be a non-empty string`);
+  return input;
+}
+
+function asStringArray(input: unknown, label: string): string[] {
+  return asArray(input, label).map((value, index) => asString(value, `${label} ${index}`));
 }
 
 function asFiniteNumber(input: unknown, label: string): number {
@@ -84,6 +110,85 @@ function parseRegistry(projects: unknown[], evidence: unknown[]): Pick<SanJuanOp
 
 function parseEvidenceList(input: unknown): EvidenceRef[] {
   return parseRegistry([], asArray(input, 'evidence')).provenance;
+}
+
+function parseGeometrySourceDocument(input: unknown, corridorId: CorridorId): {
+  sources: GeometrySourceRecord[];
+  evidence: EvidenceRef[];
+} {
+  const document = asRecord(input, `${corridorId} geometry source manifest`);
+  if (document.schemaVersion !== 'sanjuan.road-geometry-sources/v2') {
+    throw new Error(`${corridorId} geometry source manifest: unsupported schemaVersion`);
+  }
+  if (document.corridorId !== corridorId) {
+    throw new Error(`${corridorId} geometry source manifest: corridorId mismatch`);
+  }
+
+  const sources = asArray(document.sources, `${corridorId} geometry sources`).map((raw, index): GeometrySourceRecord => {
+    const source = asRecord(raw, `${corridorId} geometry source ${index}`);
+    const role = asString(source.role, `${corridorId} geometry source ${index} role`) as GeometrySourceRole;
+    const format = asString(source.format, `${corridorId} geometry source ${index} format`) as GeometrySourceFormat;
+    if (!GEOMETRY_SOURCE_ROLES.has(role)) throw new Error(`${corridorId} geometry source ${index}: invalid role ${role}`);
+    if (!GEOMETRY_SOURCE_FORMATS.has(format)) throw new Error(`${corridorId} geometry source ${index}: invalid format ${format}`);
+
+    return {
+      id: asString(source.id, `${corridorId} geometry source ${index} id`),
+      provider: asString(source.provider, `${corridorId} geometry source ${index} provider`),
+      datasetName: asString(source.datasetName, `${corridorId} geometry source ${index} datasetName`),
+      sourceUrl: asString(source.sourceUrl, `${corridorId} geometry source ${index} sourceUrl`),
+      retrievedAt: asString(source.retrievedAt, `${corridorId} geometry source ${index} retrievedAt`),
+      role,
+      format,
+      ...(typeof source.license === 'string' && source.license.length > 0 ? { license: source.license } : {}),
+      ...(typeof source.attribution === 'string' && source.attribution.length > 0 ? { attribution: source.attribution } : {}),
+      featureIds: asStringArray(source.featureIds, `${corridorId} geometry source ${index} featureIds`),
+      limitations: asStringArray(source.limitations, `${corridorId} geometry source ${index} limitations`),
+    };
+  });
+
+  const sourceIds = sources.map((source) => source.id);
+  if (new Set(sourceIds).size !== sourceIds.length) throw new Error(`${corridorId} geometry source manifest: duplicate source ids`);
+
+  return {
+    sources,
+    evidence: parseEvidenceList(document.evidence),
+  };
+}
+
+function parseGeometrySegments(input: unknown, corridorId: CorridorId): RoadGeometrySegment[] {
+  const collection = asRecord(input, `${corridorId} V2 geometry segments`);
+  if (collection.type !== 'FeatureCollection') throw new Error(`${corridorId} V2 geometry segments must be a FeatureCollection`);
+
+  return asArray(collection.features, `${corridorId} V2 geometry segment features`).map((raw, index) => {
+    const feature = asRecord(raw, `${corridorId} V2 geometry segment ${index}`);
+    const properties = asRecord(feature.properties, `${corridorId} V2 geometry segment ${index} properties`);
+    const geometry = asRecord(feature.geometry, `${corridorId} V2 geometry segment ${index} geometry`);
+    return {
+      ...properties,
+      geometry,
+    } as unknown as RoadGeometrySegment;
+  });
+}
+
+function validateV2GeometryRelations(
+  corridor: CorridorDefinition,
+  sources: GeometrySourceRecord[],
+  availableEvidence: EvidenceRef[],
+): void {
+  const sourceMap = new Map(sources.map((source) => [source.id, source]));
+  const segments = corridor.geometrySegments ?? [];
+  if (segments.length === 0) throw new Error(`${corridor.id}: V2 corridor requires geometrySegments`);
+
+  for (const segment of segments) {
+    const source = sourceMap.get(segment.sourceDatasetId);
+    if (!source) throw new Error(`${corridor.id}/${segment.id}: unknown geometry source ${segment.sourceDatasetId}`);
+    assertEvidenceRefsExist(segment.evidenceRefs, availableEvidence);
+    for (const featureId of segment.sourceFeatureIds) {
+      if (!source.featureIds.includes(featureId)) {
+        throw new Error(`${corridor.id}/${segment.id}: source feature ${featureId} is absent from ${source.id}`);
+      }
+    }
+  }
 }
 
 export async function loadStaticRunArtifacts(fetcher: JsonFetcher): Promise<StaticRunArtifacts> {
@@ -156,12 +261,12 @@ export async function loadTrafficCalibration(fetcher: JsonFetcher): Promise<Stat
 
   const corridorWeights = asArray(document.corridorWeights, 'traffic calibration corridor weights').map((raw, index) => {
     const weight = asRecord(raw, `traffic calibration corridor weight ${index}`);
-    if (!CORRIDOR_IDS.includes(weight.corridorId as typeof CORRIDOR_IDS[number])) {
+    if (!CORRIDOR_IDS.includes(weight.corridorId as CorridorId)) {
       throw new Error(`traffic calibration corridor weight ${index}: unsupported corridor`);
     }
     const value = asFiniteNumber(weight.weight, `traffic calibration corridor weight ${index} weight`);
     if (value <= 0) throw new Error(`traffic calibration corridor weight ${index}: weight must be positive`);
-    return { corridorId: weight.corridorId as typeof CORRIDOR_IDS[number], weight: value };
+    return { corridorId: weight.corridorId as CorridorId, weight: value };
   });
   const weightedIds = [...new Set(corridorWeights.map((entry) => entry.corridorId))].sort();
   if (JSON.stringify(weightedIds) !== JSON.stringify([...CORRIDOR_IDS].sort())) {
@@ -169,16 +274,10 @@ export async function loadTrafficCalibration(fetcher: JsonFetcher): Promise<Stat
   }
 
   const evidence = parseEvidenceList(document.evidence);
-  const evidenceRefs = asArray(document.evidenceRefs, 'traffic calibration evidenceRefs').map((value) => {
-    if (typeof value !== 'string' || value.length === 0) throw new Error('traffic calibration evidenceRefs must contain strings');
-    return value;
-  });
+  const evidenceRefs = asStringArray(document.evidenceRefs, 'traffic calibration evidenceRefs');
   assertEvidenceRefsExist(evidenceRefs, evidence);
 
-  const limitations = asArray(document.limitations, 'traffic calibration limitations').map((value) => {
-    if (typeof value !== 'string' || value.length === 0) throw new Error('traffic calibration limitations must contain strings');
-    return value;
-  });
+  const limitations = asStringArray(document.limitations, 'traffic calibration limitations');
   if (limitations.length === 0) throw new Error('traffic calibration limitations required');
 
   return {
@@ -193,7 +292,10 @@ export async function loadTrafficCalibration(fetcher: JsonFetcher): Promise<Stat
   };
 }
 
-export async function loadStaticOperationData(fetcher: JsonFetcher): Promise<StaticOperationData> {
+export async function loadStaticOperationData(
+  fetcher: JsonFetcher,
+  overrides: CorridorAssetOverrides = {},
+): Promise<StaticOperationData> {
   const projectDocument = asRecord(await fetchJson(fetcher, '/data/projects/projects.v1.json'), 'project registry');
   const projectRegistry = parseRegistry(
     asArray(projectDocument.projects, 'projects'),
@@ -210,45 +312,98 @@ export async function loadStaticOperationData(fetcher: JsonFetcher): Promise<Sta
     assertEvidenceRefsExist(project.evidenceRefs, projectRegistry.provenance);
   }
 
+  const versions = { ...DEFAULT_CORRIDOR_ASSET_VERSIONS, ...overrides };
+  if (versions.hualilan !== 'v1' || versions['los-azules'] !== 'v1') {
+    throw new Error('V2 corridor assets are supported only for Veladero in V0.1');
+  }
+
   const corridors: CorridorDefinition[] = [];
   const evidence: EvidenceRef[] = [...projectRegistry.provenance];
+  const geometrySources: GeometrySourceRecord[] = [];
 
   for (const id of CORRIDOR_IDS) {
     const base = `/data/corridors/${id}`;
-    const [metadataRaw, geometryRaw, profileRaw, routeSamplesRaw] = await Promise.all([
-      fetchJson(fetcher, `${base}/metadata.v1.json`),
-      fetchJson(fetcher, `${base}/corridor.v1.geojson`),
+    const version = versions[id];
+
+    if (version === 'v1') {
+      const [metadataRaw, geometryRaw, profileRaw, routeSamplesRaw] = await Promise.all([
+        fetchJson(fetcher, `${base}/metadata.v1.json`),
+        fetchJson(fetcher, `${base}/corridor.v1.geojson`),
+        fetchJson(fetcher, `${base}/profile.v1.json`),
+        fetchJson(fetcher, `${base}/route-samples.v1.json`),
+      ]);
+
+      const metadata = asRecord(metadataRaw, `${id} metadata`);
+      const feature = asRecord(geometryRaw, `${id} geometry feature`);
+      const profile = asRecord(profileRaw, `${id} profile`);
+      const routeDocument = asRecord(routeSamplesRaw, `${id} route samples`);
+      const corridorEvidence = parseEvidenceList(metadata.evidence);
+      const availableEvidence = [...evidence, ...corridorEvidence];
+
+      const corridor = parseCorridor({
+        ...metadata,
+        geometry: feature.geometry,
+        elevationProfile: profile,
+        routeSamples: asArray(routeDocument.samples, `${id} route samples`),
+      });
+
+      assertEvidenceRefsExist(corridor.evidenceRefs, availableEvidence);
+      for (const node of corridor.nodes) assertEvidenceRefsExist(node.evidenceRefs, availableEvidence);
+
+      const profileEvidenceRefs = Array.isArray(profile.evidenceRefs) ? profile.evidenceRefs as string[] : [];
+      if (profileEvidenceRefs.length > 0) assertEvidenceRefsExist(profileEvidenceRefs, availableEvidence);
+
+      const properties = asRecord(feature.properties, `${id} geometry properties`);
+      const geometryEvidenceRefs = Array.isArray(properties.evidenceRefs) ? properties.evidenceRefs as string[] : [];
+      if (geometryEvidenceRefs.length > 0) assertEvidenceRefsExist(geometryEvidenceRefs, availableEvidence);
+
+      corridors.push(corridor);
+      evidence.push(...corridorEvidence);
+      continue;
+    }
+
+    if (id !== 'veladero') throw new Error(`V2 assets are unsupported for ${id}`);
+
+    const [metadataRaw, geometryRaw, profileRaw, routeSamplesRaw, segmentsRaw, sourcesRaw] = await Promise.all([
+      fetchJson(fetcher, `${base}/metadata.v2.json`),
+      fetchJson(fetcher, `${base}/corridor.v2.geojson`),
       fetchJson(fetcher, `${base}/profile.v1.json`),
-      fetchJson(fetcher, `${base}/route-samples.v1.json`),
+      fetchJson(fetcher, `${base}/route-samples.v2.json`),
+      fetchJson(fetcher, `${base}/segments.v2.geojson`),
+      fetchJson(fetcher, `${base}/sources.v2.json`),
     ]);
 
-    const metadata = asRecord(metadataRaw, `${id} metadata`);
-    const feature = asRecord(geometryRaw, `${id} geometry feature`);
+    const metadata = asRecord(metadataRaw, `${id} V2 metadata`);
+    const feature = asRecord(geometryRaw, `${id} V2 geometry feature`);
     const profile = asRecord(profileRaw, `${id} profile`);
-    const routeDocument = asRecord(routeSamplesRaw, `${id} route samples`);
+    const routeDocument = asRecord(routeSamplesRaw, `${id} V2 route samples`);
+    const sourceManifest = parseGeometrySourceDocument(sourcesRaw, id);
     const corridorEvidence = parseEvidenceList(metadata.evidence);
-    const availableEvidence = [...evidence, ...corridorEvidence];
+    const availableEvidence = [...evidence, ...corridorEvidence, ...sourceManifest.evidence];
+    const geometrySegments = parseGeometrySegments(segmentsRaw, id);
 
     const corridor = parseCorridor({
       ...metadata,
       geometry: feature.geometry,
+      geometrySegments,
       elevationProfile: profile,
-      routeSamples: asArray(routeDocument.samples, `${id} route samples`),
+      routeSamples: asArray(routeDocument.samples, `${id} V2 route samples`),
     });
 
     assertEvidenceRefsExist(corridor.evidenceRefs, availableEvidence);
     for (const node of corridor.nodes) assertEvidenceRefsExist(node.evidenceRefs, availableEvidence);
-
     const profileEvidenceRefs = Array.isArray(profile.evidenceRefs) ? profile.evidenceRefs as string[] : [];
     if (profileEvidenceRefs.length > 0) assertEvidenceRefsExist(profileEvidenceRefs, availableEvidence);
-
-    const properties = asRecord(feature.properties, `${id} geometry properties`);
+    const properties = asRecord(feature.properties, `${id} V2 geometry properties`);
     const geometryEvidenceRefs = Array.isArray(properties.evidenceRefs) ? properties.evidenceRefs as string[] : [];
     if (geometryEvidenceRefs.length > 0) assertEvidenceRefsExist(geometryEvidenceRefs, availableEvidence);
 
+    validateV2GeometryRelations(corridor, sourceManifest.sources, availableEvidence);
+
     corridors.push(corridor);
-    evidence.push(...corridorEvidence);
+    evidence.push(...corridorEvidence, ...sourceManifest.evidence);
+    geometrySources.push(...sourceManifest.sources);
   }
 
-  return { projects, corridors, evidence };
+  return { projects, corridors, evidence, geometrySources };
 }
