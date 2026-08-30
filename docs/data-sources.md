@@ -6,7 +6,7 @@ San Juan Mining Ops Sim follows one rule throughout the V0 data model: every val
 
 ## Evidence roles
 
-- `PRIMARY` — published source used directly for territorial or project context.
+- `PRIMARY` — published source used directly for territorial, project, or provider context.
 - `DERIVED` — artifact reconstructed or interpolated from cited public anchors.
 - `CALIBRATION` — real reference data used only to shape a synthetic display model.
 - `ANALOGUE` — evidence from a comparable geography used as context, not transferred as an observation of San Juan.
@@ -73,7 +73,10 @@ Vehicle elevation is resolved from vehicle distance along those versioned route 
 
 Provider: **Open-Meteo Forecast API · Best Match**.
 
-Runtime artifact: `public/data/environment/environment-sj-20260830.json`.
+Runtime artifacts:
+
+- `public/data/environment/environment-sj-20260830.json` — immutable weather values and route-tied nodes;
+- `public/data/environment/environment-sj-20260830.evidence.v1.json` — structured provider evidence referenced by the snapshot and run.
 
 The checked-in V0 snapshot:
 
@@ -84,7 +87,11 @@ The checked-in V0 snapshot:
 - is queried by corridor position and passage time;
 - is modelled weather, not a station observation or road-condition measurement.
 
-The browser does not call Open-Meteo per vehicle or per simulation tick. A new provider refresh should create a new versioned environment/run artifact instead of mutating an old run.
+The environment evidence registry records provider name, provider endpoint, retrieval time, build method, and limitations separately from the operational scenario. This keeps the architecture explicit: operational/synthetic evidence lives with `OperationSpec`, while provider evidence for modelled weather lives with the versioned environment artifact. `OperationalRun.provenance` references the weather evidence ID without duplicating the provider record into the operational spec.
+
+The loader and acceptance tests fail closed if the snapshot references missing environment evidence, if the evidence registry belongs to another snapshot, or if the run omits the environment evidence reference from its provenance. The Sources drawer renders the structured weather evidence alongside model/source state and limitations.
+
+The browser does not call Open-Meteo per vehicle or per simulation tick. `scripts/build-environment.mjs` writes both the snapshot and its companion evidence registry. A new provider refresh should create a new versioned environment/run artifact instead of mutating an old run.
 
 Upstream licensing/usage rights are not asserted by this repository beyond what is explicitly documented in the source artifact. Consult the provider's current terms for redistribution or downstream use.
 
@@ -100,11 +107,18 @@ Evidence split:
 
 The simulator does **not** transfer an Argentine or Chilean absolute vehicle count onto the three mining corridors. Background `BG-*` vehicles are deterministic synthetic territorial context only. They do not represent live San Juan traffic and do not model lanes, congestion, signals, overtaking, closures, or traffic-control decisions.
 
-## Synthetic operating plan
+## Synthetic operating plan and display rules
 
 Exactly 24 highlighted units are generated from the checked-in run seed: 12 `PERSONNEL`, 6 `FIELD`, and 6 `LOGISTICS` vehicles. Departure times, assignments, planned dwell, speed profiles, return timing, and context display rules are `SYNTHETIC_ASSUMPTION` inputs.
 
-The operating plan is not operator dispatch and is not based on live company telemetry.
+Two scenario-level evidence records make that authorship explicit:
+
+- `synthetic-operating-plan-v1` — deterministic V0 movement/schedule assumptions;
+- `scenario-display-rules-v1` — thresholds used only to surface contextual signals.
+
+The canonical `buildV0OperationSpec()` registers these records and fails closed if any project, corridor, fleet, planned-stop, calibration, or context-rule evidence reference is missing. The same builder is used by both the application and deterministic acceptance replay so production and QA cannot silently construct different provenance graphs.
+
+The operating plan is not operator dispatch and is not based on live company telemetry. Display-rule thresholds are not safety, transitability, occupational-health, or operational decision thresholds.
 
 ## Community / qualitative material
 
