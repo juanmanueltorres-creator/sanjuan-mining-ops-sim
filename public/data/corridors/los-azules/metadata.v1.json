@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "sanjuan.corridor-metadata/v1",
+  "id": "los-azules",
+  "name": "San Juan → Calingasta → Los Azules",
+  "origin": {"id":"san-juan","name":"San Juan","lat":-31.5375,"lon":-68.5364},
+  "destination": {"id":"los-azules","name":"Los Azules","lat":-31.11277,"lon":-70.22138},
+  "geometryClass": "RECONSTRUCTED_ACCESS",
+  "totalDistanceKm": 276,
+  "segments": [
+    {"id":"los-azules-01","corridorId":"los-azules","startKm":0,"endKm":50,"distanceKm":50,"elevationMinM":650,"elevationMaxM":940,"roadClass":"pavedLowland","geometryConfidence":"RECONSTRUCTED_ACCESS","environmentNodeIds":[]},
+    {"id":"los-azules-02","corridorId":"los-azules","startKm":50,"endKm":120,"distanceKm":70,"elevationMinM":940,"elevationMaxM":1150,"roadClass":"mountainRoad","geometryConfidence":"RECONSTRUCTED_ACCESS","environmentNodeIds":[]},
+    {"id":"los-azules-03","corridorId":"los-azules","startKm":120,"endKm":164,"distanceKm":44,"elevationMinM":1150,"elevationMaxM":1370,"roadClass":"mountainRoad","geometryConfidence":"RECONSTRUCTED_ACCESS","environmentNodeIds":[]},
+    {"id":"los-azules-04","corridorId":"los-azules","startKm":164,"endKm":189,"distanceKm":25,"elevationMinM":1370,"elevationMaxM":1900,"roadClass":"mountainRoad","geometryConfidence":"RECONSTRUCTED_ACCESS","environmentNodeIds":[]},
+    {"id":"los-azules-05","corridorId":"los-azules","startKm":189,"endKm":271,"distanceKm":82,"elevationMinM":1900,"elevationMaxM":3450,"roadClass":"highMountain","geometryConfidence":"RECONSTRUCTED_ACCESS","environmentNodeIds":[]},
+    {"id":"los-azules-06","corridorId":"los-azules","startKm":271,"endKm":276,"distanceKm":5,"elevationMinM":3450,"elevationMaxM":3500,"roadClass":"approach","geometryConfidence":"APPROXIMATE_APPROACH","environmentNodeIds":[]}
+  ],
+  "nodes": [
+    {"id":"calingasta","name":"Calingasta","lat":-31.335410441,"lon":-69.427381783,"distanceKm":164,"elevationM":1370,"evidenceRefs":["calingasta-public-locality"]}
+  ],
+  "evidenceRefs": ["argentina-calingasta-road-chain", "calingasta-public-locality", "mcewen-los-azules-access", "mcewen-los-azules-location", "los-azules-route-reconstruction", "los-azules-profile-derived"],
+  "retrievedAt": "2026-08-30",
+  "limitations": [
+    "The regional public-road leg and project access are reconstructed from public route descriptions and territorial anchors, not an operator-supplied navigation trace.",
+    "The 276 km distance axis is a deterministic scenario reconstruction used for simulation; it is not presented as a surveyed or current driving distance.",
+    "The last 5 km are deliberately classified APPROXIMATE_APPROACH.",
+    "No current road condition, authorization, closure or transitability is inferred."
+  ],
+  "evidence": [
+    {"id":"argentina-calingasta-road-chain","role":"PRIMARY","sourceName":"Argentina.gob.ar — acceso regional por RN40 / RP436 / RN149","sourceUrl":"https://www.argentina.gob.ar/parquesnacionales/centro/parque-nacional-el-leoncito/horarios-como-llegar","retrievedAt":"2026-08-30","method":"Official road-chain description used to constrain the San Juan-to-Calingasta regional approach.","limitations":["The page describes regional access to El Leoncito/Calingasta corridor, not a mining-company route."]},
+    {"id":"calingasta-public-locality","role":"PRIMARY","sourceName":"Argentina Obra Pública — Calingasta locality","sourceUrl":"https://snop-ppo.obraspublicas.gob.ar/localities/details/c6623e01-732a-4f7b-971b-987159e18365","retrievedAt":"2026-08-30","method":"Published locality coordinate used as a regional route anchor.","limitations":["Locality coordinate is not a project gate or logistics facility."]},
+    {"id":"mcewen-los-azules-access","role":"PRIMARY","sourceName":"McEwen — Los Azules NI 43-101 Technical Report 2025","sourceUrl":"https://s21.q4cdn.com/390685383/files/technical_reports/los_azules/McEwen_NI43-101_TR_Los_Azules_Nov_2025.pdf","retrievedAt":"2026-08-30","method":"Published access narrative used for the Calingasta/RP437/RP406 context and the ~87 km exploration-road leg.","limitations":["Public technical-report narrative is not a current turn-by-turn or access-authorization feed."]},
+    {"id":"mcewen-los-azules-location","role":"PRIMARY","sourceName":"McEwen — Los Azules","sourceUrl":"https://mcewenmining.com/operations/los-azules/default.aspx","retrievedAt":"2026-08-30","method":"Operator page used for project setting and approximate 3,500 m elevation.","limitations":["No live operational or vehicle information is used."]},
+    {"id":"los-azules-route-reconstruction","role":"DERIVED","sourceName":"San Juan Mining Ops Sim — Los Azules route reconstruction","retrievedAt":"2026-08-30","method":"Polyline and deterministic distance axis reconstructed from public road/access descriptions, Calingasta and project anchors; unsupported intermediate positions are schematic.","limitations":["Not suitable for navigation, engineering or access authorization."]},
+    {"id":"los-azules-profile-derived","role":"DERIVED","sourceName":"San Juan Mining Ops Sim — Los Azules analytical profile","retrievedAt":"2026-08-30","method":"Public elevation context interpolated across versioned route distance.","limitations":["Not an engineering-grade DEM survey."]}
+  ]
+}
