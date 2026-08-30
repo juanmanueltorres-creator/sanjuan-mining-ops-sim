@@ -15,10 +15,20 @@ function lineFeature(id, coordinates, properties = {}) {
 }
 
 describe('CKAN dataset fallback', () => {
-  it('stores the canonical namespaced CKAN resource ids exposed by Datos Argentina', () => {
-    expect(OFFICIAL_RESOURCES.map((item) => item.resourceId)).toEqual([
-      'transporte_98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
-      'transporte_903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+  it('stores the published direct WFS descriptors used for acquisition', () => {
+    expect(OFFICIAL_RESOURCES).toMatchObject([
+      {
+        resourceId: 'd58b91ee-c46a-4260-8d89-69438417d73b',
+        format: 'wfs',
+        url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_nacional',
+        catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b',
+      },
+      {
+        resourceId: '903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+        format: 'wfs',
+        url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_provincial',
+        catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+      },
     ]);
   });
 
