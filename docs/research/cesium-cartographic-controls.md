@@ -2,80 +2,73 @@
 
 Date: 2026-08-30
 
-## Goal
+Scope: the V0 regional operational scene. This note documents the APIs and display rules used for orientation, scale, cursor readout, regional reset and attribution. The goal is a compact map-first instrument layer, not decorative GIS chrome.
 
-Add compact cartographic instrumentation without turning the map into a dashboard: north reference, local scale, cursor coordinates/elevation, home extent, and readable attribution.
+## North / camera orientation
 
-## Chosen patterns
+Chosen pattern: derive north from `Viewer.camera.heading`, convert radians to degrees and update from the camera `changed` event. `camera.percentageChanged` is reduced from its default so the compass stays aligned without a React animation-frame loop.
 
-### North / heading
+Reference: https://cesium.com/learn/cesiumjs/ref-doc/Camera.html
 
-Use Cesium `viewer.camera.heading` (radians) as the single source of truth. The north marker rotates by the inverse camera heading so the glyph continues to indicate geographic north as the view rotates.
+Implementation rule: rotate the north arrow by the negative camera heading. This is camera orientation, not magnetic declination or a field compass. The readout does not mutate the camera and does not create a second viewer.
 
-Source: https://cesium.com/learn/cesiumjs/ref-doc/Camera.html
+## Local scale bar
 
-Important boundary: this is camera orientation, not magnetic declination or a field compass.
+Chosen pattern: estimate ground distance from two horizontal screen samples near the lower map area.
 
-### Cursor coordinate + elevation
+1. Convert each screen sample into a pick ray with `camera.getPickRay`.
+2. Intersect the ray with the rendered globe using `scene.globe.pick`.
+3. Measure the resulting Cartesian distance.
+4. Derive metres per pixel.
+5. Select a readable `1 / 2 / 5 × 10^n` distance that fits the target width.
 
-For a cursor screen position:
-
-1. `viewer.camera.getPickRay(windowCoordinates)`
-2. `viewer.scene.globe.pick(ray, viewer.scene)`
-3. convert the returned Cartesian position to cartographic longitude/latitude/height
-4. if no globe intersection exists, display `—` rather than synthesizing a coordinate
-
-Cesium documents `Globe.pick` specifically for intersecting a camera ray through a screen pixel with the rendered globe.
-
-Sources:
+References:
 - https://cesium.com/learn/cesiumjs/ref-doc/Globe.html
-- https://cesium.com/learn/cesiumjs-learn/cesiumjs-camera/
+- https://cesium.com/learn/cesiumjs/ref-doc/Camera.html
 
-For V0 the elevation readout represents the rendered globe/terrain intersection. It is not a surveyed road elevation.
+A perspective globe has no single uniform screen scale, so this is a local scale around the measurement position. If either ray misses the globe, or the result is non-finite, the UI shows `SCALE UNAVAILABLE`; it does not synthesize a value from camera height or freeze a stale one.
 
-### Local scale bar
+## Cursor coordinates and elevation
 
-Use a local screen-to-ground estimate near the lower center of the map:
+Chosen pattern: use `ScreenSpaceEventHandler` on `MOUSE_MOVE`, intersect the cursor ray with the globe, and derive longitude/latitude from the picked Cartesian position.
 
-1. shoot two camera rays through screen points separated by a small known number of pixels
-2. intersect both with `scene.globe`
-3. convert both intersections to cartographic points
-4. calculate ground distance
-5. derive metres-per-pixel
-6. choose a readable `1 / 2 / 5 × 10^n` scale length
+References:
+- https://cesium.com/learn/cesiumjs/ref-doc/ScreenSpaceEventHandler.html
+- https://cesium.com/learn/cesiumjs/ref-doc/Globe.html
 
-This follows the Cesium community/Terria-style scale indicator pattern. Because a perspective globe does not have one uniform scale across the entire screen, the UI must label this as a local scale and compute it near the scale bar location.
+Elevation is stricter than coordinates. `Globe.getHeight(cartographic)` returns a terrain height or `undefined`; therefore V0 exposes elevation only when a terrain provider is actually available and the returned value is finite. Ellipsoid-only fallback or missing terrain data renders `ELEV —`. A longitude/latitude pick is never silently promoted into a surveyed or road-surface elevation.
 
-Reference: https://community.cesium.com/t/distance-scale-indicator/10371
+## Regional view
 
-If either ray misses the globe, the scale becomes unavailable (`—`) rather than freezing a stale value.
+Chosen pattern: `camera.setView` resets the scene to one deterministic San Juan regional camera position/orientation. Cesium documents `setView` as setting camera position, orientation and transform.
 
-### Home / regional extent
+Reference: https://cesium.com/learn/cesiumjs/ref-doc/Camera.html#setView
 
-Use a fixed sourced San Juan regional extent with `camera.flyTo`, not a magic camera state copied from a user session. Cesium accepts a `Rectangle` as a camera destination.
+The reset is deliberately immediate rather than cinematic. It changes presentation only; it does not change simulation time, selected vehicle, source state or the immutable operational run.
 
-Source: https://cesium.com/learn/cesiumjs/ref-doc/Camera.html
+## Credits and OpenStreetMap
 
-The home action restores the regional operational view only; it does not modify simulation time or selection state.
+Cesium's credit display remains the canonical attribution surface. Credits must stay visible and unobstructed by the operational HUD.
 
-### Attribution / credits
-
-Do not replace or hide Cesium/provider credits. Cesium exposes `Viewer.creditDisplay` / `CreditDisplay`, including static credits and its native credit container. Keep that container readable at the lower edge and add our territorial-data attribution separately only when necessary.
-
-Sources:
+References:
+- https://cesium.com/learn/cesiumjs/ref-doc/Credit.html
 - https://cesium.com/learn/cesiumjs/ref-doc/CreditDisplay.html
-- https://cesium.com/learn/cesiumjs/ref-doc/Viewer.html
+- https://www.openstreetmap.org/copyright
+- https://operations.osmfoundation.org/policies/tiles/
 
-## Implementation boundary
+V0 uses the standard HTTPS OSM raster tile URL for ordinary interactive viewing only. The map displays an on-screen link to the OSM copyright/licence page. The application does not bulk-download, prefetch areas for offline use or bypass HTTP caching.
 
-`MapInstrumentation` may read camera/globe state, but formatting and scale selection remain pure helpers in `cartographicReadout.ts` and are unit tested. The instrumentation must not create a second Viewer, alter the simulation engine, or infer safety/transitability from terrain.
+Operational limitation: `tile.openstreetmap.org` is a community-funded best-effort service with no SLA. Sustained/commercial production traffic should use a configurable appropriate OSM-derived provider or self-hosted tiles rather than treating the community server as guaranteed infrastructure.
 
-## Visual rules
+## Architecture boundary
 
-- north control compact and always visible
-- scale and coordinate/elevation readouts live at map edges, not in large cards
-- unavailable values render `—`
-- attribution remains readable and unobstructed
-- no decorative compass animation; update only with camera state
-- controls must not cover critical route/vehicle content
-- mobile collapses readouts before shrinking text below legible size
+Cesium owns globe/camera/picking state. React owns the compact instrument presentation. Formatting and 1/2/5 scale selection remain pure helpers in `cartographicReadout.ts`.
+
+The instrumentation must not:
+- create another `Viewer` or `CustomDataSource`;
+- write simulation truth into React on every animation frame;
+- infer transitability, authorization or safety from terrain/weather;
+- hide provider credits;
+- drive geospatial geometry with a UI motion library.
+
+V0 invariant: `one Viewer + one primary CustomDataSource + persistent entities + fail-closed readouts`.
