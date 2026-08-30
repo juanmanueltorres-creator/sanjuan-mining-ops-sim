@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import type { OperationalMetrics, VehicleSnapshot } from '../domain/contracts';
@@ -64,8 +64,7 @@ describe('operational UI', () => {
     expect(onPlaybackChange).toHaveBeenCalledWith(600);
   });
 
-  it('exposes the full 06:00–20:00 timeline without hiding its endpoints', async () => {
-    const user = userEvent.setup();
+  it('exposes the full 06:00–20:00 timeline without hiding its endpoints', () => {
     const onSeek = vi.fn();
     render(<Timeline minuteOfDay={600} onSeek={onSeek} />);
 
@@ -75,9 +74,8 @@ describe('operational UI', () => {
     expect(slider).toHaveAttribute('min', '360');
     expect(slider).toHaveAttribute('max', '1200');
 
-    await user.clear(slider);
-    await user.type(slider, '720');
-    expect(onSeek).toHaveBeenCalled();
+    fireEvent.change(slider, { target: { value: '720' } });
+    expect(onSeek).toHaveBeenCalledWith(720);
   });
 
   it('shows selected vehicle detail compactly and does not invent environment context', () => {
