@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "sanjuan.route-samples/v1",
+  "corridorId": "hualilan",
+  "samples": [
+    {"distanceKm":0,"lon":-68.5364,"lat":-31.5375,"elevationM":650,"segmentId":"hualilan-01"},
+    {"distanceKm":52,"lon":-68.63929,"lat":-31.09887,"elevationM":940,"segmentId":"hualilan-02"},
+    {"distanceKm":75,"lon":-68.78,"lat":-30.98,"elevationM":1200,"segmentId":"hualilan-03"},
+    {"distanceKm":119.5,"lon":-68.947,"lat":-30.736,"elevationM":1700,"segmentId":"hualilan-04"},
+    {"distanceKm":120,"lon":-68.95,"lat":-30.73333,"elevationM":1700,"segmentId":"hualilan-04"}
+  ]
+}
