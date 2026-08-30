@@ -1,3 +1,6 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+
 export const CKAN_RESOURCE = 'https://datos.gob.ar/api/3/action/resource_show?id=';
 export const OFFICIAL_RESOURCES = [
   {
@@ -15,6 +18,8 @@ export const OVERPASS_ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
 ];
+export const VELADERO_REGIONAL_BBOX = [-69.5, -31.8, -68.3, -29.9];
+export const VELADERO_HIGH_MOUNTAIN_BBOX = [-70.1, -30.25, -69.2, -29.25];
 
 function asRecord(input, label) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error(`${label}: expected object`);
@@ -99,6 +104,26 @@ async function readJsonResponse(response, label) {
   } catch (error) {
     throw new Error(`${label}: invalid JSON (${error instanceof Error ? error.message : String(error)})`);
   }
+}
+
+async function writeJson(targetPath, value) {
+  await writeFile(targetPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function inventoryOfficialSource(result, generatedAt) {
+  const featureIds = result.featureCollection.features.map((feature) => String(feature.id));
+  return {
+    id: result.source.id,
+    provider: result.source.provider,
+    resourceId: result.source.resourceId,
+    resourceName: result.source.name,
+    sourceUrl: result.source.url,
+    requestUrl: result.requestUrl,
+    format: result.source.format,
+    retrievedAt: generatedAt,
+    featureCount: featureIds.length,
+    featureIds,
+  };
 }
 
 export function normalizeWfsFeatureCollection(input) {
@@ -250,4 +275,60 @@ export async function fetchOverpassRoadSource(bbox, fetcher = fetch, endpoints =
   }
 
   throw new Error(`Overpass acquisition failed: ${failures.join('; ')}`);
+}
+
+export async function acquireVeladeroSources({
+  fetcher = fetch,
+  outputDir = path.join('artifacts', 'road-geometry-acquisition'),
+  overpassEndpoints = OVERPASS_ENDPOINTS,
+  now = () => new Date().toISOString(),
+} = {}) {
+  const generatedAt = now();
+  if (typeof generatedAt !== 'string' || generatedAt.length === 0) throw new Error('Acquisition timestamp required');
+
+  const officialResults = [];
+  for (const resource of OFFICIAL_RESOURCES) {
+    officialResults.push(await fetchOfficialRoadSource(resource, VELADERO_REGIONAL_BBOX, fetcher));
+  }
+  const osmResult = await fetchOverpassRoadSource(VELADERO_HIGH_MOUNTAIN_BBOX, fetcher, overpassEndpoints);
+
+  await mkdir(outputDir, { recursive: true });
+  const snapshots = {
+    'dnv-national-roads.v1.geojson': officialResults[0].featureCollection,
+    'ign-provincial-roads.v1.geojson': officialResults[1].featureCollection,
+    'osm-high-mountain-access.v1.geojson': osmResult.featureCollection,
+  };
+  for (const [fileName, document] of Object.entries(snapshots)) {
+    await writeJson(path.join(outputDir, fileName), document);
+  }
+
+  const osmFeatureIds = osmResult.featureCollection.features.map((feature) => String(feature.id));
+  const inventory = {
+    schemaVersion: 'sanjuan.road-source-inventory/v1',
+    corridorId: 'veladero',
+    generatedAt,
+    acquisitionBboxes: {
+      regional: [...VELADERO_REGIONAL_BBOX],
+      highMountain: [...VELADERO_HIGH_MOUNTAIN_BBOX],
+    },
+    sources: [
+      ...officialResults.map((result) => inventoryOfficialSource(result, generatedAt)),
+      {
+        id: 'osm-high-mountain-access-20260830',
+        provider: 'OpenStreetMap via Overpass API',
+        sourceUrl: osmResult.endpoint,
+        format: 'OSM',
+        role: 'FALLBACK',
+        license: 'ODbL 1.0',
+        attribution: '© OpenStreetMap contributors',
+        retrievedAt: generatedAt,
+        query: osmResult.query,
+        featureCount: osmFeatureIds.length,
+        featureIds: osmFeatureIds,
+      },
+    ],
+  };
+  await writeJson(path.join(outputDir, 'source-inventory.json'), inventory);
+
+  return { inventory, outputDir, snapshots };
 }
