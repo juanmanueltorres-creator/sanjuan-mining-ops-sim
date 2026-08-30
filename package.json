@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test": "vitest"
+    "test": "vitest",
+    "validate:data": "node scripts/validate-data.mjs"
   },
   "dependencies": {
     "cesium": "^1.132.0",
