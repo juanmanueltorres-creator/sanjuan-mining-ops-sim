@@ -32,7 +32,7 @@ async function loadCheckedInScenario() {
   ]);
 
   const spec = buildV0OperationSpec(operation, artifacts.run.seed, traffic);
-  return { spec, artifacts, traffic };
+  return { spec, artifacts, traffic, operation };
 }
 
 function replay(
@@ -78,5 +78,16 @@ describe('V0 checked-in replay acceptance', () => {
       .flatMap((item) => item.operational.contextEvents)
       .flatMap((event) => event.evidenceRefs);
     expect([...new Set(emittedRefs.filter((id) => !known.has(id)))]).toEqual([]);
+  });
+
+  it('fails closed when a scenario-level evidence reference is not registered', async () => {
+    const { operation, artifacts, traffic } = await loadCheckedInScenario();
+    const driftedTraffic = {
+      ...traffic,
+      evidenceRefs: [...traffic.evidenceRefs, 'missing-scenario-evidence'],
+    };
+
+    expect(() => buildV0OperationSpec(operation, artifacts.run.seed, driftedTraffic))
+      .toThrow(/Missing evidence refs: missing-scenario-evidence/);
   });
 });
