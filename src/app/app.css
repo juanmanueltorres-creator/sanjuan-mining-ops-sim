@@ -100,6 +100,96 @@ button:hover {
   letter-spacing: 0.16em;
 }
 
+.map-instruments {
+  position: absolute;
+  bottom: 62px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  pointer-events: none;
+  color: rgba(238, 243, 245, 0.72);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.045em;
+}
+
+.north-indicator,
+.scale-indicator,
+.cursor-readout,
+.regional-view-button {
+  border: 1px solid rgba(222, 232, 235, 0.1);
+  border-radius: 7px;
+  background: rgba(11, 17, 21, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.north-indicator {
+  display: grid;
+  grid-template-columns: 13px auto;
+  align-items: center;
+  gap: 2px;
+  height: 28px;
+  padding: 4px 7px;
+}
+
+.north-arrow {
+  display: inline-grid;
+  place-items: center;
+  color: #e3aa54;
+  font-size: 14px;
+  line-height: 1;
+  transform-origin: 50% 50%;
+}
+
+.north-indicator strong {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+}
+
+.scale-indicator {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  min-width: 72px;
+  height: 28px;
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+.scale-line {
+  display: block;
+  max-width: 120px;
+  height: 4px;
+  border-right: 1px solid rgba(238, 243, 245, 0.74);
+  border-bottom: 1px solid rgba(238, 243, 245, 0.74);
+  border-left: 1px solid rgba(238, 243, 245, 0.74);
+}
+
+.cursor-readout {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  max-width: min(390px, 42vw);
+  padding: 4px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.regional-view-button {
+  min-height: 28px;
+  padding: 4px 8px;
+  pointer-events: auto;
+  color: rgba(238, 243, 245, 0.68);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
 .operational-ui {
   position: absolute;
   inset: 0;
@@ -191,6 +281,8 @@ button:hover {
   position: absolute;
   top: 14px;
   right: 14px;
+  display: grid;
+  gap: 2px;
   max-width: min(360px, calc(100vw - 28px));
   padding: 8px 10px;
   border: 1px solid rgba(222, 232, 235, 0.1);
@@ -383,11 +475,11 @@ button:hover {
 }
 
 .cesium-widget-credits {
-  bottom: 62px !important;
-  left: 10px !important;
+  bottom: 96px !important;
+  left: 12px !important;
   right: auto !important;
-  max-width: min(520px, calc(100vw - 20px));
-  opacity: 0.65;
+  max-width: min(520px, calc(100vw - 24px));
+  opacity: 0.58;
 }
 
 @media (max-width: 980px) {
@@ -398,6 +490,10 @@ button:hover {
 
   .map-status {
     top: 70px;
+  }
+
+  .cursor-readout {
+    max-width: 32vw;
   }
 }
 
@@ -435,6 +531,29 @@ button:hover {
     text-align: center;
   }
 
+  .map-instruments {
+    bottom: 55px;
+    left: 10px;
+    right: 10px;
+    gap: 5px;
+    overflow-x: auto;
+  }
+
+  .north-indicator,
+  .scale-indicator,
+  .cursor-readout,
+  .regional-view-button {
+    flex: 0 0 auto;
+  }
+
+  .cursor-readout {
+    max-width: 54vw;
+  }
+
+  .regional-view-button {
+    display: none;
+  }
+
   .vehicle-panel {
     right: 10px;
     bottom: 76px;
@@ -462,7 +581,7 @@ button:hover {
   }
 
   .cesium-widget-credits {
-    bottom: 58px !important;
+    bottom: 85px !important;
   }
 }
 
