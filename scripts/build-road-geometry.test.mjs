@@ -103,6 +103,38 @@ describe('Veladero V2 road geometry builder', () => {
     ]);
   });
 
+  it('uses V1 route samples as the canonical legacy segment-label source', () => {
+    const compatibilityMetadata = {
+      ...v1Metadata,
+      segments: [
+        { ...v1Metadata.segments[0], id: 'veladero-01', startKm: 0, endKm: 205, distanceKm: 205 },
+        { ...v1Metadata.segments[1], id: 'veladero-02', startKm: 205, endKm: 300, distanceKm: 95 },
+        { ...v1Metadata.segments[1], id: 'veladero-03', startKm: 300, endKm: 360, distanceKm: 60 },
+      ],
+    };
+    const legacyRouteSamples = [
+      { distanceKm: 0, lon: 0, lat: 0, elevationM: 100, segmentId: 'veladero-01' },
+      { distanceKm: 205, lon: 0.015, lat: 0, elevationM: 200, segmentId: 'veladero-02' },
+      { distanceKm: 260, lon: 0.02, lat: 0, elevationM: 230, segmentId: 'veladero-02' },
+      { distanceKm: 320, lon: 0.027, lat: 0, elevationM: 275, segmentId: 'veladero-02' },
+      { distanceKm: 360, lon: 0.03, lat: 0, elevationM: 300, segmentId: 'veladero-03' },
+    ];
+
+    const built = buildRoadGeometry(
+      fixtureManifest(),
+      sourceDocs,
+      compatibilityMetadata,
+      v1Profile,
+      { spacingMeters: 250, legacyRouteSamples },
+    );
+    const sampleAfterMetadataBoundary = built.routeSamples.samples.find(
+      (sample) => sample.distanceKm > 300 && sample.distanceKm < 320,
+    );
+
+    expect(sampleAfterMetadataBoundary).toBeDefined();
+    expect(sampleAfterMetadataBoundary.segmentId).toBe('veladero-02');
+  });
+
   it('fails closed when a selected source feature id is absent from its frozen snapshot', () => {
     const manifest = fixtureManifest();
     manifest.routeSegments[0].sourceFeatureIds = ['missing-official'];
