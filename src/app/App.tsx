@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import type {
   EvidenceRef,
-  OperationalRun,
   OperationalSnapshot,
   SanJuanOperationSpec,
 } from '../domain/contracts';
-import { loadStaticOperationData, type StaticOperationData } from '../data/loadOperation';
+import {
+  loadStaticOperationData,
+  loadStaticRunArtifacts,
+  type StaticOperationData,
+  type StaticRunArtifacts,
+} from '../data/loadOperation';
 import { CesiumStage } from '../map/CesiumStage';
 import { advanceClock, createClock, END_MINUTE, type Playback } from '../simulation/clock';
 import { getOperationalSnapshot } from '../simulation/engine';
@@ -37,29 +41,15 @@ const SYNTHETIC_PLAN_EVIDENCE: EvidenceRef = {
   ],
 };
 
-const V0_RUN: OperationalRun = {
-  id: 'sanjuan-v0-demo-run',
-  targetDate: '2026-08-30',
-  issuedAt: '2026-08-30T06:00:00-03:00',
-  dataAsOf: '2026-08-30T06:00:00-03:00',
-  timezone: 'America/Argentina/San_Juan',
-  mode: 'SIMULATED',
-  modelVersion: 'movement-v0.1',
-  scenarioVersion: 'sanjuan-operation-v0.1',
-  environmentSnapshotId: 'pending-task-8',
-  seed: 'sanjuan-v0-20260830',
-  provenance: ['synthetic-operating-plan-v1'],
-};
-
-function buildOperationSpec(data: StaticOperationData): SanJuanOperationSpec {
+function buildOperationSpec(data: StaticOperationData, seed: string | number): SanJuanOperationSpec {
   return {
     schemaVersion: 'sanjuan.operation/v1',
     scenarioId: 'sanjuan-mining-ops-v0',
     timezone: 'America/Argentina/San_Juan',
-    seed: 'sanjuan-v0-20260830',
+    seed,
     territory: { projects: data.projects },
     corridors: data.corridors,
-    fleet: buildV0Schedule('sanjuan-v0-20260830'),
+    fleet: buildV0Schedule(seed),
     schedule: {
       startMinute: 360,
       endMinute: 1200,
@@ -74,6 +64,7 @@ function buildOperationSpec(data: StaticOperationData): SanJuanOperationSpec {
 export function App() {
   const [started, setStarted] = useState(false);
   const [data, setData] = useState<StaticOperationData | null>(null);
+  const [runArtifacts, setRunArtifacts] = useState<StaticRunArtifacts | null>(null);
   const [dataError, setDataError] = useState<string | null>(null);
   const [clock, setClock] = useState(createClock);
   const [playback, setPlayback] = useState<Playback>(300);
@@ -81,11 +72,16 @@ export function App() {
 
   useEffect(() => {
     let cancelled = false;
+    const fetcher = (url: string) => fetch(url);
 
-    void loadStaticOperationData((url) => fetch(url))
-      .then((loaded) => {
+    void Promise.all([
+      loadStaticOperationData(fetcher),
+      loadStaticRunArtifacts(fetcher),
+    ])
+      .then(([loadedData, loadedRunArtifacts]) => {
         if (cancelled) return;
-        setData(loaded);
+        setData(loadedData);
+        setRunArtifacts(loadedRunArtifacts);
         setDataError(null);
       })
       .catch((error: unknown) => {
@@ -98,10 +94,17 @@ export function App() {
     };
   }, []);
 
-  const spec = useMemo(() => (data ? buildOperationSpec(data) : null), [data]);
+  const spec = useMemo(
+    () => (data && runArtifacts ? buildOperationSpec(data, runArtifacts.run.seed) : null),
+    [data, runArtifacts],
+  );
   const snapshot = useMemo(
-    () => (spec ? getOperationalSnapshot(spec, V0_RUN, clock.minuteOfDay) : { ...EMPTY_SNAPSHOT, simTime: clock.minuteOfDay }),
-    [spec, clock.minuteOfDay],
+    () => (
+      spec && runArtifacts
+        ? getOperationalSnapshot(spec, runArtifacts.run, clock.minuteOfDay, runArtifacts.environment)
+        : { ...EMPTY_SNAPSHOT, simTime: clock.minuteOfDay }
+    ),
+    [spec, runArtifacts, clock.minuteOfDay],
   );
 
   const fleetIds = useMemo(() => spec?.fleet.map((vehicle) => vehicle.id) ?? [], [spec]);
@@ -168,7 +171,9 @@ export function App() {
           />
 
           <div className="map-status" role="status">
-            {data ? '10 projects · 3 operational corridors · 24 synthetic units' : dataError ? 'Territorial data unavailable' : 'Loading territorial data…'}
+            {data ? <span>10 projects · 3 operational corridors · 24 synthetic units</span> : null}
+            {runArtifacts ? <span>MODELLED WEATHER · {runArtifacts.environment.sourceState}</span> : null}
+            {!data && !runArtifacts && <span>{dataError ? 'Operational data unavailable' : 'Loading operational data…'}</span>}
           </div>
 
           <VehiclePanel vehicle={selectedVehicle} corridorName={selectedCorridorName} />
