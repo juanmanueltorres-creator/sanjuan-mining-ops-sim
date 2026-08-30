@@ -18,7 +18,7 @@ V0 includes:
 - a deterministic operating day from 06:00 to 20:00 in `America/Argentina/San_Juan`;
 - 60×, 120×, 300×, and 600× playback, with 300× as the default;
 - versioned elevation/route samples;
-- a checked-in Open-Meteo forecast snapshot with 12 route-tied environment nodes;
+- a checked-in Open-Meteo forecast snapshot with 12 route-tied environment nodes and a companion evidence registry;
 - weather-at-passage context that does not change vehicle movement;
 - subdued deterministic synthetic background traffic;
 - north, local scale, coordinates/elevation readout, regional reset, and provider attribution;
@@ -52,7 +52,7 @@ The environment is added after movement is derived. A weather or context signal 
 
 Every important artifact carries an evidence role or an explicit synthetic boundary:
 
-- `PRIMARY` — published territorial/project evidence;
+- `PRIMARY` — published territorial/project/provider evidence;
 - `DERIVED` — reconstructed/interpolated artifact;
 - `CALIBRATION` — real reference used only to shape a synthetic display model;
 - `ANALOGUE` — comparable external geography, not a San Juan observation;
@@ -61,6 +61,8 @@ Every important artifact carries an evidence role or an explicit synthetic bound
 - `METHOD_REFERENCE` — method support rather than territorial observation.
 
 Corridor geometry is explicitly classified. Hualilán, Veladero, and Los Azules are currently represented as `RECONSTRUCTED_ACCESS`, with `APPROXIMATE_APPROACH` used where the final approach is intentionally schematic.
+
+Operational/synthetic provenance and environment/provider provenance remain separate. The canonical `buildV0OperationSpec()` registers and validates scenario evidence; the versioned environment evidence registry resolves the weather refs carried by the `EnvironmentSnapshot` and `OperationalRun`. Both paths fail closed on unresolved references.
 
 See [`docs/data-sources.md`](docs/data-sources.md) for the complete source and limitation index.
 
@@ -72,10 +74,12 @@ checked-in territorial assets
 versioned OperationalRun
         +
 versioned EnvironmentSnapshot
+        +
+versioned environment evidence registry
         ↓
 runtime validation / provenance checks
         ↓
-SanJuanOperationSpec
+canonical SanJuanOperationSpec builder
         ↓
 pure deterministic simulation engine
         ↓
@@ -88,7 +92,7 @@ Cesium adapter + compact React UI
 
 The simulation engine is renderer-agnostic. Cesium consumes snapshots through persistent entities; the app uses one `Viewer` and one primary `CustomDataSource` rather than recreating map entities every frame.
 
-Runtime does not call a weather provider per vehicle or per simulation tick.
+Runtime does not call a weather provider per vehicle or per simulation tick. `scripts/build-environment.mjs` emits the weather snapshot and its companion evidence registry together.
 
 ## Run locally
 
@@ -106,19 +110,16 @@ The app also degrades explicitly if Cesium cannot initialize WebGL: the operatio
 ```bash
 npm test -- --run
 npm run validate:data
+npm run audit:claims
 npm run build
 npm run qa:visual
 ```
 
-`qa:visual` runs after a production build, launches the Vite preview, and checks the approved desktop/tablet/mobile layouts in Chrome/Chromium. It requires a local Chrome/Chromium executable.
+`validate:data` verifies the checked-in territorial, traffic, run, environment, and environment-evidence artifacts. `qa:visual` runs after a production build, launches the Vite preview, and checks the approved desktop/tablet/mobile layouts in Chrome/Chromium. It requires a local Chrome/Chromium executable.
 
-For provenance-language review:
+`audit:claims` lists sensitive provenance/operational language for explicit human review instead of silently suppressing matches.
 
-```bash
-npm run audit:claims
-```
-
-The acceptance suite also replays the checked-in V0 run twice at 06:00, 09:00, 12:00, 16:00, and 20:00 and requires exact snapshot equality.
+The acceptance suite also replays the checked-in V0 run twice at 06:00, 09:00, 12:00, 16:00, and 20:00 and requires exact snapshot equality. It additionally requires scenario, run, environment, context-rule, and emitted-context evidence references to resolve, and tests that the canonical scenario builder rejects evidence drift.
 
 See [`docs/qa/v0-acceptance.md`](docs/qa/v0-acceptance.md) for the recorded V0 acceptance result.
 
