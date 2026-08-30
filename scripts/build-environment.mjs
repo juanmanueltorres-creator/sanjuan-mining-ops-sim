@@ -136,6 +136,13 @@ const { url, locations } = await fetchProvider(nodeDefinitions, targetDate);
 const builtAt = new Date().toISOString();
 const nodes = nodeDefinitions.map((node, index) => ({ ...node, hourly: normalizeHourly(locations[index].hourly) }));
 const compactDate = targetDate.replaceAll('-', '');
+const evidenceId = `open-meteo-forecast-${compactDate}`;
+const sharedLimitations = [
+  'Modelled forecast context, not an in-situ station observation.',
+  'The generic forecast response does not expose a single model-run timestamp; retrievedAt records snapshot retrieval time.',
+  'Weather values do not imply road condition, transitability, authorization or operational safety.',
+  'Environment nodes are route-tied analytical samples interpolated from the versioned corridor geometry/elevation assets.',
+];
 const snapshot = {
   schemaVersion: 'sanjuan.environment/v1',
   id: `environment-sj-${compactDate}-v1`,
@@ -147,17 +154,32 @@ const snapshot = {
   modelKind: 'FORECAST',
   nodes,
   sourceState: sourceStateFor(nodes),
-  evidenceRefs: [`open-meteo-forecast-${compactDate}`],
+  evidenceRefs: [evidenceId],
   limitations: [
-    'Modelled forecast context, not an in-situ station observation.',
-    'The generic forecast response does not expose a single model-run timestamp; dataAsOf records snapshot retrieval time.',
-    'Weather values do not imply road condition, transitability, authorization or operational safety.',
-    'Environment nodes are route-tied analytical samples interpolated from the versioned corridor geometry/elevation assets.',
+    ...sharedLimitations,
     `Build request: ${url.origin}${url.pathname} with ${nodes.length} coordinates and hourly weather variables.`,
   ],
 };
+const evidenceRegistry = {
+  schemaVersion: 'sanjuan.environment-evidence/v1',
+  environmentSnapshotId: snapshot.id,
+  evidence: [{
+    id: evidenceId,
+    role: 'PRIMARY',
+    sourceName: snapshot.provider,
+    sourceUrl: `${url.origin}${url.pathname}`,
+    retrievedAt: builtAt,
+    method: `Versioned forecast snapshot requested for ${nodes.length} route-tied nodes with hourly temperature, precipitation, snowfall, wind speed, wind gust and wind direction.`,
+    limitations: sharedLimitations,
+  }],
+};
 
 if (snapshot.sourceState === 'UNAVAILABLE') throw new Error('Environment build produced no usable weather values');
-await mkdir(path.dirname(path.resolve(out)), { recursive: true });
-await writeFile(path.resolve(out), `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
-console.log(`Built ${snapshot.id}: ${nodes.length} nodes, sourceState=${snapshot.sourceState}`);
+const outputPath = path.resolve(out);
+const evidencePath = path.join(path.dirname(outputPath), `environment-sj-${compactDate}.evidence.v1.json`);
+await mkdir(path.dirname(outputPath), { recursive: true });
+await Promise.all([
+  writeFile(outputPath, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8'),
+  writeFile(evidencePath, `${JSON.stringify(evidenceRegistry, null, 2)}\n`, 'utf8'),
+]);
+console.log(`Built ${snapshot.id}: ${nodes.length} nodes, sourceState=${snapshot.sourceState}; evidence=${path.basename(evidencePath)}`);
