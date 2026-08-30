@@ -3,14 +3,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const CKAN_RESOURCE = 'https://datos.gob.ar/api/3/action/resource_show?id=';
+export const CKAN_PACKAGE = 'https://datos.gob.ar/api/3/action/package_show?id=';
 export const OFFICIAL_RESOURCES = [
   {
     id: 'dnv-rutas-nacionales-20260830',
+    datasetId: 'transporte-rutas-nacionales',
     resourceId: '98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
     provider: 'Dirección Nacional de Vialidad / Datos Argentina',
   },
   {
     id: 'ign-rutas-provinciales-2016-20260830',
+    datasetId: 'transporte-rutas-provinciales',
     resourceId: '903edc8b-da5b-4f3e-b555-eef41b89c3f3',
     provider: 'Instituto Geográfico Nacional / Datos Argentina',
   },
@@ -203,34 +206,73 @@ export function normalizeWfsUrl(url, bbox) {
   return parsed.toString();
 }
 
-export async function resolveCkanResource(resource, fetcher = fetch) {
-  const descriptor = asRecord(resource, 'Official resource descriptor');
-  if (typeof descriptor.resourceId !== 'string' || descriptor.resourceId.length === 0) throw new Error('Official resource id required');
-  const raw = await readJsonResponse(
-    await fetcher(`${CKAN_RESOURCE}${descriptor.resourceId}`),
-    `CKAN resource ${descriptor.resourceId}`,
-  );
-  const document = asRecord(raw, `CKAN resource ${descriptor.resourceId}`);
-  if (document.success !== true) throw new Error(`CKAN resource ${descriptor.resourceId}: API reported failure`);
-  const result = asRecord(document.result, `CKAN resource ${descriptor.resourceId} result`);
-  if (typeof result.url !== 'string' || result.url.length === 0) throw new Error(`CKAN resource ${descriptor.resourceId}: source URL required`);
-
+function resolvedResource(descriptor, result, label) {
+  const record = asRecord(result, label);
+  if (typeof record.url !== 'string' || record.url.length === 0) throw new Error(`${label}: source URL required`);
   return {
     ...descriptor,
-    resourceId: descriptor.resourceId,
-    name: typeof result.name === 'string' ? result.name : descriptor.id,
-    format: typeof result.format === 'string' ? result.format : '',
-    url: result.url,
-    lastModified: typeof result.last_modified === 'string' ? result.last_modified : undefined,
+    resourceId: typeof record.id === 'string' && record.id.length > 0 ? record.id : descriptor.resourceId,
+    name: typeof record.name === 'string' ? record.name : descriptor.id,
+    format: typeof record.format === 'string' ? record.format : '',
+    url: record.url,
+    lastModified: typeof record.last_modified === 'string' ? record.last_modified : undefined,
   };
+}
+
+function selectDatasetGeoJsonResource(resources, descriptor) {
+  if (!Array.isArray(resources)) throw new Error(`CKAN dataset ${descriptor.datasetId}: resources array required`);
+  const records = resources.filter((candidate) => candidate && typeof candidate === 'object' && !Array.isArray(candidate));
+  const preferred = records.find((candidate) => candidate.id === descriptor.resourceId && typeof candidate.url === 'string');
+  if (preferred) return preferred;
+  const geojson = records.find((candidate) => {
+    const format = typeof candidate.format === 'string' ? candidate.format.toLowerCase() : '';
+    const name = typeof candidate.name === 'string' ? candidate.name.toLowerCase() : '';
+    return typeof candidate.url === 'string' && candidate.url.length > 0 && (format.includes('geojson') || name.includes('geojson'));
+  });
+  if (!geojson) throw new Error(`CKAN dataset ${descriptor.datasetId}: GeoJSON resource required`);
+  return geojson;
+}
+
+export async function resolveCkanResource(resource, fetcher = fetch) {
+  const descriptor = asRecord(resource, 'Official resource descriptor');
+  const hasResourceId = typeof descriptor.resourceId === 'string' && descriptor.resourceId.length > 0;
+  const hasDatasetId = typeof descriptor.datasetId === 'string' && descriptor.datasetId.length > 0;
+  if (!hasResourceId && !hasDatasetId) throw new Error('Official resource id or dataset id required');
+
+  if (hasResourceId) {
+    const response = await fetcher(`${CKAN_RESOURCE}${descriptor.resourceId}`);
+    if (response?.ok) {
+      const raw = await readJsonResponse(response, `CKAN resource ${descriptor.resourceId}`);
+      const document = asRecord(raw, `CKAN resource ${descriptor.resourceId}`);
+      if (document.success !== true) throw new Error(`CKAN resource ${descriptor.resourceId}: API reported failure`);
+      return resolvedResource(descriptor, document.result, `CKAN resource ${descriptor.resourceId}`);
+    }
+    if (!hasDatasetId) {
+      throw new Error(`CKAN resource ${descriptor.resourceId}: request failed${response?.status ? ` (${response.status})` : ''}`);
+    }
+  }
+
+  const raw = await readJsonResponse(
+    await fetcher(`${CKAN_PACKAGE}${descriptor.datasetId}`),
+    `CKAN dataset ${descriptor.datasetId}`,
+  );
+  const document = asRecord(raw, `CKAN dataset ${descriptor.datasetId}`);
+  if (document.success !== true) throw new Error(`CKAN dataset ${descriptor.datasetId}: API reported failure`);
+  const result = asRecord(document.result, `CKAN dataset ${descriptor.datasetId} result`);
+  const selected = selectDatasetGeoJsonResource(result.resources, descriptor);
+  return resolvedResource(descriptor, selected, `CKAN dataset ${descriptor.datasetId} GeoJSON resource`);
 }
 
 export async function fetchOfficialRoadSource(resource, bbox, fetcher = fetch) {
   assertBbox(bbox);
   const source = await resolveCkanResource(resource, fetcher);
-  const isWfs = source.format.toLowerCase().includes('wfs') || /(?:\?|&)service=wfs(?:&|$)/i.test(source.url) || /\/wfs(?:\?|$)/i.test(source.url);
-  if (!isWfs) throw new Error(`Official resource ${source.id}: expected a WFS source URL, found format ${source.format || 'unknown'}`);
-  const requestUrl = normalizeWfsUrl(source.url, bbox);
+  const format = source.format.toLowerCase();
+  const isWfs = format.includes('wfs') || /(?:\?|&)service=wfs(?:&|$)/i.test(source.url) || /\/wfs(?:\?|$)/i.test(source.url);
+  const isGeoJson = format.includes('geojson') || /\.geojson(?:\?|$)/i.test(source.url);
+  if (!isWfs && !isGeoJson) {
+    throw new Error(`Official resource ${source.id}: expected WFS or GeoJSON source, found format ${source.format || 'unknown'}`);
+  }
+  const requestUrl = isWfs ? normalizeWfsUrl(source.url, bbox) : source.url;
   const raw = await readJsonResponse(await fetcher(requestUrl), `Official road source ${source.id}`);
   const normalized = normalizeWfsFeatureCollection(raw);
   const featureCollection = clipFeatureCollectionToBbox(normalized, bbox);
