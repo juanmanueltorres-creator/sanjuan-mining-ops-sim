@@ -102,6 +102,22 @@ function legacyRouteSampleSegmentAt(segments, operationalKm) {
   return sorted.at(-1);
 }
 
+function legacyRouteSampleAt(routeSamples, operationalKm) {
+  assert(Array.isArray(routeSamples) && routeSamples.length > 0, 'Legacy route samples are required');
+  const sorted = [...routeSamples].sort((a, b) => a.distanceKm - b.distanceKm);
+  if (operationalKm <= sorted[0].distanceKm + EPS) return sorted[0];
+  if (operationalKm >= sorted.at(-1).distanceKm - EPS) return sorted.at(-1);
+
+  let low = 1;
+  let high = sorted.length - 1;
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (sorted[mid].distanceKm < operationalKm - EPS) low = mid + 1;
+    else high = mid;
+  }
+  return sorted[low];
+}
+
 function geometrySegmentAt(segments, chainageKm) {
   if (chainageKm <= segments[0].startChainageKm + EPS) return segments[0];
   if (chainageKm >= segments.at(-1).endChainageKm - EPS) return segments.at(-1);
@@ -214,6 +230,9 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
   assert(Array.isArray(v1Metadata.nodes), 'V1 nodes required');
   assert(Array.isArray(v1Profile?.samples) && v1Profile.samples.length >= 2, 'V1 elevation profile required');
 
+  const legacyRouteSamples = Array.isArray(options.legacyRouteSamples) && options.legacyRouteSamples.length > 0
+    ? [...options.legacyRouteSamples].sort((a, b) => a.distanceKm - b.distanceKm)
+    : null;
   const { assembled, corridorCoordinates, maxSourceGapMeters, maxDerivedChordSeenKm } = assembleSegments(manifest, sourceDocs);
   const chainage = buildChainage(corridorCoordinates);
   const measuredChainageKm = chainage.at(-1).chainageKm;
@@ -235,24 +254,28 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
   assert(Math.abs(calibrationAnchors.at(-1).operationalKm - v1Metadata.totalDistanceKm) <= EPS, 'Operational calibration must end at V1 totalDistanceKm');
 
   const operationalBoundaries = unique(v1Metadata.segments.flatMap((segment) => [segment.startKm, segment.endKm])).sort((a, b) => a - b);
+  const legacyOperationalSamples = legacyRouteSamples?.map((sample) => sample.distanceKm) ?? [];
   const requiredChainages = unique([
     ...assembled.flatMap((segment) => [segment.startChainageKm, segment.endChainageKm]),
     ...calibrationAnchors.map((anchor) => anchor.geometryChainageKm),
     ...operationalBoundaries.map((operationalKm) => chainageForOperationalKm(operationalKm, calibrationAnchors)),
+    ...legacyOperationalSamples.map((operationalKm) => chainageForOperationalKm(operationalKm, calibrationAnchors)),
   ]).sort((a, b) => a - b);
 
   const sampled = resamplePolyline(corridorCoordinates, options.spacingMeters ?? 250, requiredChainages);
   const routeSamples = sampled.map((sample) => {
     const rawOperationalKm = calibrateOperationalKm(sample.chainageKm, calibrationAnchors);
-    const operationalKm = snapOperationalKm(rawOperationalKm, operationalBoundaries);
-    const operationalSegment = legacyRouteSampleSegmentAt(v1Metadata.segments, operationalKm);
+    const operationalKm = snapOperationalKm(rawOperationalKm, unique([...operationalBoundaries, ...legacyOperationalSamples]));
+    const operationalSegmentId = legacyRouteSamples
+      ? legacyRouteSampleAt(legacyRouteSamples, operationalKm).segmentId
+      : legacyRouteSampleSegmentAt(v1Metadata.segments, operationalKm).id;
     const geometrySegment = geometrySegmentAt(assembled, sample.chainageKm);
     return {
       distanceKm: round(operationalKm, 9),
       lon: round(sample.lon, 9),
       lat: round(sample.lat, 9),
       elevationM: round(interpolateElevation(v1Profile.samples, operationalKm), 6),
-      segmentId: operationalSegment.id,
+      segmentId: operationalSegmentId,
       geometryChainageKm: round(sample.chainageKm, 9),
       geometrySegmentId: geometrySegment.id,
       geometryClass: geometrySegment.geometryClass,
@@ -260,7 +283,9 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
   });
 
   routeSamples[0].distanceKm = 0;
-  routeSamples[0].segmentId = [...v1Metadata.segments].sort((a, b) => a.startKm - b.startKm)[0].id;
+  routeSamples[0].segmentId = legacyRouteSamples
+    ? legacyRouteSamples[0].segmentId
+    : [...v1Metadata.segments].sort((a, b) => a.startKm - b.startKm)[0].id;
   routeSamples.at(-1).distanceKm = v1Metadata.totalDistanceKm;
   assert(routeSamples.some((sample) => Math.abs(sample.distanceKm - 205) <= EPS), 'Generated samples must include exact operational km 205');
 
@@ -360,17 +385,23 @@ async function readJson(filePath) {
 async function buildFromDisk(corridorId) {
   if (corridorId !== 'veladero') throw new Error(`Unsupported corridor ${corridorId}`);
   const corridorDir = path.join(process.cwd(), 'public', 'data', 'corridors', corridorId);
-  const [manifest, v1Metadata, v1Profile] = await Promise.all([
+  const [manifest, v1Metadata, v1Profile, v1RouteSamples] = await Promise.all([
     readJson(path.join(corridorDir, 'sources.v2.json')),
     readJson(path.join(corridorDir, 'metadata.v1.json')),
     readJson(path.join(corridorDir, 'profile.v1.json')),
+    readJson(path.join(corridorDir, 'route-samples.v1.json')),
   ]);
   const sourceDocs = {};
   for (const source of manifest.sources ?? []) {
     if (!source.snapshotPath) continue;
     sourceDocs[source.id] = await readJson(path.join(corridorDir, source.snapshotPath));
   }
-  return { corridorDir, built: buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile) };
+  return {
+    corridorDir,
+    built: buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, {
+      legacyRouteSamples: v1RouteSamples.samples,
+    }),
+  };
 }
 
 async function writeBuild(corridorId) {
