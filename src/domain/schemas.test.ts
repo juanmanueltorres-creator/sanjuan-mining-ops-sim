@@ -135,6 +135,41 @@ describe('domain schemas', () => {
     });
   });
 
+  it('allows derived road geometry without fake upstream feature ids while public roads remain source-backed', () => {
+    const derivedSegment = {
+      id: 'hualilan-derived-01',
+      corridorId: 'hualilan',
+      geometryClass: 'RECONSTRUCTED_ACCESS',
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [-68.5364, -31.5375],
+          [-68.55, -31.53],
+        ],
+      },
+      sourceFeatureIds: [],
+      evidenceRefs: ['derived-route'],
+      sourceDatasetId: 'derived-route-build-v1',
+      sourceRetrievedAt: '2026-08-30',
+      limitations: ['Explicit derived connector; not source road geometry.'],
+    };
+
+    const parsed = parseCorridor({
+      ...validCorridor,
+      geometrySegments: [derivedSegment],
+    });
+    expect(parsed.geometrySegments?.[0].sourceFeatureIds).toEqual([]);
+
+    expect(() => parseCorridor({
+      ...validCorridor,
+      geometrySegments: [{
+        ...derivedSegment,
+        id: 'hualilan-public-without-source',
+        geometryClass: 'PUBLIC_ROAD',
+      }],
+    })).toThrow();
+  });
+
   it('keeps V1 corridors valid when geometrySegments are absent', () => {
     expect(parseCorridor(validCorridor)).not.toHaveProperty('geometrySegments');
   });
