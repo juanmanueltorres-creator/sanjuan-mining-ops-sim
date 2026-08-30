@@ -1,11 +1,20 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('App', () => {
-  it('renders the product shell without implying live telemetry', () => {
+  it('enters the shift on explicit user action and stays paused at 06:00', async () => {
+    const user = userEvent.setup();
     render(<App />);
-    expect(screen.getByText('SAN JUAN MINING OPS SIM')).toBeInTheDocument();
-    expect(screen.getByText(/synthetic operation/i)).toBeInTheDocument();
+
+    expect(screen.getByText('SAN JUAN · MINING OPERATIONS')).toBeVisible();
+    expect(screen.getByText(/synthetic operation/i)).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: /start shift/i }));
+
+    expect(screen.queryByRole('button', { name: /start shift/i })).not.toBeInTheDocument();
+    expect(screen.getByText('06:00')).toBeVisible();
+    expect(screen.getByRole('button', { name: /play/i })).toBeVisible();
   });
 });
