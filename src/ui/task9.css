@@ -233,9 +233,9 @@
 
   .analysis-drawer {
     top: auto;
-    right: 8px;
+    right: 10px;
     bottom: 8px;
-    left: 8px;
+    left: 10px;
     width: auto;
     max-width: none;
     max-height: 54vh;
