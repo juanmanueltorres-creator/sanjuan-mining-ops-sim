@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import type {
-  EvidenceRef,
-  OperationalSnapshot,
-  SanJuanOperationSpec,
-} from '../domain/contracts';
+import type { OperationalSnapshot } from '../domain/contracts';
+import { buildV0OperationSpec } from '../data/buildOperationSpec';
 import {
   loadStaticOperationData,
   loadStaticRunArtifacts,
@@ -16,7 +13,6 @@ import { CesiumStage } from '../map/CesiumStage';
 import { backgroundTrafficAt } from '../simulation/backgroundTraffic';
 import { advanceClock, createClock, END_MINUTE, type Playback } from '../simulation/clock';
 import { getOperationalSnapshot } from '../simulation/engine';
-import { buildV0Schedule } from '../simulation/schedule';
 import { AnalysisDrawer } from '../ui/AnalysisDrawer';
 import { CommandHud } from '../ui/CommandHud';
 import { IntroOverlay } from '../ui/IntroOverlay';
@@ -33,42 +29,6 @@ const EMPTY_SNAPSHOT: OperationalSnapshot = {
   contextEvents: [],
   metrics: { activeVehicles: 0, atProject: 0, returning: 0, done: 0 },
 };
-
-const SYNTHETIC_PLAN_EVIDENCE: EvidenceRef = {
-  id: 'synthetic-operating-plan-v1',
-  role: 'SYNTHETIC_ASSUMPTION',
-  sourceName: 'San Juan Mining Ops Sim — V0 operating plan',
-  retrievedAt: '2026-08-30',
-  method: 'Seeded deterministic schedule for demonstration and software validation.',
-  limitations: [
-    'Vehicle assignments, departure times, dwell times and speed profiles are synthetic.',
-    'The scenario does not represent operator dispatch, live telemetry or a safety recommendation.',
-  ],
-};
-
-function buildOperationSpec(
-  data: StaticOperationData,
-  seed: string | number,
-  traffic: StaticTrafficCalibration,
-): SanJuanOperationSpec {
-  return {
-    schemaVersion: 'sanjuan.operation/v1',
-    scenarioId: 'sanjuan-mining-ops-v0',
-    timezone: 'America/Argentina/San_Juan',
-    seed,
-    territory: { projects: data.projects },
-    corridors: data.corridors,
-    fleet: buildV0Schedule(seed),
-    schedule: {
-      startMinute: 360,
-      endMinute: 1200,
-      defaultPlayback: 300,
-      playbackOptions: [60, 120, 300, 600],
-    },
-    calibration: { evidenceRefs: traffic.evidenceRefs },
-    provenance: [...data.evidence, ...traffic.evidence, SYNTHETIC_PLAN_EVIDENCE],
-  };
-}
 
 export function App() {
   const [started, setStarted] = useState(false);
@@ -110,7 +70,7 @@ export function App() {
   const spec = useMemo(
     () => (
       data && runArtifacts && trafficCalibration
-        ? buildOperationSpec(data, runArtifacts.run.seed, trafficCalibration)
+        ? buildV0OperationSpec(data, runArtifacts.run.seed, trafficCalibration)
         : null
     ),
     [data, runArtifacts, trafficCalibration],
