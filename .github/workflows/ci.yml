@@ -31,6 +31,23 @@ jobs:
       - name: Validate data
         run: npm run validate:data
 
+      - name: Generate Veladero V2 geometry
+        run: node scripts/build-road-geometry.mjs veladero
+
+      - name: Validate Veladero V2 geometry
+        run: node scripts/validate-road-geometry.mjs veladero
+
+      - name: Upload Veladero V2 geometry
+        uses: actions/upload-artifact@v4
+        with:
+          name: veladero-road-geometry-v2
+          path: |
+            public/data/corridors/veladero/metadata.v2.json
+            public/data/corridors/veladero/corridor.v2.geojson
+            public/data/corridors/veladero/segments.v2.geojson
+            public/data/corridors/veladero/route-samples.v2.json
+          if-no-files-found: error
+
       - name: Audit provenance claims
         run: npm run audit:claims
 
