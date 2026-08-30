@@ -7,7 +7,6 @@ import {
   haversineMeters,
   interpolateElevation,
   locateAnchor,
-  operationalSegmentAt,
   resamplePolyline,
   validateAnchorOrder,
   validateSegmentContinuity,
@@ -91,6 +90,16 @@ function snapOperationalKm(value, boundaries) {
     if (Math.abs(value - boundary) <= 1e-7) return boundary;
   }
   return value;
+}
+
+function legacyRouteSampleSegmentAt(segments, operationalKm) {
+  assert(Array.isArray(segments) && segments.length > 0, 'Operational segments are required');
+  const sorted = [...segments].sort((a, b) => a.startKm - b.startKm);
+  if (operationalKm <= sorted[0].startKm + EPS) return sorted[0];
+  for (let index = 1; index < sorted.length; index += 1) {
+    if (operationalKm <= sorted[index].startKm + EPS) return sorted[index];
+  }
+  return sorted.at(-1);
 }
 
 function geometrySegmentAt(segments, chainageKm) {
@@ -236,7 +245,7 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
   const routeSamples = sampled.map((sample) => {
     const rawOperationalKm = calibrateOperationalKm(sample.chainageKm, calibrationAnchors);
     const operationalKm = snapOperationalKm(rawOperationalKm, operationalBoundaries);
-    const operationalSegment = operationalSegmentAt(v1Metadata.segments, operationalKm);
+    const operationalSegment = legacyRouteSampleSegmentAt(v1Metadata.segments, operationalKm);
     const geometrySegment = geometrySegmentAt(assembled, sample.chainageKm);
     return {
       distanceKm: round(operationalKm, 9),
@@ -251,6 +260,7 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
   });
 
   routeSamples[0].distanceKm = 0;
+  routeSamples[0].segmentId = [...v1Metadata.segments].sort((a, b) => a.startKm - b.startKm)[0].id;
   routeSamples.at(-1).distanceKm = v1Metadata.totalDistanceKm;
   assert(routeSamples.some((sample) => Math.abs(sample.distanceKm - 205) <= EPS), 'Generated samples must include exact operational km 205');
 
