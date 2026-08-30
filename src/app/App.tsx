@@ -9,6 +9,7 @@ import {
   type StaticRunArtifacts,
   type StaticTrafficCalibration,
 } from '../data/loadOperation';
+import { resolveRuntimeAssetUrl } from '../data/runtimeAssetUrl';
 import { CesiumStage } from '../map/CesiumStage';
 import { backgroundTrafficAt } from '../simulation/backgroundTraffic';
 import { advanceClock, createClock, END_MINUTE, type Playback } from '../simulation/clock';
@@ -43,7 +44,7 @@ export function App() {
 
   useEffect(() => {
     let cancelled = false;
-    const fetcher = (url: string) => fetch(url);
+    const fetcher = (url: string) => fetch(resolveRuntimeAssetUrl(url, import.meta.env.BASE_URL));
 
     void Promise.all([
       loadStaticOperationData(fetcher),
