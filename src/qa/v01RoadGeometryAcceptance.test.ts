@@ -31,12 +31,15 @@ function contextEventsWithoutSpatialElevationValue(
     : event);
 }
 
-function highElevationValues(snapshot: ReturnType<typeof getOperationalSnapshot>) {
-  return new Map(
-    snapshot.contextEvents
-      .filter((event) => event.type === 'HIGH_ELEVATION')
-      .map((event) => [event.id, event.value] as const),
-  );
+function highElevationValues(snapshot: ReturnType<typeof getOperationalSnapshot>): Map<string, number> {
+  const values = new Map<string, number>();
+  for (const event of snapshot.contextEvents.filter((item) => item.type === 'HIGH_ELEVATION')) {
+    if (typeof event.value !== 'number') {
+      throw new Error(`HIGH_ELEVATION event ${event.id} must expose a numeric value`);
+    }
+    values.set(event.id, event.value);
+  }
+  return values;
 }
 
 function nonPositionalSignature(snapshot: ReturnType<typeof getOperationalSnapshot>) {
