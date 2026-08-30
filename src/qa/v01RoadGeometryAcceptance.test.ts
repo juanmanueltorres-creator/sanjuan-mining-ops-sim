@@ -11,6 +11,7 @@ import {
 import { getOperationalSnapshot } from '../simulation/engine';
 
 const CHECKPOINTS = [360, 540, 720, 960, 1200] as const;
+const ELEVATION_EQUIVALENCE_TOLERANCE_M = 0.001;
 
 const fileFetcher: JsonFetcher = async (url) => {
   try {
@@ -21,6 +22,22 @@ const fileFetcher: JsonFetcher = async (url) => {
     return { ok: false, json: async () => ({}) };
   }
 };
+
+function contextEventsWithoutSpatialElevationValue(
+  snapshot: ReturnType<typeof getOperationalSnapshot>,
+) {
+  return snapshot.contextEvents.map((event) => event.type === 'HIGH_ELEVATION'
+    ? { ...event, value: '<spatial-elevation-value>' }
+    : event);
+}
+
+function highElevationValues(snapshot: ReturnType<typeof getOperationalSnapshot>) {
+  return new Map(
+    snapshot.contextEvents
+      .filter((event) => event.type === 'HIGH_ELEVATION')
+      .map((event) => [event.id, event.value] as const),
+  );
+}
 
 function nonPositionalSignature(snapshot: ReturnType<typeof getOperationalSnapshot>) {
   return {
@@ -38,7 +55,7 @@ function nonPositionalSignature(snapshot: ReturnType<typeof getOperationalSnapsh
     })),
     corridorStates: snapshot.corridorStates,
     operationalEvents: snapshot.operationalEvents,
-    contextEvents: snapshot.contextEvents,
+    contextEvents: contextEventsWithoutSpatialElevationValue(snapshot),
     metrics: snapshot.metrics,
   };
 }
@@ -61,6 +78,15 @@ describe('V0.1 Veladero road-geometry acceptance', () => {
       const v2 = getOperationalSnapshot(v2Spec, artifacts.run, minute, artifacts.environment);
 
       expect(nonPositionalSignature(v2)).toEqual(nonPositionalSignature(v1));
+
+      const v1ElevationValues = highElevationValues(v1);
+      const v2ElevationValues = highElevationValues(v2);
+      expect([...v2ElevationValues.keys()]).toEqual([...v1ElevationValues.keys()]);
+      for (const [eventId, v2Value] of v2ElevationValues) {
+        const v1Value = v1ElevationValues.get(eventId);
+        expect(v1Value).toBeDefined();
+        expect(Math.abs(v2Value - (v1Value as number))).toBeLessThanOrEqual(ELEVATION_EQUIVALENCE_TOLERANCE_M);
+      }
 
       const v1ById = new Map(v1.vehicles.map((vehicle) => [vehicle.id, vehicle]));
       for (const vehicle of v2.vehicles.filter((item) => item.corridorId === 'veladero')) {
