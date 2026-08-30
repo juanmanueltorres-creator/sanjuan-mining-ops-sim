@@ -8,13 +8,13 @@ export const OFFICIAL_RESOURCES = [
   {
     id: 'dnv-rutas-nacionales-20260830',
     datasetId: 'transporte-rutas-nacionales',
-    resourceId: '98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
+    resourceId: 'transporte_98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
     provider: 'Dirección Nacional de Vialidad / Datos Argentina',
   },
   {
     id: 'ign-rutas-provinciales-2016-20260830',
     datasetId: 'transporte-rutas-provinciales',
-    resourceId: '903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+    resourceId: 'transporte_903edc8b-da5b-4f3e-b555-eef41b89c3f3',
     provider: 'Instituto Geográfico Nacional / Datos Argentina',
   },
 ];
