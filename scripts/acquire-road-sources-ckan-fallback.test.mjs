@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CKAN_RESOURCE, fetchOfficialRoadSource, resolveCkanResource } from './acquire-road-sources.mjs';
+import { CKAN_RESOURCE, OFFICIAL_RESOURCES, fetchOfficialRoadSource, resolveCkanResource } from './acquire-road-sources.mjs';
 
 const CKAN_PACKAGE = 'https://datos.gob.ar/api/3/action/package_show?id=';
 const regionalBbox = [-69.5, -31.8, -68.3, -29.9];
@@ -15,6 +15,13 @@ function lineFeature(id, coordinates, properties = {}) {
 }
 
 describe('CKAN dataset fallback', () => {
+  it('stores the canonical namespaced CKAN resource ids exposed by Datos Argentina', () => {
+    expect(OFFICIAL_RESOURCES.map((item) => item.resourceId)).toEqual([
+      'transporte_98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
+      'transporte_903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+    ]);
+  });
+
   it('falls back from a stale resource id to package_show and selects the published GeoJSON resource', async () => {
     const fetcher = vi.fn(async (url) => {
       const text = String(url);
