@@ -1,3 +1,6 @@
+export const START_MINUTE = 360;
+export const END_MINUTE = 1200;
+
 export type Playback = 60 | 120 | 300 | 600;
 
 export interface OperationalClock {
@@ -6,13 +9,18 @@ export interface OperationalClock {
 }
 
 export function createClock(): OperationalClock {
-  return { minuteOfDay: 0, playing: false };
+  return { minuteOfDay: START_MINUTE, playing: false };
 }
 
 export function resetClock(): OperationalClock {
   return createClock();
 }
 
-export function advanceClock(clock: OperationalClock, _elapsedRealMs: number, _playback: Playback): OperationalClock {
-  return clock;
+export function advanceClock(clock: OperationalClock, elapsedRealMs: number, playback: Playback): OperationalClock {
+  if (!clock.playing) return clock;
+  const simulatedMinutes = (elapsedRealMs / 1000) * (playback / 60);
+  return {
+    ...clock,
+    minuteOfDay: Math.min(END_MINUTE, clock.minuteOfDay + simulatedMinutes),
+  };
 }
