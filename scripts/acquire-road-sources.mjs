@@ -11,6 +11,10 @@ export const OFFICIAL_RESOURCES = [
     provider: 'Instituto Geográfico Nacional / Datos Argentina',
   },
 ];
+export const OVERPASS_ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+];
 
 function asRecord(input, label) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error(`${label}: expected object`);
@@ -86,6 +90,15 @@ function intersectsBbox(geometry, bbox) {
   }
   const [clipMinLon, clipMinLat, clipMaxLon, clipMaxLat] = bbox;
   return maxLon >= clipMinLon && minLon <= clipMaxLon && maxLat >= clipMinLat && minLat <= clipMaxLat;
+}
+
+async function readJsonResponse(response, label) {
+  if (!response?.ok) throw new Error(`${label}: request failed${response?.status ? ` (${response.status})` : ''}`);
+  try {
+    return await response.json();
+  } catch (error) {
+    throw new Error(`${label}: invalid JSON (${error instanceof Error ? error.message : String(error)})`);
+  }
 }
 
 export function normalizeWfsFeatureCollection(input) {
@@ -164,18 +177,77 @@ export function normalizeWfsUrl(url, bbox) {
   return parsed.toString();
 }
 
-export async function resolveCkanResource(resource) {
-  return { ...resource };
+export async function resolveCkanResource(resource, fetcher = fetch) {
+  const descriptor = asRecord(resource, 'Official resource descriptor');
+  if (typeof descriptor.resourceId !== 'string' || descriptor.resourceId.length === 0) throw new Error('Official resource id required');
+  const raw = await readJsonResponse(
+    await fetcher(`${CKAN_RESOURCE}${descriptor.resourceId}`),
+    `CKAN resource ${descriptor.resourceId}`,
+  );
+  const document = asRecord(raw, `CKAN resource ${descriptor.resourceId}`);
+  if (document.success !== true) throw new Error(`CKAN resource ${descriptor.resourceId}: API reported failure`);
+  const result = asRecord(document.result, `CKAN resource ${descriptor.resourceId} result`);
+  if (typeof result.url !== 'string' || result.url.length === 0) throw new Error(`CKAN resource ${descriptor.resourceId}: source URL required`);
+
+  return {
+    ...descriptor,
+    resourceId: descriptor.resourceId,
+    name: typeof result.name === 'string' ? result.name : descriptor.id,
+    format: typeof result.format === 'string' ? result.format : '',
+    url: result.url,
+    lastModified: typeof result.last_modified === 'string' ? result.last_modified : undefined,
+  };
 }
 
-export async function fetchOfficialRoadSource(resource) {
-  return { source: resource, featureCollection: { type: 'FeatureCollection', features: [] } };
+export async function fetchOfficialRoadSource(resource, bbox, fetcher = fetch) {
+  assertBbox(bbox);
+  const source = await resolveCkanResource(resource, fetcher);
+  const isWfs = source.format.toLowerCase().includes('wfs') || /(?:\?|&)service=wfs(?:&|$)/i.test(source.url) || /\/wfs(?:\?|$)/i.test(source.url);
+  if (!isWfs) throw new Error(`Official resource ${source.id}: expected a WFS source URL, found format ${source.format || 'unknown'}`);
+  const requestUrl = normalizeWfsUrl(source.url, bbox);
+  const raw = await readJsonResponse(await fetcher(requestUrl), `Official road source ${source.id}`);
+  const normalized = normalizeWfsFeatureCollection(raw);
+  const featureCollection = clipFeatureCollectionToBbox(normalized, bbox);
+  if (featureCollection.features.length === 0) throw new Error(`Official road source ${source.id}: no features intersect acquisition bbox`);
+  return { source, requestUrl, featureCollection };
 }
 
-export function buildOverpassQuery() {
-  return '';
+export function buildOverpassQuery(bbox) {
+  assertBbox(bbox);
+  const [west, south, east, north] = bbox;
+  return `[out:json][timeout:120];\nway["highway"](${south},${west},${north},${east});\nout tags geom;`;
 }
 
-export async function fetchOverpassRoadSource() {
-  return { endpoint: null, featureCollection: { type: 'FeatureCollection', features: [] } };
+export async function fetchOverpassRoadSource(bbox, fetcher = fetch, endpoints = OVERPASS_ENDPOINTS) {
+  assertBbox(bbox);
+  if (!Array.isArray(endpoints) || endpoints.length === 0) throw new Error('At least one Overpass endpoint is required');
+  const query = buildOverpassQuery(bbox);
+  const body = new URLSearchParams({ data: query }).toString();
+  const failures = [];
+
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetcher(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body,
+      });
+      if (!response?.ok) {
+        failures.push(`${endpoint}: HTTP ${response?.status ?? 'error'}`);
+        continue;
+      }
+      const raw = await response.json();
+      const normalized = normalizeOverpassWays(raw);
+      const featureCollection = clipFeatureCollectionToBbox(normalized, bbox);
+      if (featureCollection.features.length === 0) {
+        failures.push(`${endpoint}: no highway ways in acquisition bbox`);
+        continue;
+      }
+      return { endpoint, query, featureCollection };
+    } catch (error) {
+      failures.push(`${endpoint}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  throw new Error(`Overpass acquisition failed: ${failures.join('; ')}`);
 }
