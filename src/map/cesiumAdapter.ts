@@ -10,6 +10,21 @@ export interface OperationalMapAdapter {
   apply(snapshot: OperationalSnapshot): void;
 }
 
-export function createOperationalAdapter(_sink: VehicleEntitySink, _vehicleIds: string[]): OperationalMapAdapter {
-  return { apply: () => undefined };
+export function createOperationalAdapter(
+  sink: VehicleEntitySink,
+  vehicleIds: string[],
+): OperationalMapAdapter {
+  const known = new Set(vehicleIds);
+  if (known.size !== vehicleIds.length) throw new Error('Duplicate vehicle id in map adapter');
+  vehicleIds.forEach((id) => sink.ensure(id));
+
+  return {
+    apply(snapshot) {
+      for (const vehicle of snapshot.vehicles) {
+        if (!known.has(vehicle.id)) throw new Error(`Unknown vehicle id: ${vehicle.id}`);
+        sink.setPosition(vehicle.id, vehicle.position.lon, vehicle.position.lat, vehicle.elevationM);
+        sink.setVisible(vehicle.id, vehicle.state !== 'DONE');
+      }
+    },
+  };
 }
