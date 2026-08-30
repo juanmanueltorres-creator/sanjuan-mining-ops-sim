@@ -47,6 +47,7 @@ const V0_RUN: OperationalRun = {
   modelVersion: 'movement-v0.1',
   scenarioVersion: 'sanjuan-operation-v0.1',
   environmentSnapshotId: 'pending-task-8',
+  seed: 'sanjuan-v0-20260830',
   provenance: ['synthetic-operating-plan-v1'],
 };
 
