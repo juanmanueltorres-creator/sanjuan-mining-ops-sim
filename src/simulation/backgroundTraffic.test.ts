@@ -29,6 +29,16 @@ describe('backgroundTrafficAt', () => {
     expect(a.every((vehicle) => vehicle.visualWeight === 'BACKGROUND')).toBe(true);
   });
 
+  it('keeps identity, corridor and direction stable while progress advances through the same time band', () => {
+    const at600 = backgroundTrafficAt('seed', 600, calibration);
+    const at601 = backgroundTrafficAt('seed', 601, calibration);
+
+    expect(at601.map(({ id, corridorId, direction }) => ({ id, corridorId, direction }))).toEqual(
+      at600.map(({ id, corridorId, direction }) => ({ id, corridorId, direction })),
+    );
+    expect(at601.some((vehicle, index) => vehicle.progress !== at600[index].progress)).toBe(true);
+  });
+
   it('uses time-band intensity without exceeding the calibration cap', () => {
     expect(backgroundTrafficAt('seed', 420, calibration)).toHaveLength(13);
     expect(backgroundTrafficAt('seed', 600, calibration)).toHaveLength(20);
