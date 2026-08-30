@@ -14,6 +14,10 @@ const runArtifacts = {
     targetDate: '2026-08-30', timezone: 'America/Argentina/San_Juan', provider: 'Open-Meteo Forecast API · Best Match', modelKind: 'FORECAST',
     sourceState: 'READY', evidenceRefs: ['weather-source'], limitations: ['Modelled weather only; not a station observation.'], nodes: [],
   },
+  evidence: [{
+    id: 'weather-source', role: 'PRIMARY', sourceName: 'Open-Meteo Forecast API · Best Match', retrievedAt: '2026-08-30',
+    method: 'Versioned modelled weather fixture.', limitations: ['Modelled weather only; not a station observation.'],
+  }],
 } as StaticRunArtifacts;
 
 const traffic = {
