@@ -67,12 +67,9 @@ export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic
           </div>
           <p className="source-primary">Synthetic civilian movement used only as subdued territorial context.</p>
           {traffic ? (
-            <>
-              <p className="source-note">{traffic.limitations.join(' ')}</p>
-              <div className="evidence-list">
-                {traffic.evidence.map((evidence) => <EvidenceCard key={evidence.id} evidence={evidence} />)}
-              </div>
-            </>
+            <div className="evidence-list">
+              {traffic.evidence.map((evidence) => <EvidenceCard key={evidence.id} evidence={evidence} />)}
+            </div>
           ) : <p className="source-unavailable">Background calibration unavailable.</p>}
         </section>
 
