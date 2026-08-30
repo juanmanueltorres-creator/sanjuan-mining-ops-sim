@@ -51,6 +51,51 @@ jobs:
           path: artifacts/visual-qa/*.png
           if-no-files-found: ignore
 
+  freeze-veladero-v2:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'feat/v0.1-road-geometry'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v0.1-road-geometry
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Regenerate Veladero V2 geometry
+        run: npm run build:road-geometry -- veladero
+
+      - name: Validate Veladero V2 geometry
+        run: npm run validate:road-geometry -- veladero
+
+      - name: Commit regenerated V2 artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/corridors/veladero/metadata.v2.json \
+                  public/data/corridors/veladero/corridor.v2.geojson \
+                  public/data/corridors/veladero/segments.v2.geojson \
+                  public/data/corridors/veladero/route-samples.v2.json
+          if git diff --cached --quiet; then
+            echo "Validated V2 artifacts already match the current builder."
+            exit 0
+          fi
+          git commit -m "data: regenerate Veladero V2 operational labels"
+          git push origin HEAD:feat/v0.1-road-geometry
+
   acquire-veladero-road-sources:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
