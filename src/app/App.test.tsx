@@ -112,4 +112,15 @@ describe('App', () => {
     expect(await screen.findByText('MODELLED WEATHER · READY')).toBeVisible();
     expect(loaders.loadStaticRunArtifacts).toHaveBeenCalledTimes(1);
   });
+
+  it('keeps compact cartographic instruments visible and fails closed without WebGL cursor data', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: /start shift/i }));
+
+    expect(screen.getByLabelText(/map orientation/i)).toHaveTextContent('N');
+    expect(screen.getByText('SCALE UNAVAILABLE')).toBeVisible();
+    expect(screen.getByText('CURSOR · TERRAIN UNAVAILABLE')).toBeVisible();
+    expect(screen.getByRole('button', { name: /regional view/i })).toBeVisible();
+  });
 });
