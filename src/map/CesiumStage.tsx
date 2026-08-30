@@ -16,13 +16,21 @@ import {
 } from 'cesium';
 import type { OperationalSnapshot } from '../domain/contracts';
 import type { StaticOperationData } from '../data/loadOperation';
-import { createOperationalAdapter, type OperationalMapAdapter, type VehicleEntitySink } from './cesiumAdapter';
+import type { BackgroundTrafficVehicle } from '../simulation/backgroundTraffic';
+import {
+  createOperationalAdapter,
+  resolveBackgroundTrafficPoint,
+  type OperationalMapAdapter,
+  type VehicleEntitySink,
+} from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
 
 export interface CesiumStageProps {
   data: StaticOperationData | null;
   snapshot: OperationalSnapshot;
   fleetIds: string[];
+  backgroundIds: string[];
+  backgroundTraffic: BackgroundTrafficVehicle[];
   onVehicleSelect?: (vehicleId: string) => void;
 }
 
@@ -79,6 +87,47 @@ function createVehicleSink(dataSource: CustomDataSource): VehicleEntitySink {
     setPosition(vehicleId, lon, lat, elevationM) {
       const entity = requireEntity(vehicleId);
       const next = Cartesian3.fromDegrees(lon, lat, Math.max(0, elevationM + 8));
+      if (entity.position instanceof ConstantPositionProperty) {
+        entity.position.setValue(next);
+      } else {
+        entity.position = new ConstantPositionProperty(next);
+      }
+    },
+    setVisible(vehicleId, visible) {
+      requireEntity(vehicleId).show = visible;
+    },
+  };
+}
+
+function createBackgroundTrafficSink(dataSource: CustomDataSource): VehicleEntitySink {
+  const entityId = (vehicleId: string) => `background:${vehicleId}`;
+
+  function requireEntity(vehicleId: string): Entity {
+    const entity = dataSource.entities.getById(entityId(vehicleId));
+    if (!entity) throw new Error(`Missing Cesium background entity for ${vehicleId}`);
+    return entity;
+  }
+
+  return {
+    ensure(vehicleId) {
+      if (dataSource.entities.getById(entityId(vehicleId))) return;
+      dataSource.entities.add({
+        id: entityId(vehicleId),
+        name: `Synthetic background traffic ${vehicleId}`,
+        show: false,
+        position: new ConstantPositionProperty(Cartesian3.fromDegrees(-68.5364, -31.5375, 0)),
+        point: {
+          pixelSize: 4,
+          color: Color.fromCssColorString('#b9c3c8').withAlpha(0.42),
+          outlineColor: Color.fromCssColorString('#0b1115').withAlpha(0.55),
+          outlineWidth: 1,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+      });
+    },
+    setPosition(vehicleId, lon, lat, elevationM) {
+      const entity = requireEntity(vehicleId);
+      const next = Cartesian3.fromDegrees(lon, lat, Math.max(0, elevationM + 5));
       if (entity.position instanceof ConstantPositionProperty) {
         entity.position.setValue(next);
       } else {
@@ -186,11 +235,19 @@ function measureScale(viewer: Viewer): Pick<MapInstrumentState, 'scaleLabel' | '
   };
 }
 
-export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: CesiumStageProps) {
+export function CesiumStage({
+  data,
+  snapshot,
+  fleetIds,
+  backgroundIds,
+  backgroundTraffic,
+  onVehicleSelect,
+}: CesiumStageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerRef = useRef<Viewer | null>(null);
   const dataSourceRef = useRef<CustomDataSource | null>(null);
   const adapterRef = useRef<OperationalMapAdapter | null>(null);
+  const backgroundSinkRef = useRef<VehicleEntitySink | null>(null);
   const staticTerritoryReadyRef = useRef(false);
   const onVehicleSelectRef = useRef(onVehicleSelect);
   const [instruments, setInstruments] = useState<MapInstrumentState>({
@@ -283,6 +340,7 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
       viewer.camera.changed.removeEventListener(updateCameraInstruments);
       handler.destroy();
       adapterRef.current = null;
+      backgroundSinkRef.current = null;
       staticTerritoryReadyRef.current = false;
       dataSourceRef.current = null;
       viewerRef.current = null;
@@ -304,8 +362,13 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
       adapterRef.current = createOperationalAdapter(createVehicleSink(dataSource), fleetIds);
     }
 
+    if (!backgroundSinkRef.current && backgroundIds.length > 0) {
+      backgroundSinkRef.current = createBackgroundTrafficSink(dataSource);
+    }
+    if (backgroundSinkRef.current) backgroundIds.forEach((id) => backgroundSinkRef.current!.ensure(id));
+
     viewer.scene.requestRender();
-  }, [data, fleetIds]);
+  }, [data, fleetIds, backgroundIds]);
 
   useEffect(() => {
     const adapter = adapterRef.current;
@@ -314,6 +377,24 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
     adapter.apply(snapshot);
     viewer.scene.requestRender();
   }, [snapshot]);
+
+  useEffect(() => {
+    const sink = backgroundSinkRef.current;
+    const viewer = viewerRef.current;
+    if (!sink || !viewer || !data) return;
+
+    const known = new Set(backgroundIds);
+    backgroundIds.forEach((id) => sink.setVisible(id, false));
+
+    for (const vehicle of backgroundTraffic) {
+      if (!known.has(vehicle.id)) throw new Error(`Unknown background traffic entity id: ${vehicle.id}`);
+      const point = resolveBackgroundTrafficPoint(vehicle, data.corridors);
+      sink.setPosition(vehicle.id, point.lon, point.lat, point.elevationM);
+      sink.setVisible(vehicle.id, true);
+    }
+
+    viewer.scene.requestRender();
+  }, [backgroundTraffic, backgroundIds, data]);
 
   const webGlAvailable = canUseWebGl();
 
