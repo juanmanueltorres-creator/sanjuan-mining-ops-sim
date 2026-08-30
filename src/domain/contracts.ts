@@ -193,6 +193,7 @@ export interface OperationalRun {
   mode: 'SIMULATED';
   modelVersion: string;
   scenarioVersion: string;
+  seed: string | number;
   environmentSnapshotId: string;
   provenance: string[];
 }
