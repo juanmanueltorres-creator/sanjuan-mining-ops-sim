@@ -1,16 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import type { SanJuanOperationSpec } from '../domain/contracts';
+import { buildV0OperationSpec } from '../data/buildOperationSpec';
 import {
   loadStaticOperationData,
   loadStaticRunArtifacts,
   loadTrafficCalibration,
   type JsonFetcher,
 } from '../data/loadOperation';
+import { V0_CONTEXT_RULES } from '../environment/contextRules';
 import { backgroundTrafficAt } from '../simulation/backgroundTraffic';
 import { getOperationalSnapshot } from '../simulation/engine';
-import { buildV0Schedule } from '../simulation/schedule';
 
 const CHECKPOINTS = [360, 540, 720, 960, 1200] as const;
 
@@ -31,29 +31,12 @@ async function loadCheckedInScenario() {
     loadTrafficCalibration(fileFetcher),
   ]);
 
-  const spec: SanJuanOperationSpec = {
-    schemaVersion: 'sanjuan.operation/v1',
-    scenarioId: 'sanjuan-mining-ops-v0',
-    timezone: 'America/Argentina/San_Juan',
-    seed: artifacts.run.seed,
-    territory: { projects: operation.projects },
-    corridors: operation.corridors,
-    fleet: buildV0Schedule(artifacts.run.seed),
-    schedule: {
-      startMinute: 360,
-      endMinute: 1200,
-      defaultPlayback: 300,
-      playbackOptions: [60, 120, 300, 600],
-    },
-    calibration: { evidenceRefs: traffic.evidenceRefs },
-    provenance: [...operation.evidence, ...traffic.evidence],
-  };
-
+  const spec = buildV0OperationSpec(operation, artifacts.run.seed, traffic);
   return { spec, artifacts, traffic };
 }
 
 function replay(
-  spec: SanJuanOperationSpec,
+  spec: ReturnType<typeof buildV0OperationSpec>,
   artifacts: Awaited<ReturnType<typeof loadStaticRunArtifacts>>,
   traffic: Awaited<ReturnType<typeof loadTrafficCalibration>>,
 ) {
@@ -74,5 +57,26 @@ describe('V0 checked-in replay acceptance', () => {
     expect(firstPass.map((item) => item.minuteOfDay)).toEqual(CHECKPOINTS);
     expect(JSON.stringify(firstPass)).toBe(JSON.stringify(secondPass));
     expect(firstPass).toEqual(secondPass);
+  });
+
+  it('resolves every fleet, calibration, context-rule, and emitted context evidence reference', async () => {
+    const { spec, artifacts, traffic } = await loadCheckedInScenario();
+    const known = new Set(spec.provenance.map((evidence) => evidence.id));
+
+    const declaredRefs = [
+      ...spec.calibration.evidenceRefs,
+      ...spec.fleet.flatMap((vehicle) => [
+        ...vehicle.evidenceRefs,
+        ...vehicle.plannedStops.flatMap((stop) => stop.evidenceRefs),
+      ]),
+      ...V0_CONTEXT_RULES.flatMap((rule) => rule.evidenceRefs),
+    ];
+
+    expect([...new Set(declaredRefs.filter((id) => !known.has(id)))]).toEqual([]);
+
+    const emittedRefs = replay(spec, artifacts, traffic)
+      .flatMap((item) => item.operational.contextEvents)
+      .flatMap((event) => event.evidenceRefs);
+    expect([...new Set(emittedRefs.filter((id) => !known.has(id)))]).toEqual([]);
   });
 });
