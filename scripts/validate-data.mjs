@@ -139,12 +139,24 @@ for (const requiredRole of TRAFFIC_EVIDENCE_ROLES) {
 assert(Array.isArray(traffic.limitations) && traffic.limitations.length > 0, 'traffic: limitations required');
 assert(traffic.limitations.some((item) => /not live san juan traffic/i.test(item)), 'traffic: limitations must explicitly state that traffic is not live San Juan traffic');
 
-const [environment, run] = await Promise.all([
+const [environment, environmentEvidenceDoc, run] = await Promise.all([
   readJson('public/data/environment/environment-sj-20260830.json'),
+  readJson('public/data/environment/environment-sj-20260830.evidence.v1.json'),
   readJson('public/data/runs/sanjuan-v0-run.v1.json'),
 ]);
 
 assert(environment.schemaVersion === 'sanjuan.environment/v1', 'environment: unsupported schemaVersion');
+assert(environmentEvidenceDoc.schemaVersion === 'sanjuan.environment-evidence/v1', 'environment evidence: unsupported schemaVersion');
+assert(environmentEvidenceDoc.environmentSnapshotId === environment.id, 'environment evidence: snapshot id mismatch');
+assert(Array.isArray(environmentEvidenceDoc.evidence) && environmentEvidenceDoc.evidence.length > 0, 'environment evidence: records required');
+const environmentEvidence = new Map(environmentEvidenceDoc.evidence.map((ref) => [ref.id, ref]));
+assertRefs(environment.evidenceRefs, environmentEvidence, 'environment');
+for (const ref of environmentEvidenceDoc.evidence) {
+  assert(typeof ref.sourceName === 'string' && ref.sourceName.length > 0, `environment evidence ${ref.id}: sourceName required`);
+  assert(typeof ref.retrievedAt === 'string' && ref.retrievedAt.length > 0, `environment evidence ${ref.id}: retrievedAt required`);
+  assert(Array.isArray(ref.limitations), `environment evidence ${ref.id}: limitations required`);
+}
+
 assert(environment.id === run.environmentSnapshotId, `runtime: environment ${environment.id} does not match run ${run.environmentSnapshotId}`);
 assert(environment.targetDate === run.targetDate, 'runtime: targetDate mismatch');
 assert(environment.timezone === TIMEZONE && run.timezone === TIMEZONE, 'runtime: timezone mismatch');
@@ -188,4 +200,4 @@ for (const corridorId of CORRIDORS) {
   }
 }
 
-console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, one immutable run, traffic calibration ${traffic.id}, ${evidenceCount} territorial evidence records.`);
+console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, ${environmentEvidence.size} environment evidence record(s), one immutable run, traffic calibration ${traffic.id}, ${evidenceCount} territorial evidence records.`);
