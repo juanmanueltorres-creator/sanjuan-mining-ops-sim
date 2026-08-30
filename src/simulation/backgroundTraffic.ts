@@ -41,6 +41,10 @@ function corridorFor(value: number, weights: TrafficCorridorWeight[]): Backgroun
   return weights.at(-1)!.corridorId;
 }
 
+function normalizedProgress(value: number): number {
+  return ((value % 1) + 1) % 1;
+}
+
 export function backgroundTrafficAt(
   seed: string | number,
   minuteOfDay: number,
@@ -53,13 +57,22 @@ export function backgroundTrafficAt(
 
   const requestedCount = Math.round(calibration.baseVisibleVehicles * timeBand.relativeIntensity);
   const count = Math.max(0, Math.min(calibration.maxVisibleVehicles, requestedCount));
-  const rng = createNamedRng(seed, `background-traffic:${minuteOfDay}`);
+  const elapsedMinutes = minuteOfDay - 360;
 
-  return Array.from({ length: count }, (_, index) => ({
-    id: `BG-${String(index + 1).padStart(3, '0')}`,
-    corridorId: corridorFor(rng(), calibration.corridorWeights),
-    direction: rng() < 0.5 ? 'OUTBOUND' : 'INBOUND',
-    progress: rng(),
-    visualWeight: 'BACKGROUND' as const,
-  }));
+  return Array.from({ length: count }, (_, index) => {
+    const id = `BG-${String(index + 1).padStart(3, '0')}`;
+    const rng = createNamedRng(seed, `background-traffic:${id}`);
+    const corridorId = corridorFor(rng(), calibration.corridorWeights);
+    const direction = rng() < 0.5 ? 'OUTBOUND' as const : 'INBOUND' as const;
+    const baseProgress = rng();
+    const progressPerMinute = 0.0015 + rng() * 0.0015;
+
+    return {
+      id,
+      corridorId,
+      direction,
+      progress: normalizedProgress(baseProgress + elapsedMinutes * progressPerMinute),
+      visualWeight: 'BACKGROUND' as const,
+    };
+  });
 }
