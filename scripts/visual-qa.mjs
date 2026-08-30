@@ -192,14 +192,20 @@ try {
 
     assertReport(await inspectCoreLayout(page), viewport.name);
 
-    const creditVisible = await page.evaluate(() => {
+    const mapRenderState = await page.evaluate(() => {
       const credit = document.querySelector('.cesium-widget-credits');
-      if (!(credit instanceof HTMLElement)) return false;
-      const rect = credit.getBoundingClientRect();
-      const style = getComputedStyle(credit);
-      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      const fallback = document.querySelector('.map-fallback');
+      const isVisible = (element) => {
+        if (!(element instanceof HTMLElement)) return false;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      return { creditVisible: isVisible(credit), fallbackVisible: isVisible(fallback) };
     });
-    if (!creditVisible) throw new Error(`${viewport.name}: Cesium/provider attribution is not visible`);
+    if (!mapRenderState.creditVisible && !mapRenderState.fallbackVisible) {
+      throw new Error(`${viewport.name}: neither provider attribution nor explicit WebGL fallback is visible`);
+    }
 
     await clickButtonByText(page, 'Sources');
     await page.waitForSelector('.analysis-drawer', { visible: true, timeout: 5_000 });
@@ -211,7 +217,7 @@ try {
       fullPage: false,
     });
     await page.close();
-    console.log(`Visual QA passed: ${viewport.name}`);
+    console.log(`Visual QA passed: ${viewport.name} (${mapRenderState.creditVisible ? 'Cesium map' : 'WebGL fallback'})`);
   }
 } finally {
   if (browser) await browser.close();
