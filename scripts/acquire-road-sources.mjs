@@ -8,14 +8,22 @@ export const OFFICIAL_RESOURCES = [
   {
     id: 'dnv-rutas-nacionales-20260830',
     datasetId: 'transporte-rutas-nacionales',
-    resourceId: 'transporte_98a9ee1b-321d-4b68-b00e-bf44ae448e2c',
+    resourceId: 'd58b91ee-c46a-4260-8d89-69438417d73b',
     provider: 'Dirección Nacional de Vialidad / Datos Argentina',
+    name: 'Rutas Nacionales Archivo "Shape" de rutas nacionales. Fuente: Dirección Nacional de Vialidad.',
+    format: 'wfs',
+    url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_nacional',
+    catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b',
   },
   {
     id: 'ign-rutas-provinciales-2016-20260830',
     datasetId: 'transporte-rutas-provinciales',
-    resourceId: 'transporte_903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+    resourceId: '903edc8b-da5b-4f3e-b555-eef41b89c3f3',
     provider: 'Instituto Geográfico Nacional / Datos Argentina',
+    name: 'Rutas Provinciales Archivo "GeoJSON" de rutas Provinciales. Instituto Geográfico Nacional.',
+    format: 'wfs',
+    url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_provincial',
+    catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3',
   },
 ];
 export const OVERPASS_ENDPOINTS = [
