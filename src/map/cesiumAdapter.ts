@@ -1,4 +1,6 @@
-import type { OperationalSnapshot } from '../domain/contracts';
+import type { CorridorDefinition, OperationalSnapshot } from '../domain/contracts';
+import type { BackgroundTrafficVehicle } from '../simulation/backgroundTraffic';
+import { positionAtDistance } from '../simulation/routeMath';
 
 export interface VehicleEntitySink {
   ensure(id: string): void;
@@ -27,4 +29,21 @@ export function createOperationalAdapter(
       }
     },
   };
+}
+
+export function resolveBackgroundTrafficPoint(
+  vehicle: BackgroundTrafficVehicle,
+  corridors: CorridorDefinition[],
+): { lon: number; lat: number; elevationM: number } {
+  const corridor = corridors.find((item) => item.id === vehicle.corridorId);
+  if (!corridor) throw new Error(`Unknown background traffic corridor: ${vehicle.corridorId}`);
+  if (corridor.routeSamples.length < 2) throw new Error(`Background traffic corridor ${vehicle.corridorId} has no route samples`);
+
+  const totalDistanceKm = corridor.routeSamples.at(-1)!.distanceKm;
+  const outboundDistanceKm = vehicle.progress * totalDistanceKm;
+  const distanceKm = vehicle.direction === 'OUTBOUND'
+    ? outboundDistanceKm
+    : totalDistanceKm - outboundDistanceKm;
+  const point = positionAtDistance(corridor.routeSamples, distanceKm);
+  return { lon: point.lon, lat: point.lat, elevationM: point.elevationM };
 }
