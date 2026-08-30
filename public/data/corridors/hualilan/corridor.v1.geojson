@@ -1,0 +1,19 @@
+{
+  "type": "Feature",
+  "properties": {
+    "schemaVersion": "sanjuan.corridor-geometry/v1",
+    "id": "hualilan",
+    "geometryClass": "RECONSTRUCTED_ACCESS",
+    "evidenceRefs": ["challenger-hualilan-access", "hualilan-route-reconstruction"]
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [-68.5364, -31.5375],
+      [-68.63929, -31.09887],
+      [-68.78, -30.98],
+      [-68.947, -30.736],
+      [-68.95, -30.73333]
+    ]
+  }
+}
