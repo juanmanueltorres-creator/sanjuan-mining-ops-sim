@@ -11,7 +11,7 @@ permissions:
 jobs:
   test-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,3 +32,14 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Visual QA
+        run: npm run qa:visual
+
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa
+          path: artifacts/visual-qa/*.png
+          if-no-files-found: ignore
