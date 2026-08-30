@@ -112,12 +112,20 @@ const roadGeometrySegmentSchema = z.object({
     type: z.literal('LineString'),
     coordinates: z.array(roadCoordinateSchema).min(2),
   }),
-  sourceFeatureIds: z.array(z.string().min(1)).min(1),
+  sourceFeatureIds: z.array(z.string().min(1)),
   evidenceRefs: z.array(z.string().min(1)).min(1),
   sourceDatasetId: z.string().min(1),
   sourceRetrievedAt: z.string().min(1),
   sourceLicense: z.string().min(1).optional(),
   limitations: z.array(z.string()),
+}).superRefine((segment, ctx) => {
+  if (segment.geometryClass === 'PUBLIC_ROAD' && segment.sourceFeatureIds.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['sourceFeatureIds'],
+      message: 'PUBLIC_ROAD geometry requires at least one upstream source feature id',
+    });
+  }
 });
 const corridorGeometrySchema = z.union([
   z.object({
