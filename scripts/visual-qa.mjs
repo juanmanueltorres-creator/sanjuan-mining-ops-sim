@@ -145,9 +145,33 @@ try {
 
   for (const viewport of VIEWPORTS) {
     const page = await browser.newPage();
+    const diagnostics = [];
+    page.on('console', (message) => {
+      if (['error', 'warning'].includes(message.type())) diagnostics.push(`console:${message.type()}: ${message.text()}`);
+    });
+    page.on('pageerror', (error) => diagnostics.push(`pageerror: ${error.message}`));
+    page.on('requestfailed', (request) => {
+      const failure = request.failure();
+      diagnostics.push(`requestfailed: ${request.url()} ${failure?.errorText ?? ''}`.trim());
+    });
+
     await page.setViewport({ width: viewport.width, height: viewport.height, deviceScaleFactor: 1 });
     await page.goto(SERVER_URL, { waitUntil: 'domcontentloaded', timeout: 30_000 });
-    await page.waitForSelector('.intro-overlay', { visible: true, timeout: 10_000 });
+
+    try {
+      await page.waitForSelector('.intro-overlay', { visible: true, timeout: 10_000 });
+    } catch (error) {
+      const dom = await page.evaluate(() => ({
+        title: document.title,
+        bodyText: document.body?.innerText?.slice(0, 1200) ?? '',
+        rootHtml: document.querySelector('#root')?.innerHTML?.slice(0, 2000) ?? '',
+      }));
+      await page.screenshot({
+        path: path.join(process.cwd(), 'artifacts', 'visual-qa', `${viewport.name}-bootstrap-failure.png`),
+        fullPage: false,
+      });
+      throw new Error(`${viewport.name}: intro did not render. DOM=${JSON.stringify(dom)} diagnostics=${JSON.stringify(diagnostics)} cause=${error.message}`);
+    }
 
     const introReport = await page.evaluate(() => {
       const card = document.querySelector('.intro-card');
