@@ -12,6 +12,8 @@ export type GeometryEvidenceClass =
   | 'RECONSTRUCTED_ACCESS'
   | 'APPROXIMATE_APPROACH'
   | 'PROJECT_LOCATION';
+export type GeometrySourceRole = 'PRIMARY' | 'CORROBORATION' | 'FALLBACK';
+export type GeometrySourceFormat = 'GeoJSON' | 'Shapefile' | 'WMS' | 'OSM';
 export type VehicleType = 'PERSONNEL' | 'FIELD' | 'LOGISTICS';
 export type VehicleState = 'AT_BASE' | 'EN_ROUTE' | 'AT_STOP' | 'AT_PROJECT' | 'RETURNING' | 'DONE';
 export type VehicleDirection = 'TO_PROJECT' | 'RETURN_TO_BASE';
@@ -45,6 +47,20 @@ export interface EvidenceRef {
   limitations: string[];
 }
 
+export interface GeometrySourceRecord {
+  id: string;
+  provider: string;
+  datasetName: string;
+  sourceUrl: string;
+  retrievedAt: string;
+  role: GeometrySourceRole;
+  format: GeometrySourceFormat;
+  license?: string;
+  attribution?: string;
+  featureIds: string[];
+  limitations: string[];
+}
+
 export interface LocationRef {
   id: string;
   name: string;
@@ -57,12 +73,28 @@ export interface ProjectDefinition extends LocationRef {
   evidenceRefs: string[];
 }
 
+export interface RoadGeometrySegment {
+  id: string;
+  corridorId: string;
+  geometryClass: Exclude<GeometryEvidenceClass, 'PROJECT_LOCATION'>;
+  geometry: { type: 'LineString'; coordinates: [number, number][] };
+  sourceFeatureIds: string[];
+  evidenceRefs: string[];
+  sourceDatasetId: string;
+  sourceRetrievedAt: string;
+  sourceLicense?: string;
+  limitations: string[];
+}
+
 export interface RouteSample {
   distanceKm: number;
   lon: number;
   lat: number;
   elevationM: number;
   segmentId: string;
+  geometryChainageKm?: number;
+  geometrySegmentId?: string;
+  geometryClass?: Exclude<GeometryEvidenceClass, 'PROJECT_LOCATION'>;
 }
 
 export interface ElevationSample {
@@ -109,6 +141,7 @@ export interface CorridorDefinition {
   destination: LocationRef;
   geometry: CorridorGeometry;
   geometryClass: GeometryEvidenceClass;
+  geometrySegments?: RoadGeometrySegment[];
   segments: CorridorSegment[];
   nodes: CorridorNode[];
   elevationProfile: ElevationProfile;
