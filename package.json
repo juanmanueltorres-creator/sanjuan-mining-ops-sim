@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest",
-    "validate:data": "node scripts/validate-data.mjs",
+    "validate:data": "node scripts/validate-data.mjs && node scripts/validate-road-geometry.mjs veladero",
     "acquire:road-sources": "node scripts/acquire-road-sources.mjs",
     "build:road-geometry": "node scripts/build-road-geometry.mjs",
     "validate:road-geometry": "node scripts/validate-road-geometry.mjs",
