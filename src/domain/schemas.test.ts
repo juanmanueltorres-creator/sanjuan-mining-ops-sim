@@ -10,6 +10,7 @@ const validRun = {
   mode: 'SIMULATED',
   modelVersion: 'v0',
   scenarioVersion: 'v0',
+  seed: 'fixture-seed',
   environmentSnapshotId: 'env-1',
   provenance: ['e-run'],
 };
@@ -64,6 +65,11 @@ const validCorridor = {
 describe('domain schemas', () => {
   it('rejects an observed mode in the V0 operational run', () => {
     expect(() => parseOperationalRun({ ...validRun, mode: 'OBSERVED' })).toThrow();
+  });
+
+  it('requires an explicit deterministic seed in every operational run', () => {
+    expect(() => parseOperationalRun({ ...validRun, seed: undefined })).toThrow();
+    expect((parseOperationalRun(validRun) as unknown as { seed: string }).seed).toBe('fixture-seed');
   });
 
   it('accepts every approved source state', () => {
