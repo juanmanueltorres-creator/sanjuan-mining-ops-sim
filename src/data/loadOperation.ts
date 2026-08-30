@@ -24,6 +24,7 @@ export interface StaticOperationData {
 export interface StaticRunArtifacts {
   run: OperationalRun;
   environment: EnvironmentSnapshot;
+  evidence: EvidenceRef[];
 }
 
 export interface StaticTrafficCalibration extends TrafficCalibration {
@@ -86,13 +87,25 @@ function parseEvidenceList(input: unknown): EvidenceRef[] {
 }
 
 export async function loadStaticRunArtifacts(fetcher: JsonFetcher): Promise<StaticRunArtifacts> {
-  const [runRaw, environmentRaw] = await Promise.all([
+  const [runRaw, environmentRaw, environmentEvidenceRaw] = await Promise.all([
     fetchJson(fetcher, '/data/runs/sanjuan-v0-run.v1.json'),
     fetchJson(fetcher, '/data/environment/environment-sj-20260830.json'),
+    fetchJson(fetcher, '/data/environment/environment-sj-20260830.evidence.v1.json'),
   ]);
 
   const run = parseOperationalRun(runRaw);
   const environment = parseEnvironmentSnapshot(environmentRaw);
+  const evidenceDocument = asRecord(environmentEvidenceRaw, 'environment evidence registry');
+
+  if (evidenceDocument.schemaVersion !== 'sanjuan.environment-evidence/v1') {
+    throw new Error('environment evidence registry: unsupported schemaVersion');
+  }
+  if (evidenceDocument.environmentSnapshotId !== environment.id) {
+    throw new Error('environment evidence registry does not match environment snapshot');
+  }
+
+  const evidence = parseEvidenceList(evidenceDocument.evidence);
+  assertEvidenceRefsExist(environment.evidenceRefs, evidence);
 
   if (environment.id !== run.environmentSnapshotId) {
     throw new Error(`Environment snapshot ${environment.id} does not match run artifact ${run.environmentSnapshotId}`);
@@ -104,7 +117,12 @@ export async function loadStaticRunArtifacts(fetcher: JsonFetcher): Promise<Stat
     throw new Error(`Environment timezone ${environment.timezone} does not match run ${run.timezone}`);
   }
 
-  return { run, environment };
+  const missingRunEnvironmentRefs = environment.evidenceRefs.filter((id) => !run.provenance.includes(id));
+  if (missingRunEnvironmentRefs.length > 0) {
+    throw new Error(`Run provenance missing environment refs: ${missingRunEnvironmentRefs.join(', ')}`);
+  }
+
+  return { run, environment, evidence };
 }
 
 export async function loadTrafficCalibration(fetcher: JsonFetcher): Promise<StaticTrafficCalibration> {
