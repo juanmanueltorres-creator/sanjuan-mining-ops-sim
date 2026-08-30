@@ -56,6 +56,9 @@ export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic
                 <div><dt>Model</dt><dd>{runArtifacts.environment.modelKind}</dd></div>
                 <div><dt>Data as of</dt><dd>{runArtifacts.environment.dataAsOf}</dd></div>
               </dl>
+              <div className="evidence-list">
+                {runArtifacts.evidence.map((evidence) => <EvidenceCard key={evidence.id} evidence={evidence} />)}
+              </div>
             </>
           ) : <p className="source-unavailable">Environment source unavailable.</p>}
         </section>
