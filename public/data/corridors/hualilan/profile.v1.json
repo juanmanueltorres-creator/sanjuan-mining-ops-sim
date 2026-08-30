@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "sanjuan.elevation-profile/v1",
+  "source": "Published Hualilán/Talacasto elevation anchors",
+  "resolution": "anchor-based analytical profile",
+  "method": "Linear interpolation between public territorial anchors; no engineering-grade DEM survey is claimed.",
+  "samples": [
+    {"distanceKm":0,"elevationM":650},
+    {"distanceKm":52,"elevationM":940},
+    {"distanceKm":75,"elevationM":1200},
+    {"distanceKm":119.5,"elevationM":1700},
+    {"distanceKm":120,"elevationM":1700}
+  ],
+  "evidenceRefs": ["challenger-hualilan-access", "hualilan-profile-derived"],
+  "limitations": [
+    "Analytical aid only; intermediate elevations are interpolated and are not a terrain survey.",
+    "Do not use for engineering design, road safety or transitability decisions."
+  ]
+}

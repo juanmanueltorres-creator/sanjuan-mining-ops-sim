@@ -1,0 +1,22 @@
+{
+  "type": "Feature",
+  "properties": {
+    "schemaVersion": "sanjuan.corridor-geometry/v1",
+    "id": "veladero",
+    "geometryClass": "RECONSTRUCTED_ACCESS",
+    "evidenceRefs": ["barrick-veladero-access", "veladero-route-reconstruction"]
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [-68.5364, -31.5375],
+      [-68.63929, -31.09887],
+      [-69.05, -30.55],
+      [-69.270283595, -30.188378113],
+      [-69.55, -29.92],
+      [-69.72, -29.7],
+      [-69.89, -29.47],
+      [-69.95222, -29.36833]
+    ]
+  }
+}

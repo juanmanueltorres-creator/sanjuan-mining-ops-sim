@@ -1,0 +1,2747 @@
+{
+  "schemaVersion": "sanjuan.environment/v1",
+  "id": "environment-sj-20260830-v1",
+  "issuedAt": "2026-08-30T08:28:42.682Z",
+  "dataAsOf": "2026-08-30T08:28:42.682Z",
+  "targetDate": "2026-08-30",
+  "timezone": "America/Argentina/San_Juan",
+  "provider": "Open-Meteo Forecast API · Best Match",
+  "modelKind": "FORECAST",
+  "nodes": [
+    {
+      "id": "hualilan-env-1",
+      "name": "hualilan environment node 1",
+      "corridorId": "hualilan",
+      "distanceKm": 0,
+      "lon": -68.5364,
+      "lat": -31.5375,
+      "elevationM": 650,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 13.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 287
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 11.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.4,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 268
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 10.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.9,
+          "windGustKmh": 10.1,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.3,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 11.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 9.7,
+          "windDirectionDeg": 253
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 12.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 210
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 10.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 188
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 13,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.2,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 133
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 16,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.1,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 38
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 18.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 14,
+          "windDirectionDeg": 115
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 20.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.1,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 122
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 22.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.1,
+          "windGustKmh": 27.4,
+          "windDirectionDeg": 117
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 23.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.5,
+          "windGustKmh": 28.4,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 23.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.7,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 136
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 23.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 27,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 23,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.4,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 137
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 19.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 167
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 18.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 6.8,
+          "windDirectionDeg": 193
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 17.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 233
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 16.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.1,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 252
+        }
+      ]
+    },
+    {
+      "id": "hualilan-env-2",
+      "name": "hualilan environment node 2",
+      "corridorId": "hualilan",
+      "distanceKm": 40,
+      "lon": -68.615546,
+      "lat": -31.200092,
+      "elevationM": 873,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 12.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 8.6,
+          "windDirectionDeg": 328
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 12,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.8,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 345
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 11.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.5,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 348
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.2,
+          "windGustKmh": 12.2,
+          "windDirectionDeg": 12
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 10.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.9,
+          "windGustKmh": 13.3,
+          "windDirectionDeg": 11
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 10.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 13,
+          "windDirectionDeg": 326
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 9.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.6,
+          "windGustKmh": 8.3,
+          "windDirectionDeg": 344
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 9.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.7,
+          "windGustKmh": 8.3,
+          "windDirectionDeg": 340
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 9.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.5,
+          "windGustKmh": 9,
+          "windDirectionDeg": 330
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 12.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.6,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 189
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 14.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 12.1,
+          "windGustKmh": 23,
+          "windDirectionDeg": 177
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 15.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.1,
+          "windGustKmh": 24.5,
+          "windDirectionDeg": 188
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 16.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 180
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 18.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.1,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 170
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 19.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.3,
+          "windGustKmh": 20.5,
+          "windDirectionDeg": 147
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 20.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.8,
+          "windGustKmh": 16.9,
+          "windDirectionDeg": 108
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 21.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 137
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 21.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.5,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 164
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 20.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6,
+          "windGustKmh": 15.8,
+          "windDirectionDeg": 189
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 19.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.6,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 227
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 17.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.9,
+          "windGustKmh": 13,
+          "windDirectionDeg": 236
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 16.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.8,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 174
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 14.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.5,
+          "windGustKmh": 5,
+          "windDirectionDeg": 135
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 13.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.2,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 149
+        }
+      ]
+    },
+    {
+      "id": "hualilan-env-3",
+      "name": "hualilan environment node 3",
+      "corridorId": "hualilan",
+      "distanceKm": 80,
+      "lon": -68.798764,
+      "lat": -30.952584,
+      "elevationM": 1256,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 11.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.6,
+          "windGustKmh": 9.7,
+          "windDirectionDeg": 214
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 11.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.7,
+          "windGustKmh": 10.1,
+          "windDirectionDeg": 238
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 10.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.1,
+          "windGustKmh": 10.4,
+          "windDirectionDeg": 255
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 9.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.8,
+          "windGustKmh": 9.7,
+          "windDirectionDeg": 264
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 8.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.6,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 276
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 9.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.1,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 261
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 9.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.3,
+          "windGustKmh": 7.2,
+          "windDirectionDeg": 278
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 8.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.5,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 8.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.1,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 288
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 11.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 6.5,
+          "windDirectionDeg": 331
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 14,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.2,
+          "windGustKmh": 8.3,
+          "windDirectionDeg": 117
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 15.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.5,
+          "windGustKmh": 16.2,
+          "windDirectionDeg": 126
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 16,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.3,
+          "windGustKmh": 19.8,
+          "windDirectionDeg": 97
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 16.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.1,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 97
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 17.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.9,
+          "windGustKmh": 26.3,
+          "windDirectionDeg": 102
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 18,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.9,
+          "windGustKmh": 27.7,
+          "windDirectionDeg": 92
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 18.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.5,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 87
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 17.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 99
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 17.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.5,
+          "windGustKmh": 23.4,
+          "windDirectionDeg": 98
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 16.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.6,
+          "windGustKmh": 15.8,
+          "windDirectionDeg": 124
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 14.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.8,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 204
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 14.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 338
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 13.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 13,
+          "windDirectionDeg": 313
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 12.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 15.5,
+          "windDirectionDeg": 308
+        }
+      ]
+    },
+    {
+      "id": "hualilan-env-4",
+      "name": "hualilan environment node 4",
+      "corridorId": "hualilan",
+      "distanceKm": 120,
+      "lon": -68.95,
+      "lat": -30.73333,
+      "elevationM": 1700,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 9.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 326
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 8.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.1,
+          "windGustKmh": 7.2,
+          "windDirectionDeg": 315
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 7.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 297
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.4,
+          "windGustKmh": 9,
+          "windDirectionDeg": 302
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 6.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.9,
+          "windGustKmh": 10.1,
+          "windDirectionDeg": 303
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 5.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.2,
+          "windGustKmh": 13,
+          "windDirectionDeg": 314
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 5.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.4,
+          "windGustKmh": 13.3,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 4.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6,
+          "windGustKmh": 11.9,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 4.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.3,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 288
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 7.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 285
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 11.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.3,
+          "windGustKmh": 11.5,
+          "windDirectionDeg": 94
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 12.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.5,
+          "windGustKmh": 19.4,
+          "windDirectionDeg": 99
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 13.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.2,
+          "windGustKmh": 27,
+          "windDirectionDeg": 95
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 13.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13,
+          "windGustKmh": 29.2,
+          "windDirectionDeg": 85
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 14.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.3,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 81
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 14.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.8,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 85
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 14.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 23.8,
+          "windDirectionDeg": 88
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 14.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 12.8,
+          "windGustKmh": 26.3,
+          "windDirectionDeg": 85
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 14.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.6,
+          "windGustKmh": 26.3,
+          "windDirectionDeg": 86
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.7,
+          "windGustKmh": 23.4,
+          "windDirectionDeg": 68
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.2,
+          "windGustKmh": 17.6,
+          "windDirectionDeg": 47
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 11.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.3,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 119
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 11,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.1,
+          "windGustKmh": 8.6,
+          "windDirectionDeg": 171
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 10.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.6,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 307
+        }
+      ]
+    },
+    {
+      "id": "veladero-env-1",
+      "name": "veladero environment node 1",
+      "corridorId": "veladero",
+      "distanceKm": 0,
+      "lon": -68.5364,
+      "lat": -31.5375,
+      "elevationM": 650,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 13.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 287
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 11.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.4,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 268
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 10.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.9,
+          "windGustKmh": 10.1,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.3,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 11.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 9.7,
+          "windDirectionDeg": 253
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 12.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 210
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 10.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 188
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 13,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.2,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 133
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 16,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.1,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 38
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 18.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 14,
+          "windDirectionDeg": 115
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 20.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.1,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 122
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 22.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.1,
+          "windGustKmh": 27.4,
+          "windDirectionDeg": 117
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 23.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.5,
+          "windGustKmh": 28.4,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 23.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.7,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 136
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 23.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 27,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 23,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.4,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 137
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 19.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 167
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 18.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 6.8,
+          "windDirectionDeg": 193
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 17.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 233
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 16.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.1,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 252
+        }
+      ]
+    },
+    {
+      "id": "veladero-env-2",
+      "name": "veladero environment node 2",
+      "corridorId": "veladero",
+      "distanceKm": 120,
+      "lon": -68.956657,
+      "lat": -30.674743,
+      "elevationM": 1373,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 112
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 11.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 0.6,
+          "windGustKmh": 4.7,
+          "windDirectionDeg": 252
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 9.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.7,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 266
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.5,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 262
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 9.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.2,
+          "windGustKmh": 6.1,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.6,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 264
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.5,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 266
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 8.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.5,
+          "windGustKmh": 6.8,
+          "windDirectionDeg": 261
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 8.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.6,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 261
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 11.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.7,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 278
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 14.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.5,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 14
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 15.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.4,
+          "windGustKmh": 13.7,
+          "windDirectionDeg": 63
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 15.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.6,
+          "windGustKmh": 23.4,
+          "windDirectionDeg": 64
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 15.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.4,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 67
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 16.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.3,
+          "windGustKmh": 28.8,
+          "windDirectionDeg": 81
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 16.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.4,
+          "windGustKmh": 30.2,
+          "windDirectionDeg": 93
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 16.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.3,
+          "windGustKmh": 31,
+          "windDirectionDeg": 97
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 16.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 12.4,
+          "windGustKmh": 29.5,
+          "windDirectionDeg": 100
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 16.2,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.7,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 91
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 14.5,
+          "precipitationMm": 0.7,
+          "snowfallCm": 0,
+          "windSpeedKmh": 0.6,
+          "windGustKmh": 16.2,
+          "windDirectionDeg": 108
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 13.5,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.1,
+          "windGustKmh": 2.9,
+          "windDirectionDeg": 261
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 13.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 0.4,
+          "windGustKmh": 3.2,
+          "windDirectionDeg": 207
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 0.9,
+          "windGustKmh": 3.2,
+          "windDirectionDeg": 191
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 12.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.8,
+          "windGustKmh": 3.2,
+          "windDirectionDeg": 233
+        }
+      ]
+    },
+    {
+      "id": "veladero-env-3",
+      "name": "veladero environment node 3",
+      "corridorId": "veladero",
+      "distanceKm": 240,
+      "lon": -69.448285,
+      "lat": -30.017592,
+      "elevationM": 3789,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": -12.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10,
+          "windGustKmh": 28.4,
+          "windDirectionDeg": 298
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": -14.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.6,
+          "windGustKmh": 33.8,
+          "windDirectionDeg": 296
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": -16,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.8,
+          "windGustKmh": 36.4,
+          "windDirectionDeg": 297
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": -16.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15.1,
+          "windGustKmh": 36.7,
+          "windDirectionDeg": 297
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": -16.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.7,
+          "windGustKmh": 36,
+          "windDirectionDeg": 295
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": -16.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.6,
+          "windGustKmh": 35.3,
+          "windDirectionDeg": 294
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": -17.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.7,
+          "windGustKmh": 35.3,
+          "windDirectionDeg": 293
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": -18.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15,
+          "windGustKmh": 34.9,
+          "windDirectionDeg": 294
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": -18.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15.2,
+          "windGustKmh": 34.6,
+          "windDirectionDeg": 293
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": -16.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.9,
+          "windGustKmh": 34.9,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": -12.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.9,
+          "windGustKmh": 33.8,
+          "windDirectionDeg": 292
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": -7.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.8,
+          "windGustKmh": 29.5,
+          "windDirectionDeg": 292
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": -5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 280
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": -4.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.3,
+          "windGustKmh": 19.1,
+          "windDirectionDeg": 241
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": -3.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.6,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 207
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": -3.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2,
+          "windGustKmh": 17.6,
+          "windDirectionDeg": 190
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": -2.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.6,
+          "windGustKmh": 17.6,
+          "windDirectionDeg": 168
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": -2.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.4,
+          "windGustKmh": 18.7,
+          "windDirectionDeg": 171
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": -3.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.7,
+          "windGustKmh": 22.3,
+          "windDirectionDeg": 143
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": -5.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.3,
+          "windGustKmh": 23,
+          "windDirectionDeg": 149
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": -6.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.9,
+          "windGustKmh": 20.9,
+          "windDirectionDeg": 152
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": -8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.1,
+          "windGustKmh": 19.8,
+          "windDirectionDeg": 183
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": -11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.3,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 276
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": -14.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.8,
+          "windGustKmh": 36.4,
+          "windDirectionDeg": 284
+        }
+      ]
+    },
+    {
+      "id": "veladero-env-4",
+      "name": "veladero environment node 4",
+      "corridorId": "veladero",
+      "distanceKm": 360,
+      "lon": -69.95222,
+      "lat": -29.36833,
+      "elevationM": 4300,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": -12.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.2,
+          "windGustKmh": 72.7,
+          "windDirectionDeg": 306
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": -14.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.7,
+          "windGustKmh": 73.8,
+          "windDirectionDeg": 305
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": -13.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.4,
+          "windGustKmh": 75.2,
+          "windDirectionDeg": 305
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": -15,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.9,
+          "windGustKmh": 75.6,
+          "windDirectionDeg": 303
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": -16.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.5,
+          "windGustKmh": 74.2,
+          "windDirectionDeg": 301
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": -16.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.2,
+          "windGustKmh": 73.4,
+          "windDirectionDeg": 302
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": -16.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.7,
+          "windGustKmh": 72,
+          "windDirectionDeg": 294
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": -15.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 68.8,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": -15.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.9,
+          "windGustKmh": 65.5,
+          "windDirectionDeg": 277
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": -14.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.2,
+          "windGustKmh": 63.4,
+          "windDirectionDeg": 284
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": -13,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.9,
+          "windGustKmh": 63.4,
+          "windDirectionDeg": 281
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": -12.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.2,
+          "windGustKmh": 60.8,
+          "windDirectionDeg": 292
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": -11.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.2,
+          "windGustKmh": 64.1,
+          "windDirectionDeg": 306
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": -10.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.7,
+          "windGustKmh": 68.8,
+          "windDirectionDeg": 314
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": -9.8,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 11.5,
+          "windGustKmh": 70.6,
+          "windDirectionDeg": 309
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": -9.5,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0.14,
+          "windSpeedKmh": 12.9,
+          "windGustKmh": 74.2,
+          "windDirectionDeg": 311
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": -9.9,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0.14,
+          "windSpeedKmh": 12.9,
+          "windGustKmh": 74.5,
+          "windDirectionDeg": 311
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": -10.7,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 76.3,
+          "windDirectionDeg": 307
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": -11.5,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 9,
+          "windGustKmh": 71.6,
+          "windDirectionDeg": 300
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": -12.2,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 6.7,
+          "windGustKmh": 67.7,
+          "windDirectionDeg": 294
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": -13.1,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 6,
+          "windGustKmh": 62.6,
+          "windDirectionDeg": 287
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": -13.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.7,
+          "windGustKmh": 60.8,
+          "windDirectionDeg": 266
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": -13.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.7,
+          "windGustKmh": 56.9,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": -15.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.6,
+          "windGustKmh": 54,
+          "windDirectionDeg": 252
+        }
+      ]
+    },
+    {
+      "id": "los-azules-env-1",
+      "name": "los-azules environment node 1",
+      "corridorId": "los-azules",
+      "distanceKm": 0,
+      "lon": -68.5364,
+      "lat": -31.5375,
+      "elevationM": 650,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 13.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 287
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 11.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.4,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 268
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 10.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.9,
+          "windGustKmh": 10.1,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.3,
+          "windGustKmh": 9.4,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 11.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.9,
+          "windGustKmh": 9.7,
+          "windDirectionDeg": 253
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 12.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 210
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 10.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 188
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 13,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.2,
+          "windGustKmh": 5.8,
+          "windDirectionDeg": 133
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 16,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.1,
+          "windGustKmh": 11.2,
+          "windDirectionDeg": 38
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 18.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 14,
+          "windDirectionDeg": 115
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 20.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.1,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 122
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 22.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.1,
+          "windGustKmh": 27.4,
+          "windDirectionDeg": 117
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 23.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.5,
+          "windGustKmh": 28.4,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 23.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.7,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 136
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 23.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 27,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 23,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.3,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 21.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.4,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 137
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 19.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 167
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 18.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 6.8,
+          "windDirectionDeg": 193
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 17.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.8,
+          "windGustKmh": 7.6,
+          "windDirectionDeg": 233
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 16.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.1,
+          "windGustKmh": 7.9,
+          "windDirectionDeg": 252
+        }
+      ]
+    },
+    {
+      "id": "los-azules-env-2",
+      "name": "los-azules environment node 2",
+      "corridorId": "los-azules",
+      "distanceKm": 92,
+      "lon": -68.885716,
+      "lat": -31.129548,
+      "elevationM": 1066,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 13,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.1,
+          "windGustKmh": 15.8,
+          "windDirectionDeg": 297
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 11.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.9,
+          "windGustKmh": 16.2,
+          "windDirectionDeg": 295
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 11.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.2,
+          "windGustKmh": 15.8,
+          "windDirectionDeg": 288
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 10.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.5,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 291
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 10.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9,
+          "windGustKmh": 13.7,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 10.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.5,
+          "windGustKmh": 13.3,
+          "windDirectionDeg": 288
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 10.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.2,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 293
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 10.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.4,
+          "windGustKmh": 12.6,
+          "windDirectionDeg": 301
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 10.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.5,
+          "windGustKmh": 13,
+          "windDirectionDeg": 294
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 13.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.7,
+          "windGustKmh": 11.9,
+          "windDirectionDeg": 247
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 14.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.2,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 148
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 15.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 19.1,
+          "windDirectionDeg": 133
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 16.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.3,
+          "windGustKmh": 21.2,
+          "windDirectionDeg": 112
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 17.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.2,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 91
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 18.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.6,
+          "windGustKmh": 22.3,
+          "windDirectionDeg": 74
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 19.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 64
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 19.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.8,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 72
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 19.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 10.4,
+          "windGustKmh": 23.8,
+          "windDirectionDeg": 75
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 18.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.9,
+          "windGustKmh": 22.3,
+          "windDirectionDeg": 73
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 17.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.4,
+          "windGustKmh": 18,
+          "windDirectionDeg": 6
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 16.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.7,
+          "windGustKmh": 12.2,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 15.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.8,
+          "windGustKmh": 11.9,
+          "windDirectionDeg": 297
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 14.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 309
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 13.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.5,
+          "windGustKmh": 14.4,
+          "windDirectionDeg": 283
+        }
+      ]
+    },
+    {
+      "id": "los-azules-env-3",
+      "name": "los-azules environment node 3",
+      "corridorId": "los-azules",
+      "distanceKm": 184,
+      "lon": -69.605476,
+      "lat": -31.307082,
+      "elevationM": 1794,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": 4.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.7,
+          "windGustKmh": 18.4,
+          "windDirectionDeg": 273
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": 3.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14.8,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 276
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": 3.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15.5,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 272
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": 3.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 14,
+          "windGustKmh": 25.2,
+          "windDirectionDeg": 270
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": 3.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 11.1,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 263
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": 3.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 17.6,
+          "windDirectionDeg": 253
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": 3.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.7,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 246
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": 3.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.3,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 251
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": 3.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.1,
+          "windGustKmh": 14.8,
+          "windDirectionDeg": 238
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": 5.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.9,
+          "windGustKmh": 13.3,
+          "windDirectionDeg": 230
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": 6.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.7,
+          "windGustKmh": 11.5,
+          "windDirectionDeg": 164
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": 7.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.9,
+          "windGustKmh": 16.6,
+          "windDirectionDeg": 139
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": 8.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.6,
+          "windGustKmh": 18,
+          "windDirectionDeg": 127
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": 9.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.9,
+          "windGustKmh": 18,
+          "windDirectionDeg": 123
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": 11,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.2,
+          "windGustKmh": 18.7,
+          "windDirectionDeg": 136
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": 11.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.7,
+          "windGustKmh": 18.4,
+          "windDirectionDeg": 148
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": 12.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.3,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 132
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": 12.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 2.4,
+          "windGustKmh": 15.1,
+          "windDirectionDeg": 126
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": 12,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 1.5,
+          "windGustKmh": 11.9,
+          "windDirectionDeg": 256
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": 10.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8,
+          "windGustKmh": 17.3,
+          "windDirectionDeg": 286
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": 9.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15.1,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 273
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": 8.3,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 15.9,
+          "windGustKmh": 31,
+          "windDirectionDeg": 267
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": 7.2,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.6,
+          "windGustKmh": 30.2,
+          "windDirectionDeg": 277
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": 6.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 13.4,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 277
+        }
+      ]
+    },
+    {
+      "id": "los-azules-env-4",
+      "name": "los-azules environment node 4",
+      "corridorId": "los-azules",
+      "distanceKm": 276,
+      "lon": -70.22138,
+      "lat": -31.11277,
+      "elevationM": 3500,
+      "hourly": [
+        {
+          "time": "2026-08-30T00:00:00-03:00",
+          "temperatureC": -14.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.3,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 178
+        },
+        {
+          "time": "2026-08-30T01:00:00-03:00",
+          "temperatureC": -14.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.1,
+          "windGustKmh": 23.8,
+          "windDirectionDeg": 185
+        },
+        {
+          "time": "2026-08-30T02:00:00-03:00",
+          "temperatureC": -14.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.8,
+          "windGustKmh": 24.5,
+          "windDirectionDeg": 192
+        },
+        {
+          "time": "2026-08-30T03:00:00-03:00",
+          "temperatureC": -14.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.9,
+          "windGustKmh": 25.2,
+          "windDirectionDeg": 195
+        },
+        {
+          "time": "2026-08-30T04:00:00-03:00",
+          "temperatureC": -15.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.8,
+          "windGustKmh": 25.6,
+          "windDirectionDeg": 192
+        },
+        {
+          "time": "2026-08-30T05:00:00-03:00",
+          "temperatureC": -15.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.4,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 184
+        },
+        {
+          "time": "2026-08-30T06:00:00-03:00",
+          "temperatureC": -15.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.4,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 186
+        },
+        {
+          "time": "2026-08-30T07:00:00-03:00",
+          "temperatureC": -15.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.2,
+          "windGustKmh": 25.2,
+          "windDirectionDeg": 179
+        },
+        {
+          "time": "2026-08-30T08:00:00-03:00",
+          "temperatureC": -15.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 7.2,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 186
+        },
+        {
+          "time": "2026-08-30T09:00:00-03:00",
+          "temperatureC": -13.7,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 6.7,
+          "windGustKmh": 23.4,
+          "windDirectionDeg": 185
+        },
+        {
+          "time": "2026-08-30T10:00:00-03:00",
+          "temperatureC": -10.8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.8,
+          "windGustKmh": 22.7,
+          "windDirectionDeg": 189
+        },
+        {
+          "time": "2026-08-30T11:00:00-03:00",
+          "temperatureC": -8,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 20.5,
+          "windDirectionDeg": 203
+        },
+        {
+          "time": "2026-08-30T12:00:00-03:00",
+          "temperatureC": -6.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.1,
+          "windGustKmh": 18,
+          "windDirectionDeg": 208
+        },
+        {
+          "time": "2026-08-30T13:00:00-03:00",
+          "temperatureC": -5.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.2,
+          "windGustKmh": 18.7,
+          "windDirectionDeg": 250
+        },
+        {
+          "time": "2026-08-30T14:00:00-03:00",
+          "temperatureC": -4.9,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 8.2,
+          "windGustKmh": 24.8,
+          "windDirectionDeg": 260
+        },
+        {
+          "time": "2026-08-30T15:00:00-03:00",
+          "temperatureC": -5.1,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 9.2,
+          "windGustKmh": 26.6,
+          "windDirectionDeg": 247
+        },
+        {
+          "time": "2026-08-30T16:00:00-03:00",
+          "temperatureC": -5.1,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 9.2,
+          "windGustKmh": 26.6,
+          "windDirectionDeg": 228
+        },
+        {
+          "time": "2026-08-30T17:00:00-03:00",
+          "temperatureC": -5.5,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0.14,
+          "windSpeedKmh": 9.8,
+          "windGustKmh": 28.1,
+          "windDirectionDeg": 223
+        },
+        {
+          "time": "2026-08-30T18:00:00-03:00",
+          "temperatureC": -6.1,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0.14,
+          "windSpeedKmh": 7.7,
+          "windGustKmh": 27.7,
+          "windDirectionDeg": 219
+        },
+        {
+          "time": "2026-08-30T19:00:00-03:00",
+          "temperatureC": -8.1,
+          "precipitationMm": 0.2,
+          "snowfallCm": 0.14,
+          "windSpeedKmh": 5.6,
+          "windGustKmh": 25.9,
+          "windDirectionDeg": 195
+        },
+        {
+          "time": "2026-08-30T20:00:00-03:00",
+          "temperatureC": -9.7,
+          "precipitationMm": 0.1,
+          "snowfallCm": 0.07,
+          "windSpeedKmh": 5.2,
+          "windGustKmh": 23.4,
+          "windDirectionDeg": 196
+        },
+        {
+          "time": "2026-08-30T21:00:00-03:00",
+          "temperatureC": -10.5,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 5.3,
+          "windGustKmh": 24.1,
+          "windDirectionDeg": 198
+        },
+        {
+          "time": "2026-08-30T22:00:00-03:00",
+          "temperatureC": -11.4,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 4.1,
+          "windGustKmh": 23,
+          "windDirectionDeg": 193
+        },
+        {
+          "time": "2026-08-30T23:00:00-03:00",
+          "temperatureC": -11.6,
+          "precipitationMm": 0,
+          "snowfallCm": 0,
+          "windSpeedKmh": 3.8,
+          "windGustKmh": 22,
+          "windDirectionDeg": 191
+        }
+      ]
+    }
+  ],
+  "sourceState": "READY",
+  "evidenceRefs": [
+    "open-meteo-forecast-20260830"
+  ],
+  "limitations": [
+    "Modelled forecast context, not an in-situ station observation.",
+    "The generic forecast response does not expose a single model-run timestamp; dataAsOf records snapshot retrieval time.",
+    "Weather values do not imply road condition, transitability, authorization or operational safety.",
+    "Environment nodes are route-tied analytical samples interpolated from the versioned corridor geometry/elevation assets.",
+    "Build request: https://api.open-meteo.com/v1/forecast with 12 coordinates and hourly weather variables."
+  ]
+}

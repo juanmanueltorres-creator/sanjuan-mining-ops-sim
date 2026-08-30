@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "sanjuan.route-samples/v1",
+  "corridorId": "veladero",
+  "samples": [
+    {"distanceKm":0,"lon":-68.5364,"lat":-31.5375,"elevationM":650,"segmentId":"veladero-01"},
+    {"distanceKm":52,"lon":-68.63929,"lat":-31.09887,"elevationM":940,"segmentId":"veladero-02"},
+    {"distanceKm":140,"lon":-69.05,"lat":-30.55,"elevationM":1500,"segmentId":"veladero-03"},
+    {"distanceKm":205,"lon":-69.270283595,"lat":-30.188378113,"elevationM":1931,"segmentId":"veladero-04"},
+    {"distanceKm":260,"lon":-69.55,"lat":-29.92,"elevationM":4850,"segmentId":"veladero-05"},
+    {"distanceKm":300,"lon":-69.72,"lat":-29.7,"elevationM":4300,"segmentId":"veladero-05"},
+    {"distanceKm":340,"lon":-69.89,"lat":-29.47,"elevationM":4100,"segmentId":"veladero-06"},
+    {"distanceKm":360,"lon":-69.95222,"lat":-29.36833,"elevationM":4300,"segmentId":"veladero-06"}
+  ]
+}

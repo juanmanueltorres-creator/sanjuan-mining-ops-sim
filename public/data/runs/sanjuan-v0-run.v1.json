@@ -1,0 +1,17 @@
+{
+  "id": "sanjuan-v0-run-20260830-v1",
+  "targetDate": "2026-08-30",
+  "issuedAt": "2026-08-30T08:28:42.682Z",
+  "dataAsOf": "2026-08-30T08:28:42.682Z",
+  "timezone": "America/Argentina/San_Juan",
+  "mode": "SIMULATED",
+  "modelVersion": "movement-v0.1",
+  "scenarioVersion": "sanjuan-operation-v0.1",
+  "seed": "sanjuan-v0-20260830",
+  "environmentSnapshotId": "environment-sj-20260830-v1",
+  "provenance": [
+    "synthetic-operating-plan-v1",
+    "scenario-display-rules-v1",
+    "open-meteo-forecast-20260830"
+  ]
+}

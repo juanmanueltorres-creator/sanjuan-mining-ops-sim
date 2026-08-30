@@ -1,0 +1,597 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0b1115;
+  color: #f2f5f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+select,
+input[type="range"] {
+  accent-color: #e3aa54;
+}
+
+button,
+select {
+  border: 1px solid rgba(228, 236, 239, 0.17);
+  border-radius: 8px;
+  background: rgba(18, 27, 32, 0.92);
+  color: #eef2f3;
+}
+
+button {
+  min-height: 32px;
+  padding: 6px 11px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: rgba(227, 170, 84, 0.65);
+  background: rgba(29, 39, 45, 0.96);
+}
+
+.app-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 520px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #0b1115;
+}
+
+.map-stage,
+.cesium-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-stage {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 62% 38%, rgba(71, 99, 103, 0.22), transparent 33%),
+    linear-gradient(145deg, #152126 0%, #0b1115 72%);
+}
+
+.cesium-host,
+.cesium-host .cesium-widget,
+.cesium-host .cesium-widget canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.map-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(230, 237, 239, 0.34);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.map-instruments {
+  position: absolute;
+  bottom: 62px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  pointer-events: none;
+  color: rgba(238, 243, 245, 0.72);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.045em;
+}
+
+.north-indicator,
+.scale-indicator,
+.cursor-readout,
+.regional-view-button {
+  border: 1px solid rgba(222, 232, 235, 0.1);
+  border-radius: 7px;
+  background: rgba(11, 17, 21, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.north-indicator {
+  display: grid;
+  grid-template-columns: 13px auto;
+  align-items: center;
+  gap: 2px;
+  height: 28px;
+  padding: 4px 7px;
+}
+
+.north-arrow {
+  display: inline-grid;
+  place-items: center;
+  color: #e3aa54;
+  font-size: 14px;
+  line-height: 1;
+  transform-origin: 50% 50%;
+}
+
+.north-indicator strong {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+}
+
+.scale-indicator {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  min-width: 72px;
+  height: 28px;
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+.scale-line {
+  display: block;
+  max-width: 120px;
+  height: 4px;
+  border-right: 1px solid rgba(238, 243, 245, 0.74);
+  border-bottom: 1px solid rgba(238, 243, 245, 0.74);
+  border-left: 1px solid rgba(238, 243, 245, 0.74);
+}
+
+.cursor-readout {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  max-width: min(390px, 42vw);
+  padding: 4px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.regional-view-button {
+  min-height: 28px;
+  padding: 4px 8px;
+  pointer-events: auto;
+  color: rgba(238, 243, 245, 0.68);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
+.operational-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.command-hud,
+.map-status,
+.vehicle-panel,
+.timeline {
+  pointer-events: auto;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.command-hud {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: min(760px, calc(100vw - 28px));
+  min-width: 0;
+  padding: 8px 9px 8px 12px;
+  border: 1px solid rgba(222, 232, 235, 0.13);
+  border-radius: 12px;
+  background: rgba(11, 17, 21, 0.82);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+}
+
+.command-identity {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: max-content;
+}
+
+.command-kicker,
+.eyebrow {
+  margin: 0;
+  color: #e3aa54;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.command-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+}
+
+.command-metrics {
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+  color: rgba(236, 242, 244, 0.67);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.command-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.command-controls button {
+  font-size: 11px;
+}
+
+.playback-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(236, 242, 244, 0.55);
+  font-size: 10px;
+}
+
+.playback-control select {
+  min-height: 32px;
+  padding: 4px 7px;
+  font-size: 11px;
+}
+
+.map-status {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  gap: 2px;
+  max-width: min(360px, calc(100vw - 28px));
+  padding: 8px 10px;
+  border: 1px solid rgba(222, 232, 235, 0.1);
+  border-radius: 10px;
+  background: rgba(11, 17, 21, 0.7);
+  color: rgba(236, 242, 244, 0.58);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  white-space: normal;
+}
+
+.timeline {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  display: grid;
+  grid-template-columns: auto minmax(90px, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 11px;
+  border: 1px solid rgba(222, 232, 235, 0.12);
+  border-radius: 11px;
+  background: rgba(11, 17, 21, 0.82);
+}
+
+.timeline input {
+  width: 100%;
+  min-width: 0;
+}
+
+.timeline-endpoint {
+  color: rgba(236, 242, 244, 0.62);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.vehicle-panel {
+  position: absolute;
+  right: 14px;
+  bottom: 78px;
+  width: min(310px, calc(100vw - 28px));
+  max-height: min(420px, calc(100vh - 158px));
+  overflow: auto;
+  padding: 13px;
+  border: 1px solid rgba(222, 232, 235, 0.13);
+  border-radius: 12px;
+  background: rgba(11, 17, 21, 0.86);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.22);
+}
+
+.vehicle-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.vehicle-panel h2 {
+  margin: 4px 0 0;
+  font-size: 17px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.state-chip {
+  flex: 0 0 auto;
+  padding: 4px 6px;
+  border: 1px solid rgba(112, 200, 215, 0.24);
+  border-radius: 999px;
+  color: #9edbe4;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.vehicle-corridor {
+  margin: 10px 0 11px;
+  color: rgba(236, 242, 244, 0.67);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.vehicle-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+}
+
+.vehicle-stats div {
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.vehicle-stats dt {
+  color: rgba(236, 242, 244, 0.44);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.vehicle-stats dd {
+  margin: 3px 0 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.environment-placeholder {
+  display: grid;
+  gap: 4px;
+  margin-top: 9px;
+  padding: 8px;
+  border-left: 2px solid rgba(227, 170, 84, 0.55);
+  background: rgba(227, 170, 84, 0.05);
+}
+
+.environment-placeholder span {
+  color: #d9b77d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.environment-placeholder small {
+  color: rgba(236, 242, 244, 0.48);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  align-items: center;
+  padding: clamp(22px, 5vw, 72px);
+  background:
+    linear-gradient(90deg, rgba(6, 11, 14, 0.96) 0%, rgba(6, 11, 14, 0.82) 38%, rgba(6, 11, 14, 0.2) 74%, rgba(6, 11, 14, 0.05) 100%),
+    linear-gradient(0deg, rgba(8, 13, 16, 0.2), rgba(8, 13, 16, 0.2));
+}
+
+.intro-card {
+  width: min(520px, 100%);
+  min-width: 0;
+}
+
+.intro-card h1 {
+  max-width: 11ch;
+  margin: 11px 0 12px;
+  font-size: clamp(34px, 5.4vw, 70px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.intro-thesis {
+  max-width: 44ch;
+  margin: 0;
+  color: rgba(242, 245, 246, 0.9);
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.4;
+}
+
+.intro-detail {
+  max-width: 58ch;
+  margin: 11px 0 0;
+  color: rgba(232, 239, 241, 0.56);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.primary-action {
+  margin-top: 18px;
+  padding: 9px 13px;
+  border-color: rgba(227, 170, 84, 0.48);
+  background: rgba(227, 170, 84, 0.12);
+  color: #f4d29b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.intro-footnote {
+  margin: 12px 0 0;
+  color: rgba(232, 239, 241, 0.4);
+  font-size: 10px;
+}
+
+.cesium-widget-credits {
+  bottom: 96px !important;
+  left: 12px !important;
+  right: auto !important;
+  max-width: min(520px, calc(100vw - 24px));
+  opacity: 0.58;
+}
+
+@media (max-width: 980px) {
+  .command-hud {
+    right: 14px;
+    max-width: none;
+  }
+
+  .map-status {
+    top: 70px;
+  }
+
+  .cursor-readout {
+    max-width: 32vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    min-height: 440px;
+  }
+
+  .command-hud {
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 7px 12px;
+    padding: 8px;
+  }
+
+  .command-metrics {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .command-controls {
+    margin-left: auto;
+  }
+
+  .playback-control > span {
+    display: none;
+  }
+
+  .map-status {
+    top: 92px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    text-align: center;
+  }
+
+  .map-instruments {
+    bottom: 55px;
+    left: 10px;
+    right: 10px;
+    gap: 5px;
+    overflow-x: auto;
+  }
+
+  .north-indicator,
+  .scale-indicator,
+  .cursor-readout,
+  .regional-view-button {
+    flex: 0 0 auto;
+  }
+
+  .cursor-readout {
+    max-width: 54vw;
+  }
+
+  .regional-view-button {
+    display: none;
+  }
+
+  .vehicle-panel {
+    right: 10px;
+    bottom: 76px;
+    width: min(290px, calc(100vw - 20px));
+    max-height: 34vh;
+  }
+
+  .timeline {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    gap: 7px;
+    padding: 7px 8px;
+  }
+
+  .intro-overlay {
+    align-items: end;
+    padding: 24px 20px 34px;
+    background: linear-gradient(0deg, rgba(6, 11, 14, 0.97) 0%, rgba(6, 11, 14, 0.7) 57%, rgba(6, 11, 14, 0.18) 100%);
+  }
+
+  .intro-card h1 {
+    max-width: 13ch;
+    font-size: clamp(36px, 12vw, 58px);
+  }
+
+  .cesium-widget-credits {
+    bottom: 85px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

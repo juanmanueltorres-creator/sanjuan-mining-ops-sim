@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "sanjuan.environment-evidence/v1",
+  "environmentSnapshotId": "environment-sj-20260830-v1",
+  "evidence": [
+    {
+      "id": "open-meteo-forecast-20260830",
+      "role": "PRIMARY",
+      "sourceName": "Open-Meteo Forecast API · Best Match",
+      "sourceUrl": "https://api.open-meteo.com/v1/forecast",
+      "retrievedAt": "2026-08-30T08:28:42.682Z",
+      "method": "Versioned forecast snapshot requested for 12 route-tied nodes with hourly temperature, precipitation, snowfall, wind speed, wind gust and wind direction.",
+      "limitations": [
+        "Modelled forecast context, not an in-situ station observation.",
+        "The generic forecast response does not expose a single model-run timestamp; retrievedAt records snapshot retrieval time.",
+        "Weather values do not imply road condition, transitability, authorization or operational safety.",
+        "Environment nodes are route-tied analytical samples interpolated from versioned corridor geometry and elevation assets."
+      ]
+    }
+  ]
+}

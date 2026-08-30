@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "sanjuan.traffic-calibration/v1",
+  "id": "traffic-calibration-v1",
+  "baseVisibleVehicles": 20,
+  "maxVisibleVehicles": 24,
+  "timeBands": [
+    { "startMinute": 360, "endMinute": 540, "relativeIntensity": 0.65 },
+    { "startMinute": 540, "endMinute": 720, "relativeIntensity": 1.0 },
+    { "startMinute": 720, "endMinute": 960, "relativeIntensity": 0.8 },
+    { "startMinute": 960, "endMinute": 1201, "relativeIntensity": 0.55 }
+  ],
+  "corridorWeights": [
+    { "corridorId": "hualilan", "weight": 0.34 },
+    { "corridorId": "veladero", "weight": 0.33 },
+    { "corridorId": "los-azules", "weight": 0.33 }
+  ],
+  "evidenceRefs": [
+    "dnv-tmda-reference",
+    "chile-pncv-north-2025",
+    "synthetic-background-traffic-shape"
+  ],
+  "limitations": [
+    "This is not live San Juan traffic and does not reproduce observed traffic counts on the three simulated corridors.",
+    "Historical Argentine TMDA information is used only as a calibration reference for subdued background road activity.",
+    "Northern Chile PNCV is an Andean road-traffic analogue, not a substitute for San Juan observations.",
+    "Time-band intensities and corridor weights are synthetic display assumptions for the V0 scenario.",
+    "Background vehicles do not model congestion, lanes, signals, overtaking, closures or traffic-control decisions."
+  ],
+  "evidence": [
+    {
+      "id": "dnv-tmda-reference",
+      "role": "CALIBRATION",
+      "sourceName": "Dirección Nacional de Vialidad — Tránsito Medio Diario Anual (TMDA)",
+      "sourceUrl": "https://www.argentina.gob.ar/transporte/vialidad-nacional/institucional/informacion-publica/tmda",
+      "retrievedAt": "2026-08-30",
+      "method": "Historical Argentine national-road traffic volumes used only as a broad calibration reference for background activity.",
+      "limitations": [
+        "Not a live feed.",
+        "Not direct counts for Hualilán, Veladero or Los Azules access corridors.",
+        "No absolute TMDA value is presented as current San Juan corridor traffic in this simulation."
+      ]
+    },
+    {
+      "id": "chile-pncv-north-2025",
+      "role": "ANALOGUE",
+      "sourceName": "Chile Dirección de Vialidad — Plan Nacional de Censo Vial, Zona Norte 2025",
+      "sourceUrl": "https://vialidad.mop.gob.cl/plan-nacional-de-censo-vial/",
+      "retrievedAt": "2026-08-30",
+      "method": "Northern Chile road-census program used as an Andean analogue for representing low-salience territorial traffic context.",
+      "limitations": [
+        "Chile is an analogue geography, not an observation of San Juan traffic.",
+        "The simulation does not transfer Chilean absolute counts into San Juan."
+      ]
+    },
+    {
+      "id": "synthetic-background-traffic-shape",
+      "role": "SYNTHETIC_ASSUMPTION",
+      "sourceName": "San Juan Mining Ops Sim — V0 background traffic display assumptions",
+      "retrievedAt": "2026-08-30",
+      "method": "Deterministic time-band intensity and near-even corridor weighting used to keep territorial context visible but subordinate to the 24 highlighted mining mobilizations.",
+      "limitations": [
+        "Relative intensity bands are scenario display assumptions, not measured hourly traffic profiles.",
+        "Corridor weights are not traffic-engineering estimates."
+      ]
+    }
+  ]
+}

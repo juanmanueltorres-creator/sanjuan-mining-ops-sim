@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "sanjuan.elevation-profile/v1",
+  "source": "Published Tudcum, Conconta/high-mountain and Veladero elevation anchors",
+  "resolution": "anchor-based analytical profile",
+  "method": "Published elevation anchors and operation elevation range mapped to versioned route distance with linear interpolation between anchors.",
+  "samples": [
+    {"distanceKm":0,"elevationM":650},
+    {"distanceKm":52,"elevationM":940},
+    {"distanceKm":140,"elevationM":1500},
+    {"distanceKm":205,"elevationM":1931},
+    {"distanceKm":260,"elevationM":4850},
+    {"distanceKm":300,"elevationM":4300},
+    {"distanceKm":340,"elevationM":4100},
+    {"distanceKm":360,"elevationM":4300}
+  ],
+  "evidenceRefs": ["barrick-veladero-access", "barrick-veladero-elevation", "tudcum-public-locality", "veladero-profile-derived"],
+  "limitations": [
+    "Analytical aid only; intermediate elevations are interpolated from public anchors and published elevation ranges.",
+    "The 4,850 m high-mountain anchor reflects published corridor/operation context, not an engineering survey point.",
+    "Do not use for navigation, engineering, occupational-health or road-safety decisions."
+  ]
+}
