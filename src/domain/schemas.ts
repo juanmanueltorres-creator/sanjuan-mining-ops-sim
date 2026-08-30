@@ -183,6 +183,7 @@ const operationalRunSchema = z.object({
   mode: z.literal('SIMULATED'),
   modelVersion: z.string().min(1),
   scenarioVersion: z.string().min(1),
+  seed: z.union([z.string().min(1), z.number().finite()]),
   environmentSnapshotId: z.string().min(1),
   provenance: z.array(z.string().min(1)),
 });
