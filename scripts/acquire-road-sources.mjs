@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export const CKAN_RESOURCE = 'https://datos.gob.ar/api/3/action/resource_show?id=';
 export const OFFICIAL_RESOURCES = [
@@ -331,4 +332,33 @@ export async function acquireVeladeroSources({
   await writeJson(path.join(outputDir, 'source-inventory.json'), inventory);
 
   return { inventory, outputDir, snapshots };
+}
+
+export async function runRoadSourceAcquisitionCli(
+  args = process.argv.slice(2),
+  {
+    acquire = acquireVeladeroSources,
+    outputDir = path.join('artifacts', 'road-geometry-acquisition'),
+  } = {},
+) {
+  const [corridorId] = args;
+  if (corridorId !== 'veladero') {
+    throw new Error('Road source acquisition currently supports only Veladero.');
+  }
+  return acquire({ outputDir });
+}
+
+const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : '';
+if (invokedPath === fileURLToPath(import.meta.url)) {
+  runRoadSourceAcquisitionCli()
+    .then(({ inventory, outputDir }) => {
+      console.log(`Veladero road source acquisition written to ${outputDir}`);
+      for (const source of inventory.sources) {
+        console.log(`${source.id}: ${source.featureCount} features`);
+      }
+    })
+    .catch((error) => {
+      console.error(error instanceof Error ? error.message : String(error));
+      process.exitCode = 1;
+    });
 }
