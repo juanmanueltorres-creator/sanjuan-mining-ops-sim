@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { OperationalSnapshot, VehicleSnapshot } from '../domain/contracts';
-import { createOperationalAdapter, type VehicleEntitySink } from './cesiumAdapter';
+import type { CorridorDefinition, OperationalSnapshot, VehicleSnapshot } from '../domain/contracts';
+import type { BackgroundTrafficVehicle } from '../simulation/backgroundTraffic';
+import { createOperationalAdapter, resolveBackgroundTrafficPoint, type VehicleEntitySink } from './cesiumAdapter';
 
 class FakeSink implements VehicleEntitySink {
   readonly ids = new Set<string>();
@@ -50,6 +51,36 @@ function snapshot(vehicles: VehicleSnapshot[]): OperationalSnapshot {
   };
 }
 
+const corridor: CorridorDefinition = {
+  id: 'hualilan',
+  name: 'San Juan → Hualilán',
+  origin: { id: 'san-juan', name: 'San Juan', lat: -31, lon: -68 },
+  destination: { id: 'hualilan', name: 'Hualilán', lat: -30, lon: -69 },
+  geometry: { type: 'LineString', coordinates: [[-68, -31], [-69, -30]] },
+  geometryClass: 'RECONSTRUCTED_ACCESS',
+  segments: [{
+    id: 'segment-1', corridorId: 'hualilan', startKm: 0, endKm: 100, distanceKm: 100,
+    elevationMinM: 600, elevationMaxM: 1600, roadClass: 'mountainRoad',
+    geometryConfidence: 'RECONSTRUCTED_ACCESS', environmentNodeIds: [],
+  }],
+  nodes: [],
+  elevationProfile: {
+    source: 'fixture', resolution: 'fixture', method: 'fixture', limitations: [],
+    samples: [{ distanceKm: 0, elevationM: 600 }, { distanceKm: 100, elevationM: 1600 }],
+  },
+  routeSamples: [
+    { distanceKm: 0, lon: -68, lat: -31, elevationM: 600, segmentId: 'segment-1' },
+    { distanceKm: 100, lon: -69, lat: -30, elevationM: 1600, segmentId: 'segment-1' },
+  ],
+  evidenceRefs: ['fixture'],
+  retrievedAt: '2026-08-30',
+  limitations: [],
+};
+
+function background(direction: BackgroundTrafficVehicle['direction'], progress: number): BackgroundTrafficVehicle {
+  return { id: 'BG-001', corridorId: 'hualilan', direction, progress, visualWeight: 'BACKGROUND' };
+}
+
 describe('createOperationalAdapter', () => {
   it('creates the fixed fleet entity set once and never grows while applying snapshots', () => {
     const ids = Array.from({ length: 24 }, (_, index) => `VEH-${index + 1}`);
@@ -79,5 +110,21 @@ describe('createOperationalAdapter', () => {
     const adapter = createOperationalAdapter(sink, ['VEH-1']);
 
     expect(() => adapter.apply(snapshot([vehicle('VEH-2', 'EN_ROUTE', -68.4)]))).toThrow(/unknown vehicle/i);
+  });
+});
+
+describe('resolveBackgroundTrafficPoint', () => {
+  it('maps outbound and inbound progress onto the versioned corridor samples', () => {
+    expect(resolveBackgroundTrafficPoint(background('OUTBOUND', 0.25), [corridor])).toMatchObject({
+      lon: -68.25, lat: -30.75, elevationM: 850,
+    });
+    expect(resolveBackgroundTrafficPoint(background('INBOUND', 0.25), [corridor])).toMatchObject({
+      lon: -68.75, lat: -30.25, elevationM: 1350,
+    });
+  });
+
+  it('fails closed if a background vehicle references an unknown corridor', () => {
+    const missing = { ...background('OUTBOUND', 0.5), corridorId: 'veladero' as const };
+    expect(() => resolveBackgroundTrafficPoint(missing, [corridor])).toThrow(/unknown background traffic corridor/i);
   });
 });
