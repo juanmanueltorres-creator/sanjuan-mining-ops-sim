@@ -108,15 +108,19 @@ describe('road source acquisition helpers', () => {
 });
 
 describe('official-first acquisition transport', () => {
-  it('resolves official dataset download URLs through the CKAN resource API', async () => {
-    const resource = OFFICIAL_RESOURCES[0];
-    const fetcher = vi.fn(async (url) => ({
+  it('retains CKAN resolution as a fallback for descriptors without a direct source URL', async () => {
+    const resource = {
+      id: 'legacy-official-resource',
+      resourceId: 'legacy-resource-id',
+      provider: 'Official fixture provider',
+    };
+    const fetcher = vi.fn(async () => ({
       ok: true,
       json: async () => ({
         success: true,
         result: {
           id: resource.resourceId,
-          name: 'Rutas Nacionales WFS',
+          name: 'Legacy official WFS',
           format: 'WFS',
           url: 'https://example.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads',
         },
@@ -134,26 +138,14 @@ describe('official-first acquisition transport', () => {
     });
   });
 
-  it('fetches an official WFS source through CKAN and retains only the requested region', async () => {
+  it('fetches a published direct official WFS source and retains only the requested region', async () => {
     const resource = OFFICIAL_RESOURCES[0];
     const fetcher = vi.fn(async (url) => {
-      if (String(url).startsWith(CKAN_RESOURCE)) {
-        return {
-          ok: true,
-          json: async () => ({
-            success: true,
-            result: {
-              id: resource.resourceId,
-              name: 'Rutas Nacionales WFS',
-              format: 'WFS',
-              url: 'https://example.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads&maxFeatures=50',
-            },
-          }),
-        };
-      }
       const parsed = new URL(String(url));
+      expect(parsed.origin).toBe('https://wms.ign.gob.ar');
       expect(parsed.searchParams.get('outputFormat')).toBe('application/json');
       expect(parsed.searchParams.get('bbox')).toBe('-69.5,-31.8,-68.3,-29.9,EPSG:4326');
+      expect(parsed.searchParams.get('typeName')).toBe('transporte:vial_nacional');
       return {
         ok: true,
         json: async () => ({
@@ -170,7 +162,7 @@ describe('official-first acquisition transport', () => {
 
     expect(result.featureCollection.features.map((feature) => feature.id)).toEqual(['rn40-inside']);
     expect(result.source).toMatchObject({ id: resource.id, resourceId: resource.resourceId });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('builds the exact high-mountain Overpass highway query from the acquisition bbox', () => {
@@ -208,8 +200,12 @@ describe('official-first acquisition transport', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
-  it('fails closed when CKAN cannot resolve a usable source URL', async () => {
-    const resource = OFFICIAL_RESOURCES[0];
+  it('fails closed when fallback CKAN metadata cannot resolve a usable source URL', async () => {
+    const resource = {
+      id: 'legacy-official-resource',
+      resourceId: 'legacy-resource-id',
+      provider: 'Official fixture provider',
+    };
     const fetcher = async () => ({ ok: true, json: async () => ({ success: true, result: { id: resource.resourceId } }) });
 
     await expect(resolveCkanResource(resource, fetcher)).rejects.toThrow(/source url/i);
@@ -224,26 +220,10 @@ describe('Veladero acquisition artifact set', () => {
     const now = () => '2026-08-30T19:20:00.000Z';
     const fetcher = vi.fn(async (url) => {
       const text = String(url);
-      if (text.startsWith(CKAN_RESOURCE)) {
-        const resource = OFFICIAL_RESOURCES.find((item) => text.endsWith(item.resourceId));
-        if (!resource) return { ok: false, status: 404, json: async () => ({}) };
-        return {
-          ok: true,
-          json: async () => ({
-            success: true,
-            result: {
-              id: resource.resourceId,
-              name: resource.id,
-              format: 'WFS',
-              url: `https://${resource.id}.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads`,
-            },
-          }),
-        };
-      }
-      if (text.includes('dnv-rutas-nacionales')) {
+      if (text.includes('typeName=transporte%3Avial_nacional')) {
         return { ok: true, json: async () => ({ type: 'FeatureCollection', features: [lineFeature('dnv-40', [[-68.55, -31.53], [-68.7, -31.0]], { ruta: '40' })] }) };
       }
-      if (text.includes('ign-rutas-provinciales')) {
+      if (text.includes('typeName=transporte%3Avial_provincial')) {
         return { ok: true, json: async () => ({ type: 'FeatureCollection', features: [lineFeature('ign-436', [[-68.7, -31.0], [-69.27, -30.19]], { ruta: '436' })] }) };
       }
       if (text === overpassEndpoint) {
