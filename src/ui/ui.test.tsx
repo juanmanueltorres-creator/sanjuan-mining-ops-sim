@@ -89,4 +89,29 @@ describe('operational UI', () => {
     expect(screen.getByText(/modelled environment pending/i)).toBeVisible();
     expect(screen.queryByText(/safe|unsafe|road closed/i)).not.toBeInTheDocument();
   });
+
+  it('shows modelled weather-at-passage with source state when environment context exists', () => {
+    const enriched: VehicleSnapshot = {
+      ...selected,
+      environmentContext: {
+        sourceState: 'READY',
+        temperatureC: -1.4,
+        precipitationMm: 0.2,
+        snowfallCm: 0,
+        windSpeedKmh: 34.1,
+        windGustKmh: 58,
+        windDirectionDeg: 271,
+        evidenceRefs: ['open-meteo-forecast-20260830'],
+      },
+    };
+
+    render(<VehiclePanel vehicle={enriched} corridorName="San Juan → Veladero" />);
+
+    expect(screen.getByText('MODELLED ENVIRONMENT')).toBeVisible();
+    expect(screen.getByText('READY')).toBeVisible();
+    expect(screen.getByText('-1.4 °C')).toBeVisible();
+    expect(screen.getByText('58.0 km/h')).toBeVisible();
+    expect(screen.getByText('0.2 mm')).toBeVisible();
+    expect(screen.queryByText(/safe|unsafe|road closed/i)).not.toBeInTheDocument();
+  });
 });
