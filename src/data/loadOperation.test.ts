@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadStaticOperationData } from './loadOperation';
+import { loadStaticOperationData, loadStaticRunArtifacts } from './loadOperation';
 
 const evidence = (id: string) => ({
   id,
@@ -80,6 +80,51 @@ function makeFetcher(projectOverride = projects) {
   };
 }
 
+const runFixture = {
+  id: 'sanjuan-v0-run-20260830-v1',
+  targetDate: '2026-08-30',
+  issuedAt: '2026-08-30T08:28:42.682Z',
+  dataAsOf: '2026-08-30T08:28:42.682Z',
+  timezone: 'America/Argentina/San_Juan',
+  mode: 'SIMULATED',
+  modelVersion: 'movement-v0.1',
+  scenarioVersion: 'sanjuan-operation-v0.1',
+  seed: 'sanjuan-v0-20260830',
+  environmentSnapshotId: 'environment-sj-20260830-v1',
+  provenance: ['open-meteo-forecast-20260830'],
+};
+
+const environmentFixture = {
+  schemaVersion: 'sanjuan.environment/v1',
+  id: 'environment-sj-20260830-v1',
+  issuedAt: '2026-08-30T08:28:42.682Z',
+  dataAsOf: '2026-08-30T08:28:42.682Z',
+  targetDate: '2026-08-30',
+  timezone: 'America/Argentina/San_Juan',
+  provider: 'Open-Meteo Forecast API · Best Match',
+  modelKind: 'FORECAST',
+  sourceState: 'READY',
+  evidenceRefs: ['open-meteo-forecast-20260830'],
+  limitations: ['Modelled weather only.'],
+  nodes: [{
+    id: 'hualilan-env-1', name: 'node', corridorId: 'hualilan', distanceKm: 0,
+    lat: -31.5375, lon: -68.5364, elevationM: 650,
+    hourly: [{
+      time: '2026-08-30T06:00:00-03:00', temperatureC: 11.1, precipitationMm: 0,
+      snowfallCm: 0, windSpeedKmh: 1.9, windGustKmh: 9.7, windDirectionDeg: 253,
+    }],
+  }],
+};
+
+function makeRunFetcher(environmentOverride = environmentFixture, runOverride = runFixture) {
+  return async (url: string) => {
+    const body = url === '/data/runs/sanjuan-v0-run.v1.json' ? runOverride
+      : url === '/data/environment/environment-sj-20260830.json' ? environmentOverride
+        : null;
+    return body ? { ok: true, json: async () => body } : { ok: false, json: async () => ({}) };
+  };
+}
+
 describe('loadStaticOperationData', () => {
   it('loads exactly 10 projects and the three active corridor bundles', async () => {
     const data = await loadStaticOperationData(makeFetcher());
@@ -91,5 +136,19 @@ describe('loadStaticOperationData', () => {
   it('fails closed when a project references missing evidence', async () => {
     const broken = projects.map((project, i) => i === 0 ? { ...project, evidenceRefs: ['missing'] } : project);
     await expect(loadStaticOperationData(makeFetcher(broken))).rejects.toThrow(/missing evidence refs/i);
+  });
+});
+
+describe('loadStaticRunArtifacts', () => {
+  it('loads the exact versioned run and environment snapshot together', async () => {
+    const artifacts = await loadStaticRunArtifacts(makeRunFetcher());
+    expect(artifacts.run.seed).toBe('sanjuan-v0-20260830');
+    expect(artifacts.environment.id).toBe(artifacts.run.environmentSnapshotId);
+    expect(artifacts.environment.sourceState).toBe('READY');
+  });
+
+  it('fails closed when the run references a different environment artifact', async () => {
+    const brokenEnvironment = { ...environmentFixture, id: 'environment-other' };
+    await expect(loadStaticRunArtifacts(makeRunFetcher(brokenEnvironment))).rejects.toThrow(/does not match run artifact/i);
   });
 });
