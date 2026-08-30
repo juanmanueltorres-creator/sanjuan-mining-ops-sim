@@ -39,10 +39,10 @@ V0.2 may be described internally as an experimental micro-digital-twin or territ
   - additional simulated planned stop;
   - segment-level synthetic speed multiplier.
 - Deterministic scenario compilation.
-- Versioned scenario definitions and rule-set identity.
+- Versioned scenario definitions, scenario-engine identity and rule-set identity.
 - Scenario fingerprinting from canonical inputs.
 - Reuse of the existing V0 simulation engine.
-- Scenario summaries and neutral deltas against Baseline.
+- Per-vehicle scenario summaries plus neutral corridor-level deltas against Baseline.
 - Modelled environment context evaluated at the resulting passage time.
 - Compact map-first scenario selection and comparison UI.
 - Explicit provenance and fail-closed validation for every scenario rule.
@@ -162,7 +162,7 @@ effective spec   movement policy
  OperationalSnapshot(s)
             │
             ▼
-    ScenarioSummary
+     ScenarioResult
             │
             ▼
   ScenarioComparison
@@ -227,7 +227,7 @@ interface ScenarioDefinition {
   corridorId: 'veladero';
 
   baseRunId: string;
-  scenarioVersion: string;
+  engineVersion: string;
   ruleSetVersion: string;
   seed: string | number;
 
@@ -242,8 +242,8 @@ Requirements:
 
 - `baseRunId` must exactly resolve to the loaded `OperationalRun.id`.
 - `corridorId` is `veladero` only in V0.2.
-- `scenarioVersion` and `ruleSetVersion` are explicit and supported.
-- `seed` is explicit and deterministic.
+- `engineVersion` and `ruleSetVersion` are explicit and supported.
+- `seed` must exactly equal the loaded baseline `OperationalRun.seed` in V0.2; scenario rules do not introduce a second stochastic baseline.
 - every `evidenceRef` resolves fail-closed.
 - the object is serializable and canonicalizable.
 
@@ -276,7 +276,7 @@ Semantics:
 scenario departure = baseline departure + offsetMinutes
 ```
 
-Nothing else changes directly.
+Nothing else changes directly. The resulting departure for every targeted vehicle must remain within the configured simulation schedule window; otherwise compilation fails.
 
 V0.2 reference scenario:
 
@@ -355,7 +355,7 @@ V0.2 reference scenario:
 
 ```text
 Scenario C
-Explicit high-mountain/selected-segment speed multiplier ×0.80
+Explicit selected-segment speed multiplier ×0.80
 ```
 
 The exact V0.1 segment identifier used by Scenario C is selected from the final merged Veladero corridor data. V0.2 must not invent a target segment name before that asset exists.
@@ -439,6 +439,7 @@ Conceptual output:
 interface ScenarioCompilation {
   scenarioId: string;
   baseRunId: string;
+  baselineFingerprint: string;
   fingerprint: string;
   appliedRuleIds: string[];
   effectiveSpec: SanJuanOperationSpec;
@@ -447,6 +448,8 @@ interface ScenarioCompilation {
 ```
 
 The exact runtime type may include a separate movement policy rather than embedding all speed modifiers in the operation spec. The key requirement is that the baseline objects remain immutable and the engine receives deterministic resolved inputs.
+
+`baselineFingerprint` is computed from a canonical representation of the baseline inputs relevant to V0.2, including at minimum the Veladero operation/corridor inputs, baseline run identity/version fields and environment snapshot identity. A baseline artifact mutation must therefore change the baseline fingerprint rather than silently reusing the same scenario identity.
 
 ## 13. Speed Resolver Seam
 
@@ -508,8 +511,8 @@ Each compilation receives a reproducible fingerprint derived from canonical dete
 
 ```text
 hash(
-  baseRunId
-  + scenarioVersion
+  baselineFingerprint
+  + engineVersion
   + ruleSetVersion
   + seed
   + canonicalRules
@@ -523,6 +526,7 @@ Requirements:
 - same logical inputs → same fingerprint;
 - rule-array ordering does not change the fingerprint;
 - changed rule parameters change the fingerprint;
+- changed relevant baseline inputs change `baselineFingerprint` and therefore the scenario fingerprint;
 - no timestamp, browser state or random runtime value participates in canonical identity.
 
 ## 16. ScenarioResult
@@ -537,16 +541,18 @@ Conceptual structure:
 interface ScenarioResult {
   scenarioId: string;
   baseRunId: string;
+  baselineFingerprint: string;
   fingerprint: string;
   appliedRuleIds: string[];
   vehicleTimings: ScenarioVehicleTiming[];
+  vehicleSegmentTimings: ScenarioVehicleSegmentTiming[];
   corridorSummary: ScenarioCorridorSummary;
   evidenceRefs: string[];
   limitations: string[];
 }
 ```
 
-Per-vehicle timing should include at least:
+Per-vehicle timing is authoritative and should include at least:
 
 ```text
 vehicleId
@@ -558,13 +564,27 @@ totalCycleMinutes
 plannedDwellMinutes
 ```
 
+`ScenarioVehicleSegmentTiming` records deterministic travel time by `vehicleId` and existing `segmentId`, because different synthetic vehicle types may have different baseline speed profiles.
+
+The corridor summary is a neutral aggregation over the targeted Veladero vehicles and should include at least:
+
+```text
+vehicleCount
+firstProjectArrivalMinute
+lastProjectArrivalMinute
+meanOutboundDurationMinutes
+totalScenarioAddedDwellMinutes
+```
+
+No single corridor-level `projectArrivalMinute` is permitted because multiple vehicles are being simulated.
+
 ## 17. Time by Operational Segment
 
-V0.2 should expose time spent traversing each existing Veladero operational segment.
+V0.2 should expose time spent traversing each existing Veladero operational segment per targeted vehicle.
 
 The comparison uses the same operational segment boundaries already defined by the corridor. It does not create a new segment system.
 
-Example presentation:
+Example for a selected vehicle:
 
 ```text
 260–340 km
@@ -628,16 +648,23 @@ interface ScenarioComparison {
   baselineScenarioId: string;
   comparedScenarioId: string;
 
-  projectArrivalDeltaMinutes: number;
-  totalCycleDeltaMinutes: number;
-  dwellDeltaMinutes: number;
+  vehicleDeltas: ScenarioVehicleDelta[];
+  vehicleSegmentTimeDeltas: ScenarioVehicleSegmentTimeDelta[];
 
-  segmentTimeDeltas: SegmentTimeDelta[];
+  corridorDelta: {
+    firstProjectArrivalDeltaMinutes: number;
+    lastProjectArrivalDeltaMinutes: number;
+    meanOutboundDurationDeltaMinutes: number;
+    totalScenarioAddedDwellDeltaMinutes: number;
+  };
+
   passageContextChanges: PassageContextChange[];
   unchangedTerritorialDimensions: string[];
   appliedRuleIds: string[];
 }
 ```
+
+Per-vehicle deltas are authoritative for ETA/cycle interpretation. Corridor deltas summarize the set without pretending the fleet has one single ETA.
 
 The comparison reports deltas only. It does not contain:
 
@@ -677,8 +704,8 @@ Veladero synthetic departures +60 minutes
 
 Expected qualitative result:
 
-- departure times +60 min;
-- project arrival times +60 min when no other rule applies;
+- each targeted departure +60 min;
+- each targeted project arrival +60 min when no other rule applies;
 - travel duration unchanged;
 - corridor/elevation unchanged;
 - environment-at-passage may differ because passage timestamps differ.
@@ -707,7 +734,7 @@ Selected Veladero operational segment synthetic speed ×0.80
 Expected qualitative result:
 
 - earlier segments unchanged;
-- target segment travel time changes;
+- target segment travel time changes according to each vehicle's baseline synthetic speed;
 - downstream event times inherit the accumulated delta;
 - baseline speed assumptions resume outside the target segment;
 - no road-condition or safety inference is made.
@@ -782,9 +809,11 @@ A compact comparison action is available when the active scenario is not Baselin
 
 The comparison opens in a contained drawer or equivalent progressive-disclosure surface. It does not open a large central modal and must not permanently obscure the map.
 
+When a Veladero vehicle is selected, the drawer prioritizes that vehicle's timing and segment deltas. When no vehicle is selected, the drawer presents the neutral Veladero corridor summary (`first/last project arrival`, mean outbound duration and scenario-added dwell) rather than inventing a single fleet ETA.
+
 The drawer distinguishes authored input from calculated output.
 
-Example:
+Example for a selected vehicle:
 
 ```text
 AUTHORED CHANGE
@@ -809,16 +838,18 @@ and relevant held-constant dimensions.
 
 ## 26. Multi-Scenario Summary Table
 
-V0.2 may provide a compact table comparing Baseline, A, B and C summaries.
+A compact Baseline/A/B/C table is optional in V0.2. It is not required to prove the Scenario Engine architecture.
 
-Example:
+If included, it must use well-defined per-vehicle or corridor-summary metrics and clearly state which level is being shown. It must not collapse multiple vehicle arrival times into an unlabeled single ETA.
+
+Illustrative corridor-summary form:
 
 | Metric | Baseline | A | B | C |
 | --- | ---: | ---: | ---: | ---: |
-| Project arrival | 12:14 | 13:14 | 12:29 | 12:47 |
-| Outbound duration | 314m | 314m | 329m | 347m |
-| Added dwell | 0m | 0m | 15m | 0m |
-| Target-segment time | 160m | 160m | 160m | 193m |
+| First project arrival | 12:14 | 13:14 | 12:29 | 12:47 |
+| Last project arrival | 13:05 | 14:05 | 13:20 | 13:41 |
+| Mean outbound duration | 314m | 314m | 329m | 347m |
+| Scenario-added dwell | 0m | 0m | 15m | 0m |
 
 Values above are illustrative only; implementation uses deterministic calculated values from the final baseline and scenario inputs.
 
@@ -832,8 +863,9 @@ Scenario compilation fails before execution for invalid identity or rule state.
 
 - unknown `baseRunId`;
 - loaded run does not match `baseRunId`;
+- scenario `seed` does not exactly equal baseline `OperationalRun.seed`;
 - corridor other than Veladero;
-- unsupported `scenarioVersion`;
+- unsupported `engineVersion`;
 - unsupported `ruleSetVersion`;
 - unresolved evidence references.
 
@@ -846,11 +878,11 @@ Scenario compilation fails before execution for invalid identity or rule state.
 - unknown target `segmentId`;
 - invalid or out-of-range `distanceKm`;
 - negative stop dwell;
-- invalid departure time after applying an offset;
+- departure outside the configured simulation schedule after applying an offset;
 - non-finite parameter;
 - multiplier <= 0.
 
-A defensive authoring range should reject obvious multiplier mistakes. Initial recommended integrity guard:
+A defensive authoring range should reject obvious multiplier mistakes. Initial integrity guard:
 
 ```text
 0.1 <= multiplier <= 2.0
@@ -884,11 +916,11 @@ The comparison may explicitly show that Baseline context is available while Scen
 Scenario execution must depend only on explicit deterministic inputs:
 
 ```text
-baseline immutable inputs
+canonical baseline inputs
 + canonical ScenarioDefinition
++ engineVersion
 + ruleSetVersion
-+ modelVersion
-+ seed
++ baseline seed
 ```
 
 Forbidden hidden inputs include:
@@ -931,15 +963,17 @@ Implementation follows strict RED → GREEN development.
 - empty rule set produces no operational changes;
 - same scenario compiled twice is exactly equal;
 - logically identical reordered rules produce the same compilation/fingerprint;
+- scenario seed differing from baseline run seed fails;
 - duplicate/conflicting rules fail;
 - unresolved evidence fails;
 - unknown segment fails;
-- invalid stop/dwell/departure/multiplier fails.
+- invalid stop/dwell/departure/multiplier fails;
+- relevant baseline mutation changes `baselineFingerprint`.
 
 ### Departure rule tests
 
-- departure shifts exactly by configured offset;
-- project arrival shifts consistently;
+- each targeted departure shifts exactly by configured offset;
+- each targeted project arrival shifts consistently;
 - driving duration remains unchanged;
 - unrelated corridors/vehicles remain unchanged.
 
@@ -954,7 +988,7 @@ Implementation follows strict RED → GREEN development.
 
 - only the target segment uses the modified speed resolver;
 - earlier segment timings remain unchanged;
-- target segment time changes deterministically;
+- target segment time changes deterministically per vehicle type;
 - downstream times inherit the accumulated delta;
 - baseline resolver remains unchanged outside the target.
 
@@ -962,14 +996,15 @@ Implementation follows strict RED → GREEN development.
 
 - changed passage time uses the corresponding environment lookup time;
 - missing context remains unavailable;
-- changing only EnvironmentSnapshot content cannot change vehicle timing when no environmental transformation rule exists.
+- changing only EnvironmentSnapshot values cannot change vehicle timing when no environmental transformation rule exists.
 
-### Comparison tests
+### Result/comparison tests
 
-- arrival delta correct;
-- cycle delta correct;
-- dwell delta correct;
-- segment-time delta correct;
+- per-vehicle arrival/cycle deltas are correct;
+- per-vehicle segment-time deltas are correct;
+- corridor first/last-arrival deltas are correct;
+- mean outbound-duration delta is calculated deterministically;
+- scenario-added dwell delta is correct;
 - unchanged dimensions preserved;
 - applied rule IDs preserved;
 - no recommendation/ranking fields exist.
@@ -1036,7 +1071,8 @@ New visual acceptance invariants:
 - comparison drawer remains contained;
 - drawer uses internal scrolling;
 - no uncontrolled horizontal overflow;
-- Baseline/A/B/C table remains readable or responsively transformed;
+- selected-vehicle vs corridor-summary comparison level is clearly labeled;
+- if the optional Baseline/A/B/C table is implemented, it remains readable or responsively transformed;
 - mobile comparison does not cover the entire viewport;
 - map remains the dominant visual surface;
 - no permanent large scenario card obscures the map.
@@ -1049,6 +1085,7 @@ CI WebGL limitations remain documented exactly as in the existing project accept
 | --- | --- |
 | Baseline | Exact V0 regression with empty rules |
 | Determinism | Same inputs produce identical result |
+| Scenario identity | Seed/versions/base run fail closed |
 | Scenario A | Departure offset only |
 | Scenario B | Explicit simulated stop only |
 | Scenario C | Explicit segment speed multiplier only |
@@ -1056,7 +1093,7 @@ CI WebGL limitations remain documented exactly as in the existing project accept
 | Provenance | Every rule and input reference resolves |
 | Missing data | Remains unavailable |
 | UI | One active scenario on the map |
-| Comparison | Neutral deltas only |
+| Comparison | Neutral per-vehicle/corridor deltas only |
 | Claims | No prediction/recommendation/safety inference |
 | Responsive | No clipping or map obstruction |
 | Build | Full production gate green on one final HEAD |
@@ -1072,9 +1109,9 @@ Scenario A — departure offset
 Scenario B — additional simulated stop
 Scenario C — segment synthetic speed multiplier
 deterministic compiler
-scenario fingerprint
-scenario summaries
-neutral comparison
+baseline + scenario fingerprints
+per-vehicle scenario results
+neutral corridor summaries
 modelled context at resulting passage time
 scenario provenance
 compact map-first UI
@@ -1117,7 +1154,7 @@ After V0.1 Road Geometry is merged and accepted:
 
 1. update `main` to the merged V0.1 state;
 2. create `feat/v0.2-scenario-engine` from that `main`;
-3. ensure this approved spec is present on the implementation base;
+3. ensure this approved spec is present on the implementation base (merge/cherry-pick the docs-only spec commit as appropriate);
 4. execute the implementation plan with TDD;
 5. preserve the V0.1 geometry and deterministic acceptance gates.
 
