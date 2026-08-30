@@ -370,7 +370,7 @@ San Juan → Tudcum → Conconta → Despoblados → Veladero
 
 Anchor tolerances are data-quality checks only, never safety/navigation tolerances.
 
-Each tolerance must be explicit in the build manifest rather than hidden in UI code. Named locality/pass anchors should normally use a low-kilometer tolerance; any broader tolerance requires a documented reason.
+Each anchor declares `maxDistanceToRouteKm` in the manifest. The default for a named locality or mountain-pass anchor is **2 km**. A tolerance above 2 km and up to **5 km** is allowed only when the source feature represents a broad geographic passage rather than a precise point, and the manifest must state the reason. Values above 5 km fail validation.
 
 ### 11.3 Distance validation
 
@@ -387,18 +387,25 @@ A default acceptance band of ±10% around 360 km may be used as a coarse corrupt
 
 ### 11.4 Connectivity validation
 
-Adjacent sourced segments must connect within an explicit small spatial tolerance.
+Adjacent sourced segments must connect within **250 m** by default.
 
-If a gap exceeds that tolerance:
+If the endpoint gap exceeds 250 m:
 
 - CI/build must not silently draw a straight bridge as `PUBLIC_ROAD`;
-- the gap must become an explicit `RECONSTRUCTED_ACCESS`/`APPROXIMATE_APPROACH` segment with provenance, or the build fails.
+- the missing connection must become an explicit `RECONSTRUCTED_ACCESS` or `APPROXIMATE_APPROACH` segment with both endpoint anchors, method and provenance;
+- a gap greater than **2 km** fails validation unless the manifest explicitly defines that gap itself as a reconstructed/approximate segment and documents why no better source geometry is available.
+
+These numbers are geometry-integrity checks, not navigation or access tolerances.
 
 ### 11.5 No giant unsupported chords
 
 The V0 visual defect must not return.
 
-A validation rule should flag long straight derived chords in high-curvature/mountain sections when they are not present in the source geometry. This is a geometry-quality guard, not a routing/safety assertion.
+For derived high-mountain geometry, the default `maxDerivedChordKm` is **5 km**. A longer straight derived chord fails validation unless the manifest explicitly whitelists that segment and ties the exception to evidence showing that the geometry is genuinely source-backed or that no higher-fidelity geometry is available.
+
+Source-backed line segments are not simplified merely to satisfy this rule; the guard applies to **derived bridging chords**, not to legitimate source geometry.
+
+This is a geometry-quality guard, not a routing/safety assertion.
 
 ## 12. Simulation Compatibility
 
@@ -502,7 +509,12 @@ Headless CI inability to initialize full WebGL must continue to fail over gracef
 
 For every source snapshot the manifest records the available source licence/attribution terms.
 
-OpenStreetMap data is distributed under ODbL and requires attribution. If OSM geometry is incorporated into the versioned corridor database, repository documentation and the interactive map must retain compliant attribution and a path to licence information.
+OpenStreetMap data is distributed under ODbL and requires attribution. If OSM geometry is incorporated into a versioned corridor artifact:
+
+- the artifact/source manifest must carry an ODbL notice and OpenStreetMap attribution;
+- repository documentation must distinguish **code licensing** from **data licensing** rather than implying that the repository MIT licence relicenses OSM-derived data;
+- the interactive map must retain visible OpenStreetMap attribution and a path to licence information;
+- redistribution/share-alike obligations applicable to the resulting database or derivative database must be respected.
 
 Official datasets are not assumed to have interchangeable licences. Their published licensing metadata is recorded individually during implementation.
 
