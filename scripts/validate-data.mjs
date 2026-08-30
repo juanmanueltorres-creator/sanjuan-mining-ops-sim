@@ -6,6 +6,7 @@ const CORRIDORS = ['hualilan', 'veladero', 'los-azules'];
 const GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH', 'PROJECT_LOCATION']);
 const SOURCE_STATES = new Set(['READY', 'STALE', 'PARTIAL', 'UNAVAILABLE']);
 const MODEL_KINDS = new Set(['FORECAST', 'HISTORICAL_REFERENCE']);
+const TRAFFIC_EVIDENCE_ROLES = new Set(['CALIBRATION', 'ANALOGUE', 'SYNTHETIC_ASSUMPTION']);
 const TIMEZONE = 'America/Argentina/San_Juan';
 const EPS = 1e-6;
 
@@ -103,6 +104,41 @@ for (const corridorId of CORRIDORS) {
   assert(Math.abs(routeSamples.at(-1).distanceKm - metadata.totalDistanceKm) <= EPS, `${corridorId}: final route sample must equal totalDistanceKm`);
 }
 
+const traffic = await readJson('public/data/calibration/traffic.v1.json');
+assert(traffic.schemaVersion === 'sanjuan.traffic-calibration/v1', 'traffic: unsupported schemaVersion');
+assert(typeof traffic.id === 'string' && traffic.id.length > 0, 'traffic: id required');
+assert(Number.isFinite(traffic.baseVisibleVehicles) && traffic.baseVisibleVehicles >= 0, 'traffic: baseVisibleVehicles must be non-negative');
+assert(Number.isInteger(traffic.maxVisibleVehicles) && traffic.maxVisibleVehicles >= 0, 'traffic: maxVisibleVehicles must be a non-negative integer');
+assert(traffic.maxVisibleVehicles <= 24, 'traffic: background pool must remain capped at 24 visible vehicles');
+
+assert(Array.isArray(traffic.timeBands) && traffic.timeBands.length > 0, 'traffic: timeBands required');
+const trafficBands = [...traffic.timeBands].sort((a, b) => a.startMinute - b.startMinute);
+assert(trafficBands[0].startMinute === 360, 'traffic: first time band must start at 06:00');
+assert(trafficBands.at(-1).endMinute === 1201, 'traffic: final time band must cover 20:00');
+for (let i = 0; i < trafficBands.length; i += 1) {
+  const band = trafficBands[i];
+  assert(Number.isFinite(band.startMinute) && Number.isFinite(band.endMinute) && band.endMinute > band.startMinute, `traffic: invalid time band ${i}`);
+  assert(Number.isFinite(band.relativeIntensity) && band.relativeIntensity >= 0, `traffic: invalid relativeIntensity in band ${i}`);
+  if (i > 0) assert(band.startMinute === trafficBands[i - 1].endMinute, `traffic: time-band gap/overlap before ${band.startMinute}`);
+}
+
+assert(Array.isArray(traffic.corridorWeights) && traffic.corridorWeights.length === CORRIDORS.length, `traffic: expected ${CORRIDORS.length} corridor weights`);
+const trafficCorridorIds = traffic.corridorWeights.map((entry) => entry.corridorId).sort();
+assert(JSON.stringify(trafficCorridorIds) === JSON.stringify([...CORRIDORS].sort()), `traffic: corridor weights must cover ${CORRIDORS.join(', ')}`);
+assert(new Set(trafficCorridorIds).size === trafficCorridorIds.length, 'traffic: duplicate corridor weights');
+for (const entry of traffic.corridorWeights) {
+  assert(Number.isFinite(entry.weight) && entry.weight > 0, `traffic/${entry.corridorId}: weight must be positive`);
+}
+
+assert(Array.isArray(traffic.evidence) && traffic.evidence.length > 0, 'traffic: evidence required');
+const trafficEvidence = new Map(traffic.evidence.map((ref) => [ref.id, ref]));
+assertRefs(traffic.evidenceRefs, trafficEvidence, 'traffic');
+for (const requiredRole of TRAFFIC_EVIDENCE_ROLES) {
+  assert(traffic.evidence.some((ref) => ref.role === requiredRole), `traffic: missing ${requiredRole} evidence`);
+}
+assert(Array.isArray(traffic.limitations) && traffic.limitations.length > 0, 'traffic: limitations required');
+assert(traffic.limitations.some((item) => /not live san juan traffic/i.test(item)), 'traffic: limitations must explicitly state that traffic is not live San Juan traffic');
+
 const [environment, run] = await Promise.all([
   readJson('public/data/environment/environment-sj-20260830.json'),
   readJson('public/data/runs/sanjuan-v0-run.v1.json'),
@@ -152,4 +188,4 @@ for (const corridorId of CORRIDORS) {
   }
 }
 
-console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, one immutable run, ${evidenceCount} territorial evidence records.`);
+console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, one immutable run, traffic calibration ${traffic.id}, ${evidenceCount} territorial evidence records.`);
