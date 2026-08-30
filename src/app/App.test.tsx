@@ -14,6 +14,7 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: /start shift/i }));
 
     expect(screen.queryByRole('button', { name: /start shift/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /3d operational map/i })).toBeVisible();
     expect(screen.getAllByText('06:00').length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /play/i })).toBeVisible();
   });
