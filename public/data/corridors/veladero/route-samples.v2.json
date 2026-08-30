@@ -10517,7 +10517,7 @@
       "lon": -69.63336849,
       "lat": -29.966225375,
       "elevationM": 4848.306437,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 259.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10527,7 +10527,7 @@
       "lon": -69.631059182,
       "lat": -29.965199496,
       "elevationM": 4845.079833,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 259.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10537,7 +10537,7 @@
       "lon": -69.629073529,
       "lat": -29.963829194,
       "elevationM": 4841.853228,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 260,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10547,7 +10547,7 @@
       "lon": -69.627445472,
       "lat": -29.962078351,
       "elevationM": 4838.626623,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 260.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10557,7 +10557,7 @@
       "lon": -69.627722457,
       "lat": -29.960104346,
       "elevationM": 4835.400019,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 260.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10567,7 +10567,7 @@
       "lon": -69.628755311,
       "lat": -29.958041796,
       "elevationM": 4832.173414,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 260.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10577,7 +10577,7 @@
       "lon": -69.630518895,
       "lat": -29.956704181,
       "elevationM": 4828.946809,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 261,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10587,7 +10587,7 @@
       "lon": -69.633016793,
       "lat": -29.956095055,
       "elevationM": 4825.720204,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 261.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10597,7 +10597,7 @@
       "lon": -69.63551469,
       "lat": -29.955485928,
       "elevationM": 4822.4936,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 261.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10607,7 +10607,7 @@
       "lon": -69.638012588,
       "lat": -29.954876801,
       "elevationM": 4819.266995,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 261.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10617,7 +10617,7 @@
       "lon": -69.640510485,
       "lat": -29.954267675,
       "elevationM": 4816.04039,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 262,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10627,7 +10627,7 @@
       "lon": -69.641677467,
       "lat": -29.953611185,
       "elevationM": 4812.813786,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 262.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10637,7 +10637,7 @@
       "lon": -69.641301577,
       "lat": -29.953309536,
       "elevationM": 4809.587181,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 262.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10647,7 +10647,7 @@
       "lon": -69.643288491,
       "lat": -29.953501937,
       "elevationM": 4806.360576,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 262.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10657,7 +10657,7 @@
       "lon": -69.641116276,
       "lat": -29.952272055,
       "elevationM": 4803.133972,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 263,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10667,7 +10667,7 @@
       "lon": -69.643129469,
       "lat": -29.952795017,
       "elevationM": 4799.907367,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 263.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10677,7 +10677,7 @@
       "lon": -69.645242665,
       "lat": -29.953927717,
       "elevationM": 4796.680762,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 263.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10687,7 +10687,7 @@
       "lon": -69.646812648,
       "lat": -29.955717851,
       "elevationM": 4793.454157,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 263.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10697,7 +10697,7 @@
       "lon": -69.64838263,
       "lat": -29.957507985,
       "elevationM": 4790.227553,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 264,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10707,7 +10707,7 @@
       "lon": -69.65034949,
       "lat": -29.95882616,
       "elevationM": 4787.000948,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 264.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10717,7 +10717,7 @@
       "lon": -69.652797545,
       "lat": -29.959572108,
       "elevationM": 4783.774343,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 264.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10727,7 +10727,7 @@
       "lon": -69.655301278,
       "lat": -29.959957824,
       "elevationM": 4780.547739,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 264.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10737,7 +10737,7 @@
       "lon": -69.65788962,
       "lat": -29.959796125,
       "elevationM": 4777.321134,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 265,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10747,7 +10747,7 @@
       "lon": -69.660477962,
       "lat": -29.959634427,
       "elevationM": 4774.094529,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 265.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10757,7 +10757,7 @@
       "lon": -69.663066304,
       "lat": -29.959472728,
       "elevationM": 4770.867925,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 265.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10767,7 +10767,7 @@
       "lon": -69.665452622,
       "lat": -29.958602508,
       "elevationM": 4767.64132,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 265.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10777,7 +10777,7 @@
       "lon": -69.667830169,
       "lat": -29.957701528,
       "elevationM": 4764.414715,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 266,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10787,7 +10787,7 @@
       "lon": -69.670365528,
       "lat": -29.957755605,
       "elevationM": 4761.18811,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 266.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10797,7 +10797,7 @@
       "lon": -69.672939343,
       "lat": -29.958042403,
       "elevationM": 4757.961506,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 266.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10807,7 +10807,7 @@
       "lon": -69.675365232,
       "lat": -29.957924934,
       "elevationM": 4754.734901,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 266.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10817,7 +10817,7 @@
       "lon": -69.677278233,
       "lat": -29.956405786,
       "elevationM": 4751.508296,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 267,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10827,7 +10827,7 @@
       "lon": -69.679180122,
       "lat": -29.957333785,
       "elevationM": 4748.281692,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 267.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10837,7 +10837,7 @@
       "lon": -69.681157932,
       "lat": -29.958725101,
       "elevationM": 4745.055087,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 267.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10847,7 +10847,7 @@
       "lon": -69.683723211,
       "lat": -29.959064686,
       "elevationM": 4741.828482,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 267.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10857,7 +10857,7 @@
       "lon": -69.68628849,
       "lat": -29.959404271,
       "elevationM": 4738.601878,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 268,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10867,7 +10867,7 @@
       "lon": -69.688853768,
       "lat": -29.959743855,
       "elevationM": 4735.375273,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 268.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10877,7 +10877,7 @@
       "lon": -69.688790275,
       "lat": -29.96076145,
       "elevationM": 4732.148668,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 268.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10887,7 +10887,7 @@
       "lon": -69.686857008,
       "lat": -29.962261294,
       "elevationM": 4728.922063,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 268.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10897,7 +10897,7 @@
       "lon": -69.687632226,
       "lat": -29.963008002,
       "elevationM": 4725.695459,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 269,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10907,7 +10907,7 @@
       "lon": -69.690211937,
       "lat": -29.963252943,
       "elevationM": 4722.468854,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 269.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10917,7 +10917,7 @@
       "lon": -69.692791648,
       "lat": -29.963497883,
       "elevationM": 4719.242249,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 269.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10927,7 +10927,7 @@
       "lon": -69.695371359,
       "lat": -29.963742824,
       "elevationM": 4716.015645,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 269.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10937,7 +10937,7 @@
       "lon": -69.69788847,
       "lat": -29.964129817,
       "elevationM": 4712.78904,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 270,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10947,7 +10947,7 @@
       "lon": -69.700000193,
       "lat": -29.965436736,
       "elevationM": 4709.562435,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 270.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10957,7 +10957,7 @@
       "lon": -69.702111915,
       "lat": -29.966743655,
       "elevationM": 4706.335831,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 270.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10967,7 +10967,7 @@
       "lon": -69.704234894,
       "lat": -29.968032166,
       "elevationM": 4703.109226,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 270.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10977,7 +10977,7 @@
       "lon": -69.706669427,
       "lat": -29.968811205,
       "elevationM": 4699.882621,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 271,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10987,7 +10987,7 @@
       "lon": -69.70910396,
       "lat": -29.969590244,
       "elevationM": 4696.656016,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 271.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -10997,7 +10997,7 @@
       "lon": -69.711538493,
       "lat": -29.970369283,
       "elevationM": 4693.429412,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 271.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11007,7 +11007,7 @@
       "lon": -69.713812953,
       "lat": -29.970118225,
       "elevationM": 4690.202807,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 271.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11017,7 +11017,7 @@
       "lon": -69.715923013,
       "lat": -29.968809211,
       "elevationM": 4686.976202,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 272,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11027,7 +11027,7 @@
       "lon": -69.718055097,
       "lat": -29.967544571,
       "elevationM": 4683.749598,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 272.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11037,7 +11037,7 @@
       "lon": -69.720603281,
       "lat": -29.967118302,
       "elevationM": 4680.522993,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 272.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11047,7 +11047,7 @@
       "lon": -69.722927243,
       "lat": -29.967230086,
       "elevationM": 4677.296388,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 272.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11057,7 +11057,7 @@
       "lon": -69.724573471,
       "lat": -29.968968203,
       "elevationM": 4674.069784,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 273,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11067,7 +11067,7 @@
       "lon": -69.726219698,
       "lat": -29.97070632,
       "elevationM": 4670.843179,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 273.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11077,7 +11077,7 @@
       "lon": -69.727247756,
       "lat": -29.970775801,
       "elevationM": 4667.616574,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 273.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11087,7 +11087,7 @@
       "lon": -69.727418973,
       "lat": -29.968532398,
       "elevationM": 4664.389969,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 273.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11097,7 +11097,7 @@
       "lon": -69.72759019,
       "lat": -29.966288995,
       "elevationM": 4661.163365,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 274,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11107,7 +11107,7 @@
       "lon": -69.727761407,
       "lat": -29.964045592,
       "elevationM": 4657.93676,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 274.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11117,7 +11117,7 @@
       "lon": -69.728491178,
       "lat": -29.961910066,
       "elevationM": 4654.710155,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 274.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11127,7 +11127,7 @@
       "lon": -69.729435981,
       "lat": -29.95981607,
       "elevationM": 4651.483551,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 274.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11137,7 +11137,7 @@
       "lon": -69.730380783,
       "lat": -29.957722074,
       "elevationM": 4648.256946,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 275,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11147,7 +11147,7 @@
       "lon": -69.731325586,
       "lat": -29.955628078,
       "elevationM": 4645.030341,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 275.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11157,7 +11157,7 @@
       "lon": -69.732715564,
       "lat": -29.953744927,
       "elevationM": 4641.803737,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 275.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11167,7 +11167,7 @@
       "lon": -69.734239401,
       "lat": -29.951925173,
       "elevationM": 4638.577132,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 275.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11177,7 +11177,7 @@
       "lon": -69.735763238,
       "lat": -29.950105419,
       "elevationM": 4635.350527,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 276,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11187,7 +11187,7 @@
       "lon": -69.737287074,
       "lat": -29.948285666,
       "elevationM": 4632.123922,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 276.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11197,7 +11197,7 @@
       "lon": -69.738810911,
       "lat": -29.946465912,
       "elevationM": 4628.897318,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 276.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11207,7 +11207,7 @@
       "lon": -69.740334747,
       "lat": -29.944646158,
       "elevationM": 4625.670713,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 276.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11217,7 +11217,7 @@
       "lon": -69.741858584,
       "lat": -29.942826405,
       "elevationM": 4622.444108,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 277,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11227,7 +11227,7 @@
       "lon": -69.742772512,
       "lat": -29.94073921,
       "elevationM": 4619.217504,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 277.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11237,7 +11237,7 @@
       "lon": -69.743562469,
       "lat": -29.938597655,
       "elevationM": 4615.990899,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 277.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11247,7 +11247,7 @@
       "lon": -69.744352426,
       "lat": -29.936456099,
       "elevationM": 4612.764294,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 277.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11257,7 +11257,7 @@
       "lon": -69.744447656,
       "lat": -29.934251713,
       "elevationM": 4609.53769,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 278,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11267,7 +11267,7 @@
       "lon": -69.74418502,
       "lat": -29.932014963,
       "elevationM": 4606.311085,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 278.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11277,7 +11277,7 @@
       "lon": -69.742897192,
       "lat": -29.930115721,
       "elevationM": 4603.08448,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 278.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11287,7 +11287,7 @@
       "lon": -69.74137998,
       "lat": -29.928291996,
       "elevationM": 4599.857875,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 278.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11297,7 +11297,7 @@
       "lon": -69.741511697,
       "lat": -29.926049867,
       "elevationM": 4596.631271,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 279,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11307,7 +11307,7 @@
       "lon": -69.741654332,
       "lat": -29.923804967,
       "elevationM": 4593.404666,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 279.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11317,7 +11317,7 @@
       "lon": -69.741796967,
       "lat": -29.921560067,
       "elevationM": 4590.178061,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 279.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11327,7 +11327,7 @@
       "lon": -69.740576668,
       "lat": -29.919737384,
       "elevationM": 4586.951457,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 279.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11337,7 +11337,7 @@
       "lon": -69.738824587,
       "lat": -29.918079439,
       "elevationM": 4583.724852,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 280,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11347,7 +11347,7 @@
       "lon": -69.738247812,
       "lat": -29.9158978,
       "elevationM": 4580.498247,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 280.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11357,7 +11357,7 @@
       "lon": -69.73779702,
       "lat": -29.913687522,
       "elevationM": 4577.271643,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 280.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11367,7 +11367,7 @@
       "lon": -69.737604056,
       "lat": -29.911445452,
       "elevationM": 4574.045038,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 280.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11377,7 +11377,7 @@
       "lon": -69.737411092,
       "lat": -29.909203382,
       "elevationM": 4570.818433,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 281,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11387,7 +11387,7 @@
       "lon": -69.737218127,
       "lat": -29.906961312,
       "elevationM": 4567.591828,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 281.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11397,7 +11397,7 @@
       "lon": -69.737025163,
       "lat": -29.904719242,
       "elevationM": 4564.365224,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 281.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11407,7 +11407,7 @@
       "lon": -69.736832198,
       "lat": -29.902477172,
       "elevationM": 4561.138619,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 281.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11417,7 +11417,7 @@
       "lon": -69.736639234,
       "lat": -29.900235102,
       "elevationM": 4557.912014,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 282,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11427,7 +11427,7 @@
       "lon": -69.736081747,
       "lat": -29.898050583,
       "elevationM": 4554.68541,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 282.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11437,7 +11437,7 @@
       "lon": -69.73535073,
       "lat": -29.895893462,
       "elevationM": 4551.458805,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 282.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11447,7 +11447,7 @@
       "lon": -69.734619713,
       "lat": -29.893736341,
       "elevationM": 4548.2322,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 282.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11457,7 +11457,7 @@
       "lon": -69.733888696,
       "lat": -29.891579219,
       "elevationM": 4545.005596,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 283,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11467,7 +11467,7 @@
       "lon": -69.733157679,
       "lat": -29.889422098,
       "elevationM": 4541.778991,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 283.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11477,7 +11477,7 @@
       "lon": -69.732426662,
       "lat": -29.887264977,
       "elevationM": 4538.552386,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 283.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11487,7 +11487,7 @@
       "lon": -69.731695645,
       "lat": -29.885107856,
       "elevationM": 4535.325781,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 283.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11497,7 +11497,7 @@
       "lon": -69.730964628,
       "lat": -29.882950734,
       "elevationM": 4532.099177,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 284,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11507,7 +11507,7 @@
       "lon": -69.730233611,
       "lat": -29.880793613,
       "elevationM": 4528.872572,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 284.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11517,7 +11517,7 @@
       "lon": -69.729502594,
       "lat": -29.878636492,
       "elevationM": 4525.645967,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 284.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11527,7 +11527,7 @@
       "lon": -69.728471281,
       "lat": -29.876575008,
       "elevationM": 4522.419363,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 284.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11537,7 +11537,7 @@
       "lon": -69.727419524,
       "lat": -29.874520034,
       "elevationM": 4519.192758,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 285,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11547,7 +11547,7 @@
       "lon": -69.726367768,
       "lat": -29.872465061,
       "elevationM": 4515.966153,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 285.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11557,7 +11557,7 @@
       "lon": -69.725316011,
       "lat": -29.870410087,
       "elevationM": 4512.739549,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 285.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11567,7 +11567,7 @@
       "lon": -69.724264255,
       "lat": -29.868355114,
       "elevationM": 4509.512944,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 285.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11577,7 +11577,7 @@
       "lon": -69.723212498,
       "lat": -29.86630014,
       "elevationM": 4506.286339,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 286,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11587,7 +11587,7 @@
       "lon": -69.722160741,
       "lat": -29.864245167,
       "elevationM": 4503.059734,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 286.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11597,7 +11597,7 @@
       "lon": -69.721108985,
       "lat": -29.862190193,
       "elevationM": 4499.83313,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 286.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11607,7 +11607,7 @@
       "lon": -69.720057228,
       "lat": -29.86013522,
       "elevationM": 4496.606525,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 286.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11617,7 +11617,7 @@
       "lon": -69.719005472,
       "lat": -29.858080246,
       "elevationM": 4493.37992,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 287,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11627,7 +11627,7 @@
       "lon": -69.717953715,
       "lat": -29.856025272,
       "elevationM": 4490.153316,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 287.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11637,7 +11637,7 @@
       "lon": -69.716901958,
       "lat": -29.853970299,
       "elevationM": 4486.926711,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 287.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11647,7 +11647,7 @@
       "lon": -69.715850202,
       "lat": -29.851915325,
       "elevationM": 4483.700106,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 287.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11657,7 +11657,7 @@
       "lon": -69.714798445,
       "lat": -29.849860352,
       "elevationM": 4480.473502,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 288,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11667,7 +11667,7 @@
       "lon": -69.713746689,
       "lat": -29.847805378,
       "elevationM": 4477.246897,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 288.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11677,7 +11677,7 @@
       "lon": -69.712505115,
       "lat": -29.84585431,
       "elevationM": 4474.020292,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 288.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11687,7 +11687,7 @@
       "lon": -69.710819715,
       "lat": -29.844146192,
       "elevationM": 4470.793687,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 288.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11697,7 +11697,7 @@
       "lon": -69.709134314,
       "lat": -29.842438073,
       "elevationM": 4467.567083,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 289,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11707,7 +11707,7 @@
       "lon": -69.707448913,
       "lat": -29.840729955,
       "elevationM": 4464.340478,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 289.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11717,7 +11717,7 @@
       "lon": -69.705763513,
       "lat": -29.839021836,
       "elevationM": 4461.113873,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 289.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11727,7 +11727,7 @@
       "lon": -69.703858159,
       "lat": -29.837512122,
       "elevationM": 4457.887269,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 289.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11737,7 +11737,7 @@
       "lon": -69.701825617,
       "lat": -29.836117137,
       "elevationM": 4454.660664,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 290,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11747,7 +11747,7 @@
       "lon": -69.699793075,
       "lat": -29.834722152,
       "elevationM": 4451.434059,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 290.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11757,7 +11757,7 @@
       "lon": -69.697760533,
       "lat": -29.833327167,
       "elevationM": 4448.207455,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 290.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11767,7 +11767,7 @@
       "lon": -69.695727992,
       "lat": -29.831932181,
       "elevationM": 4444.98085,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 290.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11777,7 +11777,7 @@
       "lon": -69.69369545,
       "lat": -29.830537196,
       "elevationM": 4441.754245,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 291,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11787,7 +11787,7 @@
       "lon": -69.691662908,
       "lat": -29.829142211,
       "elevationM": 4438.52764,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 291.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11797,7 +11797,7 @@
       "lon": -69.689630366,
       "lat": -29.827747226,
       "elevationM": 4435.301036,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 291.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11807,7 +11807,7 @@
       "lon": -69.687597824,
       "lat": -29.826352241,
       "elevationM": 4432.074431,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 291.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11817,7 +11817,7 @@
       "lon": -69.686751329,
       "lat": -29.824260847,
       "elevationM": 4428.847826,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 292,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11827,7 +11827,7 @@
       "lon": -69.686013661,
       "lat": -29.822105554,
       "elevationM": 4425.621222,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 292.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11837,7 +11837,7 @@
       "lon": -69.685275994,
       "lat": -29.81995026,
       "elevationM": 4422.394617,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 292.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11847,7 +11847,7 @@
       "lon": -69.683683511,
       "lat": -29.818182692,
       "elevationM": 4419.168012,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 292.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11857,7 +11857,7 @@
       "lon": -69.682064758,
       "lat": -29.816427039,
       "elevationM": 4415.941408,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 293,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11867,7 +11867,7 @@
       "lon": -69.680446006,
       "lat": -29.814671387,
       "elevationM": 4412.714803,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 293.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11877,7 +11877,7 @@
       "lon": -69.678827253,
       "lat": -29.812915734,
       "elevationM": 4409.488198,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 293.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11887,7 +11887,7 @@
       "lon": -69.678103769,
       "lat": -29.810847758,
       "elevationM": 4406.261593,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 293.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11897,7 +11897,7 @@
       "lon": -69.677871166,
       "lat": -29.808608534,
       "elevationM": 4403.034989,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 294,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11907,7 +11907,7 @@
       "lon": -69.679763433,
       "lat": -29.807402983,
       "elevationM": 4399.808384,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 294.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11917,7 +11917,7 @@
       "lon": -69.682160189,
       "lat": -29.806548752,
       "elevationM": 4396.581779,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 294.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11927,7 +11927,7 @@
       "lon": -69.684556946,
       "lat": -29.805694521,
       "elevationM": 4393.355175,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 294.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11937,7 +11937,7 @@
       "lon": -69.686953702,
       "lat": -29.804840291,
       "elevationM": 4390.12857,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 295,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11947,7 +11947,7 @@
       "lon": -69.689350458,
       "lat": -29.80398606,
       "elevationM": 4386.901965,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 295.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11957,7 +11957,7 @@
       "lon": -69.69189557,
       "lat": -29.803587368,
       "elevationM": 4383.675361,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 295.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11967,7 +11967,7 @@
       "lon": -69.694452913,
       "lat": -29.80322623,
       "elevationM": 4380.448756,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 295.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11977,7 +11977,7 @@
       "lon": -69.697010255,
       "lat": -29.802865093,
       "elevationM": 4377.222151,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 296,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11987,7 +11987,7 @@
       "lon": -69.699567598,
       "lat": -29.802503956,
       "elevationM": 4373.995546,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 296.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -11997,7 +11997,7 @@
       "lon": -69.702124941,
       "lat": -29.802142818,
       "elevationM": 4370.768942,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 296.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12007,7 +12007,7 @@
       "lon": -69.704433099,
       "lat": -29.801178281,
       "elevationM": 4367.542337,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 296.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12017,7 +12017,7 @@
       "lon": -69.706672815,
       "lat": -29.80004801,
       "elevationM": 4364.315732,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 297,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12027,7 +12027,7 @@
       "lon": -69.708912531,
       "lat": -29.798917739,
       "elevationM": 4361.089128,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 297.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12037,7 +12037,7 @@
       "lon": -69.710483417,
       "lat": -29.797140649,
       "elevationM": 4357.862523,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 297.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12047,7 +12047,7 @@
       "lon": -69.712020264,
       "lat": -29.795330639,
       "elevationM": 4354.635918,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 297.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12057,7 +12057,7 @@
       "lon": -69.71355711,
       "lat": -29.793520629,
       "elevationM": 4351.409314,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 298,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12067,7 +12067,7 @@
       "lon": -69.715093957,
       "lat": -29.791710619,
       "elevationM": 4348.182709,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 298.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12077,7 +12077,7 @@
       "lon": -69.716907556,
       "lat": -29.790111765,
       "elevationM": 4344.956104,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 298.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12087,7 +12087,7 @@
       "lon": -69.718778043,
       "lat": -29.788556315,
       "elevationM": 4341.729499,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 298.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12097,7 +12097,7 @@
       "lon": -69.72064853,
       "lat": -29.787000866,
       "elevationM": 4338.502895,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 299,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12107,7 +12107,7 @@
       "lon": -69.722519017,
       "lat": -29.785445416,
       "elevationM": 4335.27629,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 299.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12117,7 +12117,7 @@
       "lon": -69.724389504,
       "lat": -29.783889966,
       "elevationM": 4332.049685,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 299.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12127,7 +12127,7 @@
       "lon": -69.726259991,
       "lat": -29.782334516,
       "elevationM": 4328.823081,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 299.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12137,7 +12137,7 @@
       "lon": -69.728130478,
       "lat": -29.780779067,
       "elevationM": 4325.596476,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 300,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12147,7 +12147,7 @@
       "lon": -69.730000965,
       "lat": -29.779223617,
       "elevationM": 4322.369871,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 300.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12157,7 +12157,7 @@
       "lon": -69.731871452,
       "lat": -29.777668167,
       "elevationM": 4319.143267,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 300.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12167,7 +12167,7 @@
       "lon": -69.73304698,
       "lat": -29.77580599,
       "elevationM": 4315.916662,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 300.75,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12177,7 +12177,7 @@
       "lon": -69.733477619,
       "lat": -29.773607548,
       "elevationM": 4312.690057,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 301,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12187,7 +12187,7 @@
       "lon": -69.735018035,
       "lat": -29.771800059,
       "elevationM": 4309.463452,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 301.25,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12197,7 +12197,7 @@
       "lon": -69.736558451,
       "lat": -29.769992569,
       "elevationM": 4306.236848,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 301.5,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
@@ -12207,8 +12207,18 @@
       "lon": -69.737489633,
       "lat": -29.767962675,
       "elevationM": 4303.010243,
-      "segmentId": "veladero-06",
+      "segmentId": "veladero-05",
       "geometryChainageKm": 301.75,
+      "geometrySegmentId": "veladero-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 300,
+      "lon": -69.737872985,
+      "lat": -29.765891701,
+      "elevationM": 4300,
+      "segmentId": "veladero-05",
+      "geometryChainageKm": 301.98323612,
       "geometrySegmentId": "veladero-osm-access-v2",
       "geometryClass": "RECONSTRUCTED_ACCESS"
     },
