@@ -28,7 +28,7 @@ export const OFFICIAL_RESOURCES = [
 ];
 export const OVERPASS_ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
-  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
 ];
 export const VELADERO_REGIONAL_BBOX = [-69.5, -31.8, -68.3, -29.9];
 export const VELADERO_HIGH_MOUNTAIN_BBOX = [-70.1, -30.25, -69.2, -29.25];
@@ -316,7 +316,12 @@ export async function fetchOverpassRoadSource(bbox, fetcher = fetch, endpoints =
     try {
       const response = await fetcher(endpoint, {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          accept: 'application/json',
+          'user-agent': 'sanjuan-mining-ops-sim/0.1 (+https://github.com/juanmanueltorres-creator/sanjuan-mining-ops-sim)',
+          referer: 'https://github.com/juanmanueltorres-creator/sanjuan-mining-ops-sim',
+        },
         body,
       });
       if (!response?.ok) {
