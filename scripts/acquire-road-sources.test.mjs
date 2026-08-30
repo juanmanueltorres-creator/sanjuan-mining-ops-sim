@@ -1,7 +1,11 @@
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import {
   CKAN_RESOURCE,
   OFFICIAL_RESOURCES,
+  acquireVeladeroSources,
   buildOverpassQuery,
   clipFeatureCollectionToBbox,
   fetchOfficialRoadSource,
@@ -209,5 +213,83 @@ describe('official-first acquisition transport', () => {
     const fetcher = async () => ({ ok: true, json: async () => ({ success: true, result: { id: resource.resourceId } }) });
 
     await expect(resolveCkanResource(resource, fetcher)).rejects.toThrow(/source url/i);
+  });
+});
+
+describe('Veladero acquisition artifact set', () => {
+  it('writes an auditable source inventory and three clipped candidate snapshots', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'veladero-acquisition-'));
+    const outputDir = path.join(tempRoot, 'artifacts');
+    const overpassEndpoint = 'https://overpass.test/interpreter';
+    const now = () => '2026-08-30T19:20:00.000Z';
+    const fetcher = vi.fn(async (url) => {
+      const text = String(url);
+      if (text.startsWith(CKAN_RESOURCE)) {
+        const resource = OFFICIAL_RESOURCES.find((item) => text.endsWith(item.resourceId));
+        if (!resource) return { ok: false, status: 404, json: async () => ({}) };
+        return {
+          ok: true,
+          json: async () => ({
+            success: true,
+            result: {
+              id: resource.resourceId,
+              name: resource.id,
+              format: 'WFS',
+              url: `https://${resource.id}.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads`,
+            },
+          }),
+        };
+      }
+      if (text.includes('dnv-rutas-nacionales')) {
+        return { ok: true, json: async () => ({ type: 'FeatureCollection', features: [lineFeature('dnv-40', [[-68.55, -31.53], [-68.7, -31.0]], { ruta: '40' })] }) };
+      }
+      if (text.includes('ign-rutas-provinciales')) {
+        return { ok: true, json: async () => ({ type: 'FeatureCollection', features: [lineFeature('ign-436', [[-68.7, -31.0], [-69.27, -30.19]], { ruta: '436' })] }) };
+      }
+      if (text === overpassEndpoint) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            elements: [{
+              type: 'way', id: 999, tags: { highway: 'track' },
+              geometry: [{ lon: -69.3, lat: -30.18 }, { lon: -69.9, lat: -29.4 }],
+            }],
+          }),
+        };
+      }
+      return { ok: false, status: 404, json: async () => ({}) };
+    });
+
+    try {
+      const result = await acquireVeladeroSources({
+        fetcher,
+        outputDir,
+        overpassEndpoints: [overpassEndpoint],
+        now,
+      });
+
+      expect(result.inventory).toMatchObject({
+        schemaVersion: 'sanjuan.road-source-inventory/v1',
+        corridorId: 'veladero',
+        generatedAt: '2026-08-30T19:20:00.000Z',
+      });
+      expect(result.inventory.sources.map((source) => [source.id, source.featureCount])).toEqual([
+        ['dnv-rutas-nacionales-20260830', 1],
+        ['ign-rutas-provinciales-2016-20260830', 1],
+        ['osm-high-mountain-access-20260830', 1],
+      ]);
+
+      const dnv = JSON.parse(await readFile(path.join(outputDir, 'dnv-national-roads.v1.geojson'), 'utf8'));
+      const ign = JSON.parse(await readFile(path.join(outputDir, 'ign-provincial-roads.v1.geojson'), 'utf8'));
+      const osm = JSON.parse(await readFile(path.join(outputDir, 'osm-high-mountain-access.v1.geojson'), 'utf8'));
+      const inventory = JSON.parse(await readFile(path.join(outputDir, 'source-inventory.json'), 'utf8'));
+      expect(dnv.features[0].id).toBe('dnv-40');
+      expect(ign.features[0].id).toBe('ign-436');
+      expect(osm.features[0].id).toBe('osm-way-999');
+      expect(inventory).toEqual(result.inventory);
+    } finally {
+      await rm(tempRoot, { recursive: true, force: true });
+    }
   });
 });
