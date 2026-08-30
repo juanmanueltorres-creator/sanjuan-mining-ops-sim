@@ -50,7 +50,13 @@ function corridor(id: string, distanceKm: number): CorridorDefinition {
 const operationData = {
   projects: [],
   corridors: [corridor('hualilan', 120), corridor('veladero', 360), corridor('los-azules', 276)],
-  evidence: [],
+  evidence: ['hualilan', 'veladero', 'los-azules'].map((id) => ({
+    id: `${id}-evidence`,
+    role: 'DERIVED' as const,
+    sourceName: `${id} fixture corridor`,
+    retrievedAt: '2026-08-30',
+    limitations: ['Test fixture only.'],
+  })),
 };
 
 const runArtifacts = {
@@ -81,6 +87,13 @@ const runArtifacts = {
     evidenceRefs: ['open-meteo-forecast-20260830'],
     limitations: ['Modelled weather only.'],
   },
+  evidence: [{
+    id: 'open-meteo-forecast-20260830',
+    role: 'PRIMARY' as const,
+    sourceName: 'Open-Meteo Forecast API · Best Match',
+    retrievedAt: '2026-08-30',
+    limitations: ['Modelled weather only.'],
+  }],
 };
 
 const trafficCalibration = {
