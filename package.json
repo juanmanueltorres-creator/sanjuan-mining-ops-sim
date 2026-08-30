@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "test": "vitest",
     "validate:data": "node scripts/validate-data.mjs",
-    "qa:visual": "node scripts/visual-qa.mjs"
+    "qa:visual": "node scripts/visual-qa.mjs",
+    "audit:claims": "node scripts/audit-claims.mjs"
   },
   "dependencies": {
     "cesium": "^1.132.0",
