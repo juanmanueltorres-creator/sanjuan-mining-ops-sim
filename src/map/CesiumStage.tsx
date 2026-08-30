@@ -17,6 +17,7 @@ import {
 import type { OperationalSnapshot } from '../domain/contracts';
 import type { StaticOperationData } from '../data/loadOperation';
 import { createOperationalAdapter, type OperationalMapAdapter, type VehicleEntitySink } from './cesiumAdapter';
+import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
 
 export interface CesiumStageProps {
   data: StaticOperationData | null;
@@ -155,27 +156,12 @@ function pickGlobe(viewer: Viewer, position: Cartesian2): Cartesian3 | null {
   return viewer.scene.globe.pick(ray, viewer.scene) ?? null;
 }
 
-function niceScaleDistance(maxDistanceM: number): number | null {
-  if (!Number.isFinite(maxDistanceM) || maxDistanceM <= 0) return null;
-  const magnitude = 10 ** Math.floor(Math.log10(maxDistanceM));
-  for (const multiplier of [5, 2, 1]) {
-    const candidate = multiplier * magnitude;
-    if (candidate <= maxDistanceM) return candidate;
-  }
-  return magnitude / 2;
-}
-
 function formatScale(distanceM: number): string {
   if (distanceM >= 1000) {
     const km = distanceM / 1000;
     return `${Number.isInteger(km) ? km.toFixed(0) : km.toFixed(1)} km`;
   }
   return `${Math.round(distanceM)} m`;
-}
-
-function formatCoordinate(value: number, positive: string, negative: string): string {
-  const hemisphere = value >= 0 ? positive : negative;
-  return `${Math.abs(value).toFixed(4)}° ${hemisphere}`;
 }
 
 function measureScale(viewer: Viewer): Pick<MapInstrumentState, 'scaleLabel' | 'scaleWidthPx'> {
@@ -189,14 +175,14 @@ function measureScale(viewer: Viewer): Pick<MapInstrumentState, 'scaleLabel' | '
 
   const measuredDistanceM = Cartesian3.distance(left, right);
   const metersPerPixel = measuredDistanceM / sampleWidthPx;
-  const niceDistanceM = niceScaleDistance(metersPerPixel * 100);
-  if (!niceDistanceM || !Number.isFinite(metersPerPixel) || metersPerPixel <= 0) {
+  const scaleDistanceM = selectScaleBarMeters(metersPerPixel * 100);
+  if (!scaleDistanceM || !Number.isFinite(metersPerPixel) || metersPerPixel <= 0) {
     return { scaleLabel: null, scaleWidthPx: null };
   }
 
   return {
-    scaleLabel: formatScale(niceDistanceM),
-    scaleWidthPx: Math.max(32, Math.min(120, niceDistanceM / metersPerPixel)),
+    scaleLabel: formatScale(scaleDistanceM),
+    scaleWidthPx: Math.max(32, Math.min(120, scaleDistanceM / metersPerPixel)),
   };
 }
 
@@ -278,10 +264,9 @@ export function CesiumStage({ data, snapshot, fleetIds, onVehicleSelect }: Cesiu
       const lat = CesiumMath.toDegrees(cartographic.latitude);
       const hasTerrain = !(viewer.terrainProvider instanceof EllipsoidTerrainProvider);
       const terrainHeight = hasTerrain ? viewer.scene.globe.getHeight(cartographic) : undefined;
-      const elevation = Number.isFinite(terrainHeight) ? `${Math.round(terrainHeight as number).toLocaleString('en-US')} m` : '—';
       setInstruments((current) => ({
         ...current,
-        cursorText: `${formatCoordinate(lat, 'N', 'S')} · ${formatCoordinate(lon, 'E', 'W')} · ELEV ${elevation}`,
+        cursorText: `${formatCoordinates(lat, lon)} · ELEV ${formatElevation(terrainHeight)}`,
       }));
     }, ScreenSpaceEventType.MOUSE_MOVE);
 
