@@ -37,7 +37,7 @@ function usedGeometrySources(operation: StaticOperationData | null): GeometrySou
       (corridor.geometrySegments ?? []).map((segment) => segment.sourceDatasetId),
     ),
   );
-  return operation.geometrySources.filter((source) => usedSourceIds.has(source.id));
+  return (operation.geometrySources ?? []).filter((source) => usedSourceIds.has(source.id));
 }
 
 function GeometrySourceCard({ source }: { source: GeometrySourceRecord }) {
