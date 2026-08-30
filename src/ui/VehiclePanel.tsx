@@ -1,4 +1,4 @@
-import type { VehicleSnapshot } from '../domain/contracts';
+import type { EnvironmentContext, VehicleSnapshot } from '../domain/contracts';
 
 export interface VehiclePanelProps {
   vehicle: VehicleSnapshot | null;
@@ -11,6 +11,36 @@ function formatMinuteOfDay(value: number | null): string {
   const hour = Math.floor(minuteOfDay / 60);
   const minute = minuteOfDay % 60;
   return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function formatValue(value: number | null, unit: string): string {
+  return value === null ? '—' : `${value.toFixed(1)} ${unit}`;
+}
+
+function EnvironmentBlock({ context }: { context?: EnvironmentContext }) {
+  if (!context) {
+    return (
+      <div className="environment-placeholder" role="status">
+        <span>MODELLED ENVIRONMENT PENDING</span>
+        <small>Weather-at-passage requires the versioned environment snapshot for this run.</small>
+      </div>
+    );
+  }
+
+  return (
+    <section className="environment-context" aria-label="Modelled environment at passage">
+      <div className="environment-context-header">
+        <span>MODELLED ENVIRONMENT</span>
+        <span className="source-state">{context.sourceState}</span>
+      </div>
+      <dl className="environment-stats">
+        <div><dt>Temperature</dt><dd>{formatValue(context.temperatureC, '°C')}</dd></div>
+        <div><dt>Wind gust</dt><dd>{formatValue(context.windGustKmh, 'km/h')}</dd></div>
+        <div><dt>Precipitation</dt><dd>{formatValue(context.precipitationMm, 'mm')}</dd></div>
+      </dl>
+      <small>Modelled context only · no road-condition or transitability inference.</small>
+    </section>
+  );
 }
 
 export function VehiclePanel({ vehicle, corridorName }: VehiclePanelProps) {
@@ -35,10 +65,7 @@ export function VehiclePanel({ vehicle, corridorName }: VehiclePanelProps) {
         <div><dt>ETA</dt><dd>{formatMinuteOfDay(vehicle.etaMinute)}</dd></div>
       </dl>
 
-      <div className="environment-placeholder" role="status">
-        <span>MODELLED ENVIRONMENT PENDING</span>
-        <small>Weather-at-passage is added from the versioned environment snapshot in the next integration step.</small>
-      </div>
+      <EnvironmentBlock context={vehicle.environmentContext} />
     </aside>
   );
 }
