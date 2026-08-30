@@ -1,12 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
+  CKAN_RESOURCE,
+  OFFICIAL_RESOURCES,
+  buildOverpassQuery,
   clipFeatureCollectionToBbox,
+  fetchOfficialRoadSource,
+  fetchOverpassRoadSource,
   normalizeOverpassWays,
   normalizeWfsFeatureCollection,
   normalizeWfsUrl,
+  resolveCkanResource,
 } from './acquire-road-sources.mjs';
 
 const regionalBbox = [-69.5, -31.8, -68.3, -29.9];
+const highMountainBbox = [-70.1, -30.25, -69.2, -29.25];
 
 function lineFeature(id, coordinates, properties = {}) {
   return {
@@ -93,5 +100,114 @@ describe('road source acquisition helpers', () => {
       .toThrow(/coordinate/i);
     expect(() => normalizeOverpassWays({ elements: [{ type: 'way', id: 7, tags: { highway: 'track' }, geometry: [{ lon: -69, lat: -30 }] }] }))
       .toThrow(/at least two/i);
+  });
+});
+
+describe('official-first acquisition transport', () => {
+  it('resolves official dataset download URLs through the CKAN resource API', async () => {
+    const resource = OFFICIAL_RESOURCES[0];
+    const fetcher = vi.fn(async (url) => ({
+      ok: true,
+      json: async () => ({
+        success: true,
+        result: {
+          id: resource.resourceId,
+          name: 'Rutas Nacionales WFS',
+          format: 'WFS',
+          url: 'https://example.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads',
+        },
+      }),
+    }));
+
+    const resolved = await resolveCkanResource(resource, fetcher);
+
+    expect(fetcher).toHaveBeenCalledWith(`${CKAN_RESOURCE}${resource.resourceId}`);
+    expect(resolved).toMatchObject({
+      resourceId: resource.resourceId,
+      provider: resource.provider,
+      format: 'WFS',
+      url: 'https://example.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads',
+    });
+  });
+
+  it('fetches an official WFS source through CKAN and retains only the requested region', async () => {
+    const resource = OFFICIAL_RESOURCES[0];
+    const fetcher = vi.fn(async (url) => {
+      if (String(url).startsWith(CKAN_RESOURCE)) {
+        return {
+          ok: true,
+          json: async () => ({
+            success: true,
+            result: {
+              id: resource.resourceId,
+              name: 'Rutas Nacionales WFS',
+              format: 'WFS',
+              url: 'https://example.test/geoserver/wfs?service=WFS&request=GetFeature&typeName=roads&maxFeatures=50',
+            },
+          }),
+        };
+      }
+      const parsed = new URL(String(url));
+      expect(parsed.searchParams.get('outputFormat')).toBe('application/json');
+      expect(parsed.searchParams.get('bbox')).toBe('-69.5,-31.8,-68.3,-29.9,EPSG:4326');
+      return {
+        ok: true,
+        json: async () => ({
+          type: 'FeatureCollection',
+          features: [
+            lineFeature('rn40-inside', [[-68.6, -31.5], [-68.7, -31.0]], { ruta: '40' }),
+            lineFeature('outside', [[-70.8, -34], [-70.7, -33.9]], { ruta: '3' }),
+          ],
+        }),
+      };
+    });
+
+    const result = await fetchOfficialRoadSource(resource, regionalBbox, fetcher);
+
+    expect(result.featureCollection.features.map((feature) => feature.id)).toEqual(['rn40-inside']);
+    expect(result.source).toMatchObject({ id: resource.id, resourceId: resource.resourceId });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('builds the exact high-mountain Overpass highway query from the acquisition bbox', () => {
+    const query = buildOverpassQuery(highMountainBbox);
+
+    expect(query).toContain('[out:json][timeout:120]');
+    expect(query).toContain('way["highway"](-30.25,-70.1,-29.25,-69.2);');
+    expect(query).toContain('out tags geom;');
+  });
+
+  it('falls back to the secondary Overpass endpoint and normalizes returned ways', async () => {
+    const endpoints = ['https://primary.test/interpreter', 'https://fallback.test/interpreter'];
+    const fetcher = vi.fn(async (url, options) => {
+      expect(options.method).toBe('POST');
+      expect(options.headers['content-type']).toMatch(/form-urlencoded/i);
+      if (url === endpoints[0]) return { ok: false, status: 429, json: async () => ({}) };
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          elements: [{
+            type: 'way',
+            id: 321,
+            tags: { highway: 'track' },
+            geometry: [{ lon: -69.6, lat: -29.9 }, { lon: -69.7, lat: -29.8 }],
+          }],
+        }),
+      };
+    });
+
+    const result = await fetchOverpassRoadSource(highMountainBbox, fetcher, endpoints);
+
+    expect(result.endpoint).toBe(endpoints[1]);
+    expect(result.featureCollection.features[0].properties.osmWayId).toBe(321);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('fails closed when CKAN cannot resolve a usable source URL', async () => {
+    const resource = OFFICIAL_RESOURCES[0];
+    const fetcher = async () => ({ ok: true, json: async () => ({ success: true, result: { id: resource.resourceId } }) });
+
+    await expect(resolveCkanResource(resource, fetcher)).rejects.toThrow(/source url/i);
   });
 });
