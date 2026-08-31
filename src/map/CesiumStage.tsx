@@ -28,6 +28,7 @@ import {
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
 import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
+import { installPreferredTerrain, normalizeTerrainToken } from './terrainRuntime';
 
 export interface CesiumStageProps {
   data: StaticOperationData | null;
@@ -44,6 +45,8 @@ interface MapInstrumentState {
   scaleWidthPx: number | null;
   cursorText: string | null;
 }
+
+type TerrainDisplayState = 'READY' | 'ELLIPSOID' | 'FAILED';
 
 const REGIONAL_VIEW = {
   lon: -69.25,
@@ -270,7 +273,9 @@ export function CesiumStage({
   const backgroundSinkRef = useRef<VehicleEntitySink | null>(null);
   const staticTerritoryReadyRef = useRef(false);
   const onVehicleSelectRef = useRef(onVehicleSelect);
+  const terrainStateRef = useRef<TerrainDisplayState>('ELLIPSOID');
   const [mapAvailable, setMapAvailable] = useState(canUseWebGl);
+  const [terrainState, setTerrainState] = useState<TerrainDisplayState>('ELLIPSOID');
   const [instruments, setInstruments] = useState<MapInstrumentState>({
     headingDeg: REGIONAL_VIEW.headingDeg,
     scaleLabel: null,
@@ -315,6 +320,25 @@ export function CesiumStage({
     viewer.scene.backgroundColor = Color.fromCssColorString('#0b1115');
     viewer.scene.globe.showGroundAtmosphere = true;
 
+    const token = normalizeTerrainToken(import.meta.env.VITE_CESIUM_ION_TOKEN);
+    void installPreferredTerrain(viewer, token).then((result) => {
+      if (viewer.isDestroyed() || result.state === 'ABORTED') return;
+
+      const nextState: TerrainDisplayState = result.state === 'READY'
+        ? 'READY'
+        : result.state === 'FAILED'
+          ? 'FAILED'
+          : 'ELLIPSOID';
+
+      if (result.state === 'FAILED') {
+        console.warn('Cesium terrain unavailable; continuing with ellipsoid fallback.');
+      }
+
+      terrainStateRef.current = nextState;
+      setTerrainState(nextState);
+      viewer.scene.requestRender();
+    });
+
     viewer.imageryLayers.addImageryProvider(
       new UrlTemplateImageryProvider({
         url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -354,7 +378,8 @@ export function CesiumStage({
       const cartographic = Cartographic.fromCartesian(position);
       const lon = CesiumMath.toDegrees(cartographic.longitude);
       const lat = CesiumMath.toDegrees(cartographic.latitude);
-      const hasTerrain = !(viewer.terrainProvider instanceof EllipsoidTerrainProvider);
+      const hasTerrain = terrainStateRef.current === 'READY'
+        && !(viewer.terrainProvider instanceof EllipsoidTerrainProvider);
       const terrainHeight = hasTerrain ? viewer.scene.globe.getHeight(cartographic) : undefined;
       setInstruments((current) => ({
         ...current,
@@ -442,6 +467,7 @@ export function CesiumStage({
         scaleWidthPx={instruments.scaleWidthPx}
         cursorText={instruments.cursorText}
         webGlAvailable={mapAvailable}
+        terrainState={terrainState}
         onRegionalView={() => {
           const viewer = viewerRef.current;
           if (viewer) setRegionalView(viewer);
