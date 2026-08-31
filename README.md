@@ -2,109 +2,144 @@
 
 > **Real territory · modelled environment · synthetic operation.**
 
-A deterministic 3D browser simulation of mining mobilizations across sourced and reconstructed San Juan corridors. It combines project context, route position, elevation, time, modelled weather-at-passage, and explicit provenance in one map-first operational scene.
+San Juan Mining Ops Sim is a deterministic 3D browser simulation for exploring planned mining mobilizations across San Juan, Argentina. It combines sourced territorial context, versioned road/access geometry, elevation, time, modelled weather-at-passage and explicit provenance in one map-first operational scene.
 
-## What it is
+**Current published model: V0.1.**
 
-San Juan Mining Ops Sim is a small open-source operational simulation lab built around a simple question:
+---
 
-**Where will each planned mobilization be during the day, and what territorial and modelled environmental context will it encounter when it passes?**
+## What you can explore
 
-The current V0.1 includes:
+The current simulation answers a deliberately narrow question:
 
-- 10 sourced San Juan mining project markers;
-- 3 active operational corridors: Hualilán, Veladero, and Los Azules;
-- exactly 24 highlighted synthetic units: 12 personnel, 6 field, and 6 logistics vehicles;
-- a deterministic operating day from 06:00 to 20:00 in `America/Argentina/San_Juan`;
-- 60×, 120×, 300×, and 600× playback, with 300× as the default;
-- versioned elevation/route samples;
-- **Veladero V2 official-first hybrid road/access geometry**, built from frozen DNV/IGN road extracts, publicly mapped OSM high-mountain access where needed, and explicit derived connectors;
-- Hualilán and Los Azules retained on their V1 reconstructed corridors;
-- a checked-in Open-Meteo forecast snapshot with 12 route-tied environment nodes and a companion evidence registry;
-- weather-at-passage context that does not change vehicle movement;
-- subdued deterministic synthetic background traffic;
-- north, local scale, coordinates/elevation readout, regional reset, and provider attribution;
-- progressive source/limitation disclosure, including the geometry datasets actually used by Veladero V2.
+> **Where will each synthetic mobilization be during the day, and what territorial and modelled environmental context will it encounter when it passes?**
 
-## What it is not
+It includes:
+
+- **10 sourced mining-project markers** across San Juan;
+- **3 operational corridors**: Hualilán, Veladero and Los Azules;
+- **24 deterministic synthetic units**: 12 personnel, 6 field and 6 logistics vehicles;
+- a simulated operating day from **06:00 to 20:00** in `America/Argentina/San_Juan`;
+- 60×, 120×, 300× and 600× playback;
+- route position, elevation, ETA/state and project context;
+- versioned modelled weather-at-passage;
+- deterministic synthetic background traffic;
+- provenance-aware road geometry and a visible Sources / Limitations surface.
+
+The same run, scenario and simulation time produce the same operational snapshot.
+
+```text
+AT_BASE
+   ↓
+EN_ROUTE / AT_STOP
+   ↓
+AT_PROJECT
+   ↓
+RETURNING
+   ↓
+DONE
+```
+
+Weather and territorial context are added **after movement is derived**. They describe the scene; they do not change speed, ETA, access or vehicle state in V0.1.
+
+---
+
+## This is a simulation, not a mine digital twin
+
+The visual scene can look operational, so the boundary is explicit:
+
+```text
+real territory != real operation
+public road reference != operator route
+modelled weather != station observation
+synthetic traffic != measured traffic
+scenario outcome != operational advice
+```
 
 This project is **not**:
 
-- live vehicle telemetry or GPS tracking;
-- operator dispatch or a fleet-management system;
-- a current mine-access or road-status feed;
-- a navigation product;
-- a safety, transitability, authorization, or road-closure decision system;
-- a model of mine-internal haulage, OEM vehicle physics, fuel optimization, or production dispatch;
-- a claim that reconstructed or publicly mapped access is an operator-verified route.
+- live GPS or vehicle telemetry;
+- operator dispatch or fleet management;
+- current road/access status;
+- navigation or route authorization;
+- a safety or transitability decision system;
+- mine-internal haulage or production dispatch;
+- OEM vehicle physics or fuel optimization;
+- evidence that a reconstructed or publicly mapped access is currently used by an operator.
 
-If evidence is unavailable, the application fails closed or labels the value unavailable instead of inventing it.
+If required evidence cannot be resolved, the application fails closed or labels the value unavailable instead of inventing certainty.
 
-## V0.1 experience
+---
 
-The app opens at 06:00 paused. `START SHIFT` reveals the compact operational UI while the map scene remains the main surface.
+## Veladero V0.1 — evidence-aware road geometry
 
-Vehicle schedules are generated from the checked-in run seed. The same run, scenario, and simulation time produce the same operational snapshot. Vehicles progress through a simple external-mobilization state machine:
+V0.1 upgrades Veladero from sparse V1 chords to a denser **official-first hybrid reference geometry** while preserving the existing synthetic operational model.
 
-`AT_BASE → EN_ROUTE / AT_STOP → AT_PROJECT → RETURNING → DONE`
-
-The environment is added after movement is derived. A weather or context signal can describe what a vehicle encounters, but V0.1 does not use that signal to change speed, ETA, access, or movement state.
-
-### Veladero V2 geometry
-
-V0.1 changes **physical geometry, not the operational model**.
-
-Veladero still uses the exact synthetic operational axis:
-
-`San Juan 0 km → Tudcum 205 km → Veladero 360 km`
-
-The existing six operational speed/timing segments remain unchanged. Separately, the physical V2 line is assembled from versioned source geometry:
-
-- sourced DNV / Datos Argentina national-road sections;
-- sourced IGN / Datos Argentina provincial-road sections;
-- publicly mapped OpenStreetMap high-mountain access as fallback/completion geometry;
-- explicit short derived connectors where the source chains do not meet exactly or where the project-location anchor must be connected.
-
-Cesium renders those physical sections by evidence class:
-
-- `PUBLIC_ROAD` — solid;
-- `RECONSTRUCTED_ACCESS` — dashed;
-- `APPROXIMATE_APPROACH` — lower-opacity dotted.
-
-The complete Veladero corridor remains conservatively classified `RECONSTRUCTED_ACCESS`. Publicly mapped high-mountain geometry is not current operator navigation, access authorization, or evidence of present road condition.
-
-## Data and evidence model
-
-Every important artifact carries an evidence role or an explicit synthetic boundary:
-
-- `PRIMARY` — published territorial/project/provider evidence;
-- `DERIVED` — reconstructed/interpolated artifact;
-- `CALIBRATION` — real reference used only to shape a synthetic display model;
-- `ANALOGUE` — comparable external geography, not a San Juan observation;
-- `QUALITATIVE` — non-numeric context;
-- `SYNTHETIC_ASSUMPTION` — authored scenario inputs;
-- `METHOD_REFERENCE` — method support rather than territorial observation.
-
-Corridor geometry is explicitly classified per physical section where V2 geometry exists. Hualilán and Los Azules remain V1 reconstructed corridors. Veladero V2 combines sourced public-road sections with reconstructed/access fallback and one approximate final approach while keeping the corridor-level classification conservative.
-
-Operational/synthetic provenance and environment/provider provenance remain separate. The canonical `buildV0OperationSpec()` registers and validates scenario evidence; the versioned environment evidence registry resolves the weather refs carried by the `EnvironmentSnapshot` and `OperationalRun`. Both paths fail closed on unresolved references.
-
-See [`docs/data-sources.md`](docs/data-sources.md) for the complete source and limitation index.
-
-## Architecture
+The operational axis remains fixed:
 
 ```text
-frozen territorial + road geometry assets
+San Juan 0 km → Tudcum 205 km → Veladero 360 km
+```
+
+The physical line is built from frozen reference geometry:
+
+- **DNV / Datos Argentina** national-road sections;
+- **IGN / Datos Argentina** provincial-road sections;
+- **OpenStreetMap / Overpass** for publicly mapped high-mountain access where official vector coverage is insufficient;
+- explicit derived connectors where source chains do not meet or the project anchor must be connected.
+
+Rendered sections keep their evidence class visible:
+
+| Class | Meaning |
+| --- | --- |
+| `PUBLIC_ROAD` | sourced public-road reference geometry |
+| `RECONSTRUCTED_ACCESS` | reconstructed or fallback access geometry |
+| `APPROXIMATE_APPROACH` | approximate connection to the project reference |
+
+The complete Veladero corridor remains conservatively classified as `RECONSTRUCTED_ACCESS`.
+
+The V0.1 geometry contains 641 vertices and measures about 365.9 km physically, but **physical chainage does not redefine the synthetic 360 km operational axis**. The existing schedule, speeds, events and ETA semantics remain unchanged.
+
+See [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) for geometry QA and regression evidence.
+
+---
+
+## Evidence model
+
+Important artifacts carry an explicit evidence role instead of being presented as equally authoritative:
+
+- `PRIMARY` — published territorial/project/provider evidence;
+- `DERIVED` — reconstructed or interpolated artifact;
+- `CALIBRATION` — real reference used only to shape a synthetic model;
+- `ANALOGUE` — external comparable geography, not a San Juan observation;
+- `QUALITATIVE` — non-numeric context;
+- `SYNTHETIC_ASSUMPTION` — authored scenario inputs;
+- `METHOD_REFERENCE` — methodological support rather than territorial evidence.
+
+Operational provenance and environment/provider provenance remain separate and are validated independently.
+
+That separation is intentional: a source can support **where something is**, another can support **how a scenario is generated**, and neither automatically becomes evidence that the simulated operation actually occurred.
+
+See [`docs/data-sources.md`](docs/data-sources.md) for the full source and limitation index.
+
+---
+
+## How it works
+
+```text
+territorial/project references
         +
-versioned OperationalRun
+versioned road/elevation artifacts
         +
-versioned EnvironmentSnapshot
+immutable OperationalRun
         +
-versioned environment evidence registry
+modelled EnvironmentSnapshot
+        +
+evidence registries
         ↓
-runtime validation / provenance checks
+runtime validation + provenance checks
         ↓
-canonical SanJuanOperationSpec builder
+canonical operation specification
         ↓
 pure deterministic simulation engine
         ↓
@@ -112,25 +147,45 @@ OperationalSnapshot
         ↓
 environment/context enrichment
         ↓
-Cesium adapter + evidence-aware geometry renderer + compact React UI
+Cesium 3D scene + compact React UI
 ```
 
-The simulation engine is renderer-agnostic. Cesium consumes snapshots through persistent entities; the app uses one `Viewer` and one primary `CustomDataSource` rather than recreating map entities every frame.
+The simulation engine is renderer-agnostic. Cesium is an adapter over deterministic snapshots rather than the source of operational state.
 
-Veladero road providers are **acquisition-time only**. Runtime does not call DNV, IGN, UNIDE, or Overpass. The browser also does not call a weather provider per vehicle or per simulation tick. `scripts/build-environment.mjs` emits the weather snapshot and its companion evidence registry together.
+Road providers are **acquisition-time dependencies**, not runtime routing services. The browser does not call DNV, IGN or Overpass to move vehicles, and it does not request weather per vehicle or simulation tick.
+
+---
+
+## Stack
+
+`React 19` · `TypeScript` · `CesiumJS` · `Vite` · `Zod` · `Vitest` · `Puppeteer`
+
+The application uses a single Cesium `Viewer` and persistent entities/data sources rather than rebuilding the scene every frame.
+
+A browser with WebGL is required for the 3D globe. If Cesium cannot initialize WebGL, the operational UI remains available and the application reports that the 3D preview is unavailable instead of crashing the whole experience.
+
+---
 
 ## Run locally
 
-Requirements: Node.js 22+ and a browser with WebGL for the 3D scene.
+Requires **Node.js 22+**.
 
 ```bash
 npm install
 npm run dev
 ```
 
-The app also degrades explicitly if Cesium cannot initialize WebGL: the operational UI remains available and the map surface reports `3D MAP · WEBGL PREVIEW UNAVAILABLE` instead of crashing the whole application.
+Production build:
 
-## Tests and data validation
+```bash
+npm run build
+```
+
+---
+
+## Verification
+
+The repository treats the checked-in data and provenance contracts as part of the software surface.
 
 ```bash
 npm test -- --run
@@ -141,55 +196,72 @@ npm run build
 npm run qa:visual
 ```
 
-`validate:data` verifies the checked-in territorial, traffic, run, environment, environment-evidence, and mixed V1/V2 corridor assets. For Veladero it also executes the dedicated road-geometry validator. `qa:visual` runs after a production build, launches the Vite preview, and checks the approved desktop/tablet/mobile layouts in Chrome/Chromium. It requires a local Chrome/Chromium executable.
+The validation suite checks, among other things:
 
-`audit:claims` lists sensitive provenance/operational language for explicit human review instead of silently suppressing matches.
+- territorial and corridor artifacts;
+- immutable run/environment linkage;
+- evidence references;
+- Veladero V2 geometry continuity and provenance;
+- V1 ↔ V2 behavioral equivalence at acceptance checkpoints;
+- sensitive wording that could overstate safety, telemetry or route authority;
+- desktop, tablet and mobile UI layouts.
 
-The V0 replay acceptance still checks the immutable run at 06:00, 09:00, 12:00, 16:00, and 20:00. V0.1 adds an explicit V1↔V2 Veladero regression at the same checkpoints: state, ETA, operational distance, segment IDs, events, context, and metrics must remain equivalent while spatial positions move onto the denser V2 geometry.
+`audit:claims` intentionally surfaces sensitive language for human review rather than silently hiding it.
 
-See:
+See [`docs/qa/v0-acceptance.md`](docs/qa/v0-acceptance.md) for the original deterministic replay contract.
 
-- [`docs/qa/v0-acceptance.md`](docs/qa/v0-acceptance.md) — original V0 acceptance;
-- [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) — V0.1 geometry metrics, provenance, regression, and QA record.
+---
 
-## Sources and limitations
+## Source families
 
-Key source families include SEGEMAR/official Argentine territorial references, public operator project/access context where appropriate, Open-Meteo modelled weather, DNV historical TMDA calibration context, and a northern Chile road-census analogue for background-traffic research.
+Current reference families include:
 
-Veladero V2 additionally uses frozen road/access geometry from:
+- SEGEMAR and other official Argentine territorial/project references;
+- Dirección Nacional de Vialidad / Datos Argentina;
+- Instituto Geográfico Nacional / Datos Argentina;
+- OpenStreetMap / Overpass where explicitly used as fallback reference geometry;
+- Open-Meteo for modelled environmental context;
+- public traffic references and external analogues used only for synthetic calibration/context.
 
-- Dirección Nacional de Vialidad / Datos Argentina national-road reference geometry;
-- Instituto Geográfico Nacional / Datos Argentina provincial-road reference geometry;
-- OpenStreetMap via a frozen Overpass acquisition for publicly mapped high-mountain access, with ODbL attribution;
-- UNIDE San Juan WMS only as corroborating provincial context, not as vector geometry provenance.
+Important limitations remain visible:
 
-Important boundaries:
+- project markers are territorial references, not private gates or facilities;
+- frozen public-road geometry is not a live road-status feed;
+- OSM geometry is not operator verification;
+- reconstructed access is not navigation-grade data;
+- elevation is analytical context, not an engineering survey;
+- modelled weather is not an on-road measurement;
+- synthetic schedules, speeds, stops, traffic and vehicle identities do not represent a real operator.
 
-- project markers are territorial references, not private gates/facilities;
-- sourced public-road geometry is a frozen reference, not a current road-status feed;
-- OSM access geometry is publicly mapped fallback geometry, not operator evidence;
-- reconstructed/approximate geometry is not suitable for navigation or access authorization;
-- elevation profiles are analytical context, not engineering surveys;
-- the immutable 2026-08-30 modelled-weather artifact is reused against the unchanged operational distance axis and was not regenerated against V2 physical chainage;
-- modelled weather is not a station observation or road-condition measurement;
-- background traffic is synthetic and not a live San Juan count;
-- schedules, speeds, stops, returns, and display rules are synthetic scenario assumptions.
+Third-party source terms continue to apply. The repository's MIT license does not re-license upstream datasets, maps, reports, imagery or APIs.
 
-Third-party source terms continue to apply. The repository's MIT License does not re-license upstream datasets, maps, reports, imagery, or APIs.
+---
 
-## Roadmap
+## Current status
 
-Possible next increments include:
+### Published on `main`
 
-- a real WebGL-capable production smoke for the merged V0.1 release;
-- new immutable dated run/environment artifacts;
-- extending the V2 source/geometry pipeline to another corridor only when the same provenance gates can be satisfied;
-- richer corridor/elevation/environment inspection without increasing map obstruction;
-- client-bundle/code-splitting work around the large Cesium payload;
-- an adapter path for reuse of stable simulation contracts inside a larger territorial platform;
-- future `WHAT_IF` scenarios that remain clearly separated from observations and operational advice.
+**V0.1** — deterministic external-mobilization simulation with evidence-aware Veladero road geometry.
 
-V0.1 deliberately does not expand into mine-internal dispatch or real-company telemetry.
+### In progress
+
+**V0.1.1 — Terrain + Road Context** is being developed separately and is **not part of the current published model yet**.
+
+The draft work introduces an optional visual terrain runtime while keeping analytical elevation separate from visual terrain placement. It remains gated on a real WebGL terrain smoke before the road-context increment proceeds.
+
+This distinction is deliberate: an open PR is not a shipped capability.
+
+---
+
+## Documentation
+
+- [`docs/data-sources.md`](docs/data-sources.md) — source and limitation registry
+- [`docs/qa/v0-acceptance.md`](docs/qa/v0-acceptance.md) — deterministic V0 acceptance
+- [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) — V0.1 road-geometry QA
+- [`docs/superpowers/specs/`](docs/superpowers/specs/) — approved design documents
+- [`docs/superpowers/plans/`](docs/superpowers/plans/) — implementation plans
+
+---
 
 ## License
 
