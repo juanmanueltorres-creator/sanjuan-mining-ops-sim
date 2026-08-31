@@ -38,6 +38,7 @@ jobs:
       - name: Build for Pages
         env:
           VITE_BASE_PATH: /sanjuan-mining-ops-sim/
+          VITE_CESIUM_ION_TOKEN: ${{ secrets.CESIUM_ION_PUBLIC_TOKEN }}
         run: npm run build
 
       - name: Configure Pages
