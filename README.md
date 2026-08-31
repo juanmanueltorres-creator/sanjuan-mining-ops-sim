@@ -130,6 +130,26 @@ npm run dev
 
 The app also degrades explicitly if Cesium cannot initialize WebGL: the operational UI remains available and the map surface reports `3D MAP · WEBGL PREVIEW UNAVAILABLE` instead of crashing the whole application.
 
+### Terrain configuration (V0.1.1)
+
+Cesium World Terrain is an optional visual enrichment. The app starts on the ellipsoid immediately and upgrades to terrain only when `VITE_CESIUM_ION_TOKEN` resolves a valid provider; a missing or failed token leaves playback and operational data available.
+
+Production uses the GitHub repository secret `CESIUM_ION_PUBLIC_TOKEN`, exposed to Vite only during the Pages build as `VITE_CESIUM_ION_TOKEN`.
+
+Token policy:
+
+- create a token dedicated to `sanjuan-mining-ops-sim`;
+- enable only the public `assets:read` scope required to stream terrain;
+- restrict the token to the Cesium World Terrain asset(s) used by the app where supported;
+- restrict Allowed URLs to the deployed GitHub Pages origin/path and only the local development origins that are actually needed;
+- never use the Cesium ion account default token in production;
+- never add private scopes such as `assets:write`, `assets:list`, `profile:read`, `tokens:read`, or `tokens:write`;
+- never commit the token to source, `.env` examples, fixtures, screenshots, logs, or documentation.
+
+A token used by browser code is observable by clients. Its security boundary is therefore least privilege plus URL/asset restrictions, not secrecy in the compiled JavaScript.
+
+Without `VITE_CESIUM_ION_TOKEN`, local development and CI intentionally exercise the ellipsoid fallback.
+
 ## Tests and data validation
 
 ```bash
