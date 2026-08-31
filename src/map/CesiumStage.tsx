@@ -9,6 +9,7 @@ import {
   CustomDataSource,
   EllipsoidTerrainProvider,
   Entity,
+  HeightReference,
   Math as CesiumMath,
   PolylineDashMaterialProperty,
   ScreenSpaceEventHandler,
@@ -28,6 +29,7 @@ import {
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
 import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
+import { visualHeightOffsetM } from './terrainPlacement';
 import { installPreferredTerrain, normalizeTerrainToken } from './terrainRuntime';
 
 export interface CesiumStageProps {
@@ -88,12 +90,13 @@ function createVehicleSink(dataSource: CustomDataSource): VehicleEntitySink {
           outlineColor: Color.fromCssColorString('#0b1115'),
           outlineWidth: 2,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
         },
       });
     },
-    setPosition(vehicleId, lon, lat, elevationM) {
+    setPosition(vehicleId, lon, lat, _elevationM) {
       const entity = requireEntity(vehicleId);
-      const next = Cartesian3.fromDegrees(lon, lat, Math.max(0, elevationM + 8));
+      const next = Cartesian3.fromDegrees(lon, lat, visualHeightOffsetM('OPERATIONAL_VEHICLE'));
       if (entity.position instanceof ConstantPositionProperty) {
         entity.position.setValue(next);
       } else {
@@ -129,12 +132,13 @@ function createBackgroundTrafficSink(dataSource: CustomDataSource): VehicleEntit
           outlineColor: Color.fromCssColorString('#0b1115').withAlpha(0.55),
           outlineWidth: 1,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
         },
       });
     },
-    setPosition(vehicleId, lon, lat, elevationM) {
+    setPosition(vehicleId, lon, lat, _elevationM) {
       const entity = requireEntity(vehicleId);
-      const next = Cartesian3.fromDegrees(lon, lat, Math.max(0, elevationM + 5));
+      const next = Cartesian3.fromDegrees(lon, lat, visualHeightOffsetM('BACKGROUND_TRAFFIC'));
       if (entity.position instanceof ConstantPositionProperty) {
         entity.position.setValue(next);
       } else {
@@ -153,13 +157,18 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
     dataSource.entities.add({
       id: `project:${project.id}`,
       name: project.name,
-      position: Cartesian3.fromDegrees(project.lon, project.lat, active ? 80 : 20),
+      position: Cartesian3.fromDegrees(
+        project.lon,
+        project.lat,
+        visualHeightOffsetM(active ? 'ACTIVE_PROJECT' : 'PROJECT'),
+      ),
       point: {
         pixelSize: active ? 9 : 5,
         color: active ? Color.fromCssColorString('#fbbf24') : Color.fromCssColorString('#89939b'),
         outlineColor: Color.fromCssColorString('#11181d'),
         outlineWidth: 1.5,
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        heightReference: HeightReference.RELATIVE_TO_GROUND,
       },
       label: active
         ? {
@@ -170,6 +179,7 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
             outlineWidth: 3,
             pixelOffset: new Cartesian2(0, -16),
             disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
           }
         : undefined,
     });
@@ -204,6 +214,8 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
           positions,
           width: style.width,
           material,
+          clampToGround: true,
+          zIndex: 10,
         },
       });
     }
