@@ -1,4 +1,4 @@
-import type { EvidenceRef } from '../domain/contracts';
+import type { EvidenceRef, GeometrySourceRecord } from '../domain/contracts';
 import type { StaticOperationData, StaticRunArtifacts, StaticTrafficCalibration } from '../data/loadOperation';
 import { SourceState } from './SourceState';
 
@@ -30,8 +30,43 @@ function EvidenceCard({ evidence }: { evidence: EvidenceRef }) {
   );
 }
 
+function usedGeometrySources(operation: StaticOperationData | null): GeometrySourceRecord[] {
+  if (!operation) return [];
+  const usedSourceIds = new Set(
+    operation.corridors.flatMap((corridor) =>
+      (corridor.geometrySegments ?? []).map((segment) => segment.sourceDatasetId),
+    ),
+  );
+  return (operation.geometrySources ?? []).filter((source) => usedSourceIds.has(source.id));
+}
+
+function GeometrySourceCard({ source }: { source: GeometrySourceRecord }) {
+  return (
+    <article className="evidence-card">
+      <div className="evidence-card-heading">
+        <strong>{source.datasetName}</strong>
+        <span>{source.role}</span>
+      </div>
+      <p>{source.provider}</p>
+      <dl className="source-metadata">
+        <div><dt>Format</dt><dd>{source.format}</dd></div>
+        <div><dt>Retrieved</dt><dd>{source.retrievedAt}</dd></div>
+        {source.license ? <div><dt>License</dt><dd>{source.license}</dd></div> : null}
+      </dl>
+      <a href={source.sourceUrl} target="_blank" rel="noreferrer">Open source ↗</a>
+      {source.attribution ? <p>{source.attribution}</p> : null}
+      {source.limitations.length > 0 ? (
+        <ul>
+          {source.limitations.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      ) : null}
+    </article>
+  );
+}
+
 export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic }: AnalysisDrawerProps) {
   if (!open) return null;
+  const geometrySources = usedGeometrySources(operation);
 
   return (
     <aside className="analysis-drawer" aria-label="Sources and limitations">
@@ -75,6 +110,21 @@ export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic
             </div>
           ) : <p className="source-unavailable">Background calibration unavailable.</p>}
         </section>
+
+        {geometrySources.length > 0 ? (
+          <section className="source-section">
+            <div className="source-section-heading"><strong>ROAD GEOMETRY</strong></div>
+            <p className="source-primary">
+              Geometry provenance shown here is limited to datasets actually used by rendered V2 road segments.
+            </p>
+            <div className="evidence-list">
+              {geometrySources.map((source) => <GeometrySourceCard key={source.id} source={source} />)}
+            </div>
+            <p className="source-note">
+              Public, reconstructed and approximate geometry are evidence classes, not operator navigation, access authorization or current road-status claims.
+            </p>
+          </section>
+        ) : null}
 
         <section className="source-section">
           <div className="source-section-heading"><strong>TERRITORIAL EVIDENCE</strong></div>

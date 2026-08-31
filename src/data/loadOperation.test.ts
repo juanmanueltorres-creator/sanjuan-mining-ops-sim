@@ -60,21 +60,107 @@ function corridorBundle(id: string) {
   };
 }
 
-function makeFetcher(projectOverride = projects) {
+function veladeroV2Bundle() {
+  const base = corridorBundle('veladero');
+  const routeEvidence = {
+    id: 'veladero-route-geometry-build-v2',
+    role: 'DERIVED',
+    sourceName: 'Veladero V2 route assembly',
+    retrievedAt: '2026-08-30',
+    limitations: ['Synthetic fixture only.'],
+  };
+  const sourceId = 'veladero-derived-geometry-v2';
+  const geometrySegmentId = 'veladero-derived-fixture-v2';
+  return {
+    metadata: {
+      ...base.metadata,
+      schemaVersion: 'sanjuan.corridor-metadata/v2',
+      geometryVersion: 'v2',
+      evidenceRefs: [...base.metadata.evidenceRefs, routeEvidence.id],
+    },
+    geometry: {
+      ...base.geometry,
+      properties: {
+        ...base.geometry.properties,
+        evidenceRefs: [...base.geometry.properties.evidenceRefs, routeEvidence.id],
+      },
+    },
+    profile: base.profile,
+    routeSamples: {
+      schemaVersion: 'sanjuan.route-samples/v2',
+      corridorId: 'veladero',
+      samples: base.routeSamples.samples.map((sample, index) => ({
+        ...sample,
+        geometryChainageKm: index * 10,
+        geometrySegmentId,
+        geometryClass: 'RECONSTRUCTED_ACCESS',
+      })),
+    },
+    segments: {
+      type: 'FeatureCollection',
+      features: [{
+        type: 'Feature',
+        id: geometrySegmentId,
+        properties: {
+          id: geometrySegmentId,
+          corridorId: 'veladero',
+          geometryClass: 'RECONSTRUCTED_ACCESS',
+          sourceFeatureIds: [],
+          evidenceRefs: [routeEvidence.id],
+          sourceDatasetId: sourceId,
+          sourceRetrievedAt: '2026-08-30',
+          limitations: ['Explicit derived fixture geometry.'],
+        },
+        geometry: base.geometry.geometry,
+      }],
+    },
+    sources: {
+      schemaVersion: 'sanjuan.road-geometry-sources/v2',
+      corridorId: 'veladero',
+      sources: [{
+        id: sourceId,
+        provider: 'San Juan Mining Ops Sim',
+        datasetName: 'Explicit derived corridor connectors',
+        sourceUrl: '/data/corridors/veladero/sources.v2.json',
+        retrievedAt: '2026-08-30',
+        role: 'FALLBACK',
+        format: 'GeoJSON',
+        featureIds: [],
+        limitations: ['Fixture source only.'],
+      }],
+      evidence: [routeEvidence],
+    },
+  };
+}
+
+function makeFetcher(projectOverride = projects, requestedUrls: string[] = []) {
   const bundles = Object.fromEntries(['hualilan', 'veladero', 'los-azules'].map((id) => [id, corridorBundle(id)]));
+  const veladeroV2 = veladeroV2Bundle();
   return async (url: string) => {
+    requestedUrls.push(url);
     let body: unknown;
     if (url === '/data/projects/projects.v1.json') {
       body = { schemaVersion: 'sanjuan.projects/v1', projects: projectOverride, evidence: projectEvidence };
     } else {
-      const match = url.match(/\/data\/corridors\/([^/]+)\/(metadata\.v1\.json|corridor\.v1\.geojson|profile\.v1\.json|route-samples\.v1\.json)$/);
-      if (!match) return { ok: false, json: async () => ({}) };
-      const [, id, file] = match;
-      const bundle = bundles[id];
-      body = file === 'metadata.v1.json' ? bundle.metadata
-        : file === 'corridor.v1.geojson' ? bundle.geometry
-          : file === 'profile.v1.json' ? bundle.profile
-            : bundle.routeSamples;
+      const v2Match = url.match(/\/data\/corridors\/veladero\/(metadata\.v2\.json|corridor\.v2\.geojson|profile\.v1\.json|route-samples\.v2\.json|segments\.v2\.geojson|sources\.v2\.json)$/);
+      if (v2Match) {
+        const file = v2Match[1];
+        body = file === 'metadata.v2.json' ? veladeroV2.metadata
+          : file === 'corridor.v2.geojson' ? veladeroV2.geometry
+            : file === 'profile.v1.json' ? veladeroV2.profile
+              : file === 'route-samples.v2.json' ? veladeroV2.routeSamples
+                : file === 'segments.v2.geojson' ? veladeroV2.segments
+                  : veladeroV2.sources;
+      } else {
+        const match = url.match(/\/data\/corridors\/([^/]+)\/(metadata\.v1\.json|corridor\.v1\.geojson|profile\.v1\.json|route-samples\.v1\.json)$/);
+        if (!match) return { ok: false, json: async () => ({}) };
+        const [, id, file] = match;
+        const bundle = bundles[id];
+        body = file === 'metadata.v1.json' ? bundle.metadata
+          : file === 'corridor.v1.geojson' ? bundle.geometry
+            : file === 'profile.v1.json' ? bundle.profile
+              : bundle.routeSamples;
+      }
     }
     return { ok: true, json: async () => body };
   };
@@ -175,6 +261,32 @@ describe('loadStaticOperationData', () => {
     expect(data.projects).toHaveLength(10);
     expect(data.corridors.map((c) => c.id).sort()).toEqual(['hualilan', 'los-azules', 'veladero']);
     expect(data.projects.filter((p) => p.activeOperationalDestination)).toHaveLength(3);
+  });
+
+  it('loads Veladero V2 by default while keeping Hualilan and Los Azules on V1', async () => {
+    const requestedUrls: string[] = [];
+    const data = await loadStaticOperationData(makeFetcher(projects, requestedUrls));
+
+    expect(requestedUrls).toContain('/data/corridors/veladero/metadata.v2.json');
+    expect(requestedUrls).toContain('/data/corridors/veladero/segments.v2.geojson');
+    expect(requestedUrls).toContain('/data/corridors/veladero/sources.v2.json');
+    expect(requestedUrls).toContain('/data/corridors/hualilan/metadata.v1.json');
+    expect(requestedUrls).toContain('/data/corridors/los-azules/metadata.v1.json');
+    expect(data.corridors.find((corridor) => corridor.id === 'veladero')?.geometrySegments).toHaveLength(1);
+    expect(data.geometrySources.map((source) => source.id)).toEqual(['veladero-derived-geometry-v2']);
+  });
+
+  it('can explicitly load legacy Veladero V1 for regression comparison', async () => {
+    const requestedUrls: string[] = [];
+    const loadWithOverrides = loadStaticOperationData as unknown as (
+      fetcher: ReturnType<typeof makeFetcher>,
+      overrides: { veladero: 'v1' },
+    ) => ReturnType<typeof loadStaticOperationData>;
+    const data = await loadWithOverrides(makeFetcher(projects, requestedUrls), { veladero: 'v1' });
+
+    expect(requestedUrls).toContain('/data/corridors/veladero/metadata.v1.json');
+    expect(requestedUrls).not.toContain('/data/corridors/veladero/metadata.v2.json');
+    expect(data.corridors.find((corridor) => corridor.id === 'veladero')?.geometrySegments).toBeUndefined();
   });
 
   it('fails closed when a project references missing evidence', async () => {

@@ -3,7 +3,15 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const CORRIDORS = ['hualilan', 'veladero', 'los-azules'];
+const CORRIDOR_ASSET_VERSIONS = {
+  hualilan: 'v1',
+  veladero: 'v2',
+  'los-azules': 'v1',
+};
 const GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH', 'PROJECT_LOCATION']);
+const ROAD_GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH']);
+const GEOMETRY_SOURCE_ROLES = new Set(['PRIMARY', 'CORROBORATION', 'FALLBACK']);
+const GEOMETRY_SOURCE_FORMATS = new Set(['GeoJSON', 'Shapefile', 'WMS', 'OSM']);
 const SOURCE_STATES = new Set(['READY', 'STALE', 'PARTIAL', 'UNAVAILABLE']);
 const MODEL_KINDS = new Set(['FORECAST', 'HISTORICAL_REFERENCE']);
 const TRAFFIC_EVIDENCE_ROLES = new Set(['CALIBRATION', 'ANALOGUE', 'SYNTHETIC_ASSUMPTION']);
@@ -46,12 +54,32 @@ const corridorTotals = new Map();
 
 for (const corridorId of CORRIDORS) {
   const base = `public/data/corridors/${corridorId}`;
+  const version = CORRIDOR_ASSET_VERSIONS[corridorId];
+  assert(version === 'v1' || (corridorId === 'veladero' && version === 'v2'), `${corridorId}: unsupported asset version ${version}`);
+
   const [metadata, feature, profile, routeDoc] = await Promise.all([
-    readJson(`${base}/metadata.v1.json`),
-    readJson(`${base}/corridor.v1.geojson`),
+    readJson(`${base}/metadata.${version}.json`),
+    readJson(`${base}/corridor.${version}.geojson`),
     readJson(`${base}/profile.v1.json`),
-    readJson(`${base}/route-samples.v1.json`),
+    readJson(`${base}/route-samples.${version}.json`),
   ]);
+
+  let geometrySegments = null;
+  let geometrySources = null;
+  let sourceEvidence = new Map();
+
+  if (version === 'v2') {
+    [geometrySegments, geometrySources] = await Promise.all([
+      readJson(`${base}/segments.v2.geojson`),
+      readJson(`${base}/sources.v2.json`),
+    ]);
+    assert(geometrySegments.type === 'FeatureCollection' && Array.isArray(geometrySegments.features), `${corridorId}: V2 segments must be a FeatureCollection`);
+    assert(geometrySources.schemaVersion === 'sanjuan.road-geometry-sources/v2', `${corridorId}: unsupported geometry source schemaVersion`);
+    assert(geometrySources.corridorId === corridorId, `${corridorId}: geometry source corridor mismatch`);
+    assert(Array.isArray(geometrySources.sources) && geometrySources.sources.length > 0, `${corridorId}: V2 geometry sources required`);
+    assert(Array.isArray(geometrySources.evidence) && geometrySources.evidence.length > 0, `${corridorId}: V2 geometry evidence required`);
+    sourceEvidence = new Map(geometrySources.evidence.map((ref) => [ref.id, ref]));
+  }
 
   assert(metadata.id === corridorId, `${corridorId}: metadata id mismatch`);
   assert(GEOMETRY_CLASSES.has(metadata.geometryClass), `${corridorId}: invalid corridor geometry class`);
@@ -65,8 +93,8 @@ for (const corridorId of CORRIDORS) {
   assert(coordinateCount >= 2, `${corridorId}: geometry requires at least two coordinates`);
 
   const localEvidence = new Map((metadata.evidence ?? []).map((ref) => [ref.id, ref]));
-  const allEvidence = new Map([...projectEvidence, ...localEvidence]);
-  evidenceCount += localEvidence.size;
+  const allEvidence = new Map([...projectEvidence, ...localEvidence, ...sourceEvidence]);
+  evidenceCount += localEvidence.size + sourceEvidence.size;
   assertRefs(metadata.evidenceRefs, allEvidence, `${corridorId} metadata`);
   assertRefs(feature.properties?.evidenceRefs, allEvidence, `${corridorId} geometry`);
   assertRefs(profile.evidenceRefs, allEvidence, `${corridorId} profile`);
@@ -95,10 +123,58 @@ for (const corridorId of CORRIDORS) {
   assert(Array.isArray(routeSamples) && routeSamples.length >= 2, `${corridorId}: route samples require >=2 entries`);
   assert(Math.abs(routeSamples[0].distanceKm) <= EPS, `${corridorId}: route samples must start at 0`);
   const segmentIds = new Set(segments.map((segment) => segment.id));
+
+  let geometrySegmentIds = null;
+  if (version === 'v2') {
+    const sourceMap = new Map();
+    for (const source of geometrySources.sources) {
+      assert(typeof source.id === 'string' && source.id.length > 0, `${corridorId}: geometry source id required`);
+      assert(!sourceMap.has(source.id), `${corridorId}: duplicate geometry source ${source.id}`);
+      assert(typeof source.provider === 'string' && source.provider.length > 0, `${corridorId}/${source.id}: provider required`);
+      assert(typeof source.datasetName === 'string' && source.datasetName.length > 0, `${corridorId}/${source.id}: datasetName required`);
+      assert(typeof source.sourceUrl === 'string' && source.sourceUrl.length > 0, `${corridorId}/${source.id}: sourceUrl required`);
+      assert(typeof source.retrievedAt === 'string' && source.retrievedAt.length > 0, `${corridorId}/${source.id}: retrievedAt required`);
+      assert(GEOMETRY_SOURCE_ROLES.has(source.role), `${corridorId}/${source.id}: invalid geometry source role`);
+      assert(GEOMETRY_SOURCE_FORMATS.has(source.format), `${corridorId}/${source.id}: invalid geometry source format`);
+      assert(Array.isArray(source.featureIds), `${corridorId}/${source.id}: featureIds must be an array`);
+      assert(Array.isArray(source.limitations), `${corridorId}/${source.id}: limitations must be an array`);
+      sourceMap.set(source.id, source);
+    }
+
+    geometrySegmentIds = new Set();
+    for (const rawFeature of geometrySegments.features) {
+      const props = rawFeature?.properties;
+      assert(rawFeature?.type === 'Feature', `${corridorId}: geometry segment must be a Feature`);
+      assert(rawFeature?.geometry?.type === 'LineString' && rawFeature.geometry.coordinates.length >= 2, `${corridorId}: geometry segment must be a LineString`);
+      assert(typeof props?.id === 'string' && props.id.length > 0, `${corridorId}: geometry segment id required`);
+      assert(!geometrySegmentIds.has(props.id), `${corridorId}: duplicate geometry segment ${props.id}`);
+      assert(props.corridorId === corridorId, `${corridorId}/${props.id}: corridorId mismatch`);
+      assert(ROAD_GEOMETRY_CLASSES.has(props.geometryClass), `${corridorId}/${props.id}: invalid geometryClass`);
+      assert(Array.isArray(props.sourceFeatureIds), `${corridorId}/${props.id}: sourceFeatureIds must be an array`);
+      assertRefs(props.evidenceRefs, allEvidence, `${corridorId}/${props.id}`);
+      const source = sourceMap.get(props.sourceDatasetId);
+      assert(source, `${corridorId}/${props.id}: unknown source dataset ${props.sourceDatasetId}`);
+      if (props.geometryClass === 'PUBLIC_ROAD') {
+        assert(props.sourceFeatureIds.length > 0, `${corridorId}/${props.id}: PUBLIC_ROAD requires sourceFeatureIds`);
+      }
+      for (const featureId of props.sourceFeatureIds) {
+        assert(source.featureIds.includes(featureId), `${corridorId}/${props.id}: source feature ${featureId} absent from ${source.id}`);
+      }
+      geometrySegmentIds.add(props.id);
+    }
+    assert(geometrySegmentIds.size > 0, `${corridorId}: V2 geometry segments required`);
+  }
+
   for (let i = 0; i < routeSamples.length; i += 1) {
     const sample = routeSamples[i];
     assert(Number.isFinite(sample.lon) && Number.isFinite(sample.lat) && Number.isFinite(sample.elevationM), `${corridorId}: invalid route sample ${i}`);
     assert(segmentIds.has(sample.segmentId), `${corridorId}: unknown segmentId ${sample.segmentId}`);
+    if (version === 'v2') {
+      assert(Number.isFinite(sample.geometryChainageKm), `${corridorId}: V2 sample ${i} missing geometryChainageKm`);
+      assert(typeof sample.geometrySegmentId === 'string' && geometrySegmentIds.has(sample.geometrySegmentId), `${corridorId}: V2 sample ${i} unknown geometrySegmentId`);
+      assert(ROAD_GEOMETRY_CLASSES.has(sample.geometryClass), `${corridorId}: V2 sample ${i} invalid geometryClass`);
+      if (i > 0) assert(sample.geometryChainageKm > routeSamples[i - 1].geometryChainageKm, `${corridorId}: V2 geometry chainage must increase`);
+    }
     if (i > 0) assert(sample.distanceKm > routeSamples[i - 1].distanceKm, `${corridorId}: route sample distances must increase`);
   }
   assert(Math.abs(routeSamples.at(-1).distanceKm - metadata.totalDistanceKm) <= EPS, `${corridorId}: final route sample must equal totalDistanceKm`);
@@ -201,3 +277,4 @@ for (const corridorId of CORRIDORS) {
 }
 
 console.log(`Validated 10 projects, ${CORRIDORS.length} corridors, ${environment.nodes.length} environment nodes, ${environmentEvidence.size} environment evidence record(s), one immutable run, traffic calibration ${traffic.id}, ${evidenceCount} territorial evidence records.`);
+console.log(`Corridor assets: hualilan=${CORRIDOR_ASSET_VERSIONS.hualilan}, veladero=${CORRIDOR_ASSET_VERSIONS.veladero}, los-azules=${CORRIDOR_ASSET_VERSIONS['los-azules']}.`);

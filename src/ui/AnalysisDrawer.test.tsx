@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import type { StaticRunArtifacts, StaticTrafficCalibration } from '../data/loadOperation';
+import type { StaticOperationData, StaticRunArtifacts, StaticTrafficCalibration } from '../data/loadOperation';
 import { AnalysisDrawer } from './AnalysisDrawer';
 
 const runArtifacts = {
@@ -34,6 +34,46 @@ const traffic = {
   }],
 } as StaticTrafficCalibration;
 
+function operationWithGeometrySources(usedSourceIds: string[]): StaticOperationData {
+  return {
+    projects: [],
+    evidence: [],
+    geometrySources: [
+      {
+        id: 'official', provider: 'Dirección Nacional de Vialidad', datasetName: 'Rutas Nacionales', sourceUrl: 'https://example.test/dnv',
+        retrievedAt: '2026-08-30', role: 'PRIMARY', format: 'GeoJSON', featureIds: ['official-1'], limitations: ['Reference geometry only.'],
+      },
+      {
+        id: 'osm', provider: 'OpenStreetMap via Overpass API', datasetName: 'Publicly mapped high-mountain access ways', sourceUrl: 'https://example.test/osm',
+        retrievedAt: '2026-08-30', role: 'FALLBACK', format: 'OSM', license: 'ODbL 1.0', attribution: '© OpenStreetMap contributors',
+        featureIds: ['osm-way-1'], limitations: ['Publicly mapped access only.'],
+      },
+    ],
+    corridors: [{
+      id: 'veladero', name: 'Veladero',
+      origin: { id: 'origin', name: 'Origin', lon: -68.5, lat: -31.5 },
+      destination: { id: 'destination', name: 'Destination', lon: -69.9, lat: -29.3 },
+      geometry: { type: 'LineString', coordinates: [[-68.5, -31.5], [-69.9, -29.3]] },
+      geometryClass: 'RECONSTRUCTED_ACCESS',
+      geometrySegments: usedSourceIds.map((sourceDatasetId, index) => ({
+        id: `geometry-${index}`,
+        corridorId: 'veladero',
+        geometryClass: sourceDatasetId === 'official' ? 'PUBLIC_ROAD' : 'RECONSTRUCTED_ACCESS',
+        geometry: { type: 'LineString', coordinates: [[-68.5 - index * 0.1, -31.5], [-68.6 - index * 0.1, -31.4]] },
+        sourceFeatureIds: sourceDatasetId === 'official' ? ['official-1'] : ['osm-way-1'],
+        evidenceRefs: [], sourceDatasetId, sourceRetrievedAt: '2026-08-30', limitations: [],
+      })),
+      segments: [], nodes: [],
+      elevationProfile: { source: 'fixture', resolution: 'fixture', method: 'fixture', samples: [], limitations: [] },
+      routeSamples: [
+        { distanceKm: 0, lon: -68.5, lat: -31.5, elevationM: 650, segmentId: 'veladero-01' },
+        { distanceKm: 360, lon: -69.9, lat: -29.3, elevationM: 4300, segmentId: 'veladero-06' },
+      ],
+      evidenceRefs: [], retrievedAt: '2026-08-30', limitations: [],
+    }],
+  };
+}
+
 describe('AnalysisDrawer', () => {
   it('keeps modelled weather and synthetic traffic provenance explicit', () => {
     render(<AnalysisDrawer open onClose={vi.fn()} operation={null} runArtifacts={runArtifacts} traffic={traffic} />);
@@ -45,5 +85,38 @@ describe('AnalysisDrawer', () => {
     expect(screen.getByText(/not live San Juan traffic/i)).toBeVisible();
     expect(screen.getByText(/limitations/i)).toBeVisible();
     expect(screen.getByRole('button', { name: /close sources/i })).toBeVisible();
+  });
+
+  it('lists only geometry sources used by physical V2 segments and exposes required attribution', () => {
+    render(
+      <AnalysisDrawer
+        open
+        onClose={vi.fn()}
+        operation={operationWithGeometrySources(['official', 'osm'])}
+        runArtifacts={runArtifacts}
+        traffic={traffic}
+      />,
+    );
+
+    expect(screen.getByText('ROAD GEOMETRY')).toBeVisible();
+    expect(screen.getByText('Rutas Nacionales')).toBeVisible();
+    expect(screen.getByText('Publicly mapped high-mountain access ways')).toBeVisible();
+    expect(screen.getByText('© OpenStreetMap contributors')).toBeVisible();
+  });
+
+  it('does not expose OSM geometry attribution when no physical segment uses the OSM source', () => {
+    render(
+      <AnalysisDrawer
+        open
+        onClose={vi.fn()}
+        operation={operationWithGeometrySources(['official'])}
+        runArtifacts={runArtifacts}
+        traffic={traffic}
+      />,
+    );
+
+    expect(screen.getByText('Rutas Nacionales')).toBeVisible();
+    expect(screen.queryByText('Publicly mapped high-mountain access ways')).not.toBeInTheDocument();
+    expect(screen.queryByText('© OpenStreetMap contributors')).not.toBeInTheDocument();
   });
 });

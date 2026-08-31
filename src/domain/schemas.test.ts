@@ -85,4 +85,92 @@ describe('domain schemas', () => {
   it('preserves the geometry evidence class', () => {
     expect(parseCorridor(validCorridor).geometryClass).toBe('RECONSTRUCTED_ACCESS');
   });
+
+  it('preserves segment-level road geometry provenance and route-sample audit metadata', () => {
+    const parsed = parseCorridor({
+      ...validCorridor,
+      geometrySegments: [{
+        id: 'hualilan-public-01',
+        corridorId: 'hualilan',
+        geometryClass: 'PUBLIC_ROAD',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [-68.5364, -31.5375],
+            [-68.70, -31.10],
+          ],
+        },
+        sourceFeatureIds: ['dnv:fixture:1'],
+        evidenceRefs: ['dnv-routes'],
+        sourceDatasetId: 'dnv-rutas-nacionales-20260830',
+        sourceRetrievedAt: '2026-08-30',
+        sourceLicense: 'Otra (Abierta)',
+        limitations: ['Reference geometry; not a live road-status source.'],
+      }],
+      routeSamples: [
+        {
+          ...validCorridor.routeSamples[0],
+          geometryChainageKm: 0,
+          geometrySegmentId: 'hualilan-public-01',
+          geometryClass: 'PUBLIC_ROAD',
+        },
+        {
+          ...validCorridor.routeSamples[1],
+          geometryChainageKm: 9.8,
+          geometrySegmentId: 'hualilan-public-01',
+          geometryClass: 'PUBLIC_ROAD',
+        },
+      ],
+    });
+
+    expect(parsed.geometrySegments?.[0]).toMatchObject({
+      id: 'hualilan-public-01',
+      geometryClass: 'PUBLIC_ROAD',
+      sourceDatasetId: 'dnv-rutas-nacionales-20260830',
+    });
+    expect(parsed.routeSamples[1]).toMatchObject({
+      geometryChainageKm: 9.8,
+      geometrySegmentId: 'hualilan-public-01',
+      geometryClass: 'PUBLIC_ROAD',
+    });
+  });
+
+  it('allows derived road geometry without fake upstream feature ids while public roads remain source-backed', () => {
+    const derivedSegment = {
+      id: 'hualilan-derived-01',
+      corridorId: 'hualilan',
+      geometryClass: 'RECONSTRUCTED_ACCESS',
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [-68.5364, -31.5375],
+          [-68.55, -31.53],
+        ],
+      },
+      sourceFeatureIds: [],
+      evidenceRefs: ['derived-route'],
+      sourceDatasetId: 'derived-route-build-v1',
+      sourceRetrievedAt: '2026-08-30',
+      limitations: ['Explicit derived connector; not source road geometry.'],
+    };
+
+    const parsed = parseCorridor({
+      ...validCorridor,
+      geometrySegments: [derivedSegment],
+    });
+    expect(parsed.geometrySegments?.[0].sourceFeatureIds).toEqual([]);
+
+    expect(() => parseCorridor({
+      ...validCorridor,
+      geometrySegments: [{
+        ...derivedSegment,
+        id: 'hualilan-public-without-source',
+        geometryClass: 'PUBLIC_ROAD',
+      }],
+    })).toThrow();
+  });
+
+  it('keeps V1 corridors valid when geometrySegments are absent', () => {
+    expect(parseCorridor(validCorridor)).not.toHaveProperty('geometrySegments');
+  });
 });

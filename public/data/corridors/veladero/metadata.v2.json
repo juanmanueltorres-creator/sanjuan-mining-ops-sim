@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "sanjuan.corridor-metadata/v2",
+  "id": "veladero",
+  "name": "San Juan → Iglesia / Tudcum → Veladero",
+  "origin": {
+    "id": "san-juan",
+    "name": "San Juan",
+    "lat": -31.5375,
+    "lon": -68.5364
+  },
+  "destination": {
+    "id": "veladero",
+    "name": "Veladero",
+    "lat": -29.36833,
+    "lon": -69.95222
+  },
+  "geometryClass": "RECONSTRUCTED_ACCESS",
+  "totalDistanceKm": 360,
+  "segments": [
+    {
+      "id": "veladero-01",
+      "corridorId": "veladero",
+      "startKm": 0,
+      "endKm": 52,
+      "distanceKm": 52,
+      "elevationMinM": 650,
+      "elevationMaxM": 940,
+      "roadClass": "pavedLowland",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "veladero-02",
+      "corridorId": "veladero",
+      "startKm": 52,
+      "endKm": 140,
+      "distanceKm": 88,
+      "elevationMinM": 940,
+      "elevationMaxM": 1500,
+      "roadClass": "pavedLowland",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "veladero-03",
+      "corridorId": "veladero",
+      "startKm": 140,
+      "endKm": 205,
+      "distanceKm": 65,
+      "elevationMinM": 1500,
+      "elevationMaxM": 1931,
+      "roadClass": "mountainRoad",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "veladero-04",
+      "corridorId": "veladero",
+      "startKm": 205,
+      "endKm": 260,
+      "distanceKm": 55,
+      "elevationMinM": 1931,
+      "elevationMaxM": 4850,
+      "roadClass": "highMountain",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "veladero-05",
+      "corridorId": "veladero",
+      "startKm": 260,
+      "endKm": 340,
+      "distanceKm": 80,
+      "elevationMinM": 4100,
+      "elevationMaxM": 4850,
+      "roadClass": "highMountain",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "veladero-06",
+      "corridorId": "veladero",
+      "startKm": 340,
+      "endKm": 360,
+      "distanceKm": 20,
+      "elevationMinM": 4000,
+      "elevationMaxM": 4400,
+      "roadClass": "approach",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    }
+  ],
+  "nodes": [
+    {
+      "id": "tudcum",
+      "name": "Tudcum",
+      "lat": -30.188378113,
+      "lon": -69.270283595,
+      "distanceKm": 205,
+      "elevationM": 1931,
+      "evidenceRefs": [
+        "tudcum-public-locality"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    "barrick-veladero-access",
+    "barrick-veladero-elevation",
+    "tudcum-public-locality",
+    "veladero-route-reconstruction",
+    "veladero-profile-derived",
+    "veladero-route-geometry-build-v2",
+    "veladero-dnv-road-geometry-v2",
+    "veladero-ign-road-geometry-v2",
+    "veladero-osm-access-geometry-v2"
+  ],
+  "retrievedAt": "2026-08-30T21:11:04.861Z",
+  "limitations": [
+    "The route is a public-source reconstruction of the regional approach and published mine-road narrative; it is not an operator-supplied navigation trace.",
+    "The high-mountain polyline between Tudcum and Veladero is schematic between public anchors.",
+    "No current road condition, access authorization, closure or transitability is inferred.",
+    "V2 geometry combines frozen official-road snapshots, publicly mapped access geometry and explicit derived connectors; it is not current operator navigation."
+  ],
+  "evidence": [
+    {
+      "id": "barrick-veladero-access",
+      "role": "PRIMARY",
+      "sourceName": "Barrick — Veladero Technical Report",
+      "sourceUrl": "https://s25.q4cdn.com/322814910/files/doc_downloads/operations/veladero/veladero-03232018.pdf",
+      "retrievedAt": "2026-08-30",
+      "method": "Published access narrative used to constrain the San Juan/Tudcum/high-mountain corridor and ~155–156 km mine-road leg.",
+      "limitations": [
+        "Narrative does not provide a current turn-by-turn route or live road-status feed."
+      ]
+    },
+    {
+      "id": "barrick-veladero-elevation",
+      "role": "PRIMARY",
+      "sourceName": "Barrick — Veladero operation",
+      "sourceUrl": "https://www.barrick.com/operations/veladero/default.aspx?LanguageId=1",
+      "retrievedAt": "2026-08-30",
+      "method": "Current operator page used for the published 4,000–4,850 m operation elevation range.",
+      "limitations": [
+        "Elevation range is contextual and not a route-profile survey."
+      ]
+    },
+    {
+      "id": "tudcum-public-locality",
+      "role": "PRIMARY",
+      "sourceName": "Argentina Obra Pública — Tudcum locality",
+      "sourceUrl": "https://snop-ppo.obraspublicas.gob.ar/Localities/Details/68f23831-42d2-4eaa-9b4e-7ff622c42eff",
+      "retrievedAt": "2026-08-30",
+      "method": "Published locality coordinate used as a regional access anchor.",
+      "limitations": [
+        "Locality coordinate is not a private mine gate coordinate."
+      ]
+    },
+    {
+      "id": "veladero-route-reconstruction",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Veladero route reconstruction",
+      "retrievedAt": "2026-08-30",
+      "method": "Polyline assembled from public road/access narrative, locality anchors and project coordinate; unsupported intermediate high-mountain positions are schematic.",
+      "limitations": [
+        "Not suitable for navigation, engineering or access authorization."
+      ]
+    },
+    {
+      "id": "veladero-profile-derived",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Veladero analytical profile",
+      "retrievedAt": "2026-08-30",
+      "method": "Published elevation anchors/ranges interpolated across versioned route distance.",
+      "limitations": [
+        "Not an engineering-grade DEM survey."
+      ]
+    }
+  ],
+  "geometryVersion": "v2",
+  "geometryMeasuredChainageKm": 365.904918,
+  "geometrySourceIds": [
+    "veladero-derived-geometry-v2",
+    "dnv-rutas-nacionales-20260830",
+    "ign-rutas-provinciales-2016-20260830",
+    "osm-high-mountain-access-20260830"
+  ]
+}
