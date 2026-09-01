@@ -24,7 +24,7 @@ describe('MapInstrumentation', () => {
     expect(onRegionalView).toHaveBeenCalledTimes(1);
   });
 
-  it('renders measured scale, cursor text, and 3D terrain state when available', () => {
+  it('renders measured scale, cursor text, and explicit World Terrain state when available', () => {
     render(
       <MapInstrumentation
         headingDeg={0}
@@ -39,10 +39,12 @@ describe('MapInstrumentation', () => {
 
     expect(screen.getByText('5 km')).toBeVisible();
     expect(screen.getByText(/31\.5376° S/)).toBeVisible();
-    expect(screen.getByText('TERRAIN 3D')).toBeVisible();
+    const terrain = screen.getByLabelText(/terrain state/i);
+    expect(terrain).toHaveTextContent('WORLD TERRAIN · 3D');
+    expect(terrain).toHaveAttribute('data-terrain-state', 'ready');
   });
 
-  it('labels ellipsoid and failed terrain modes as ellipsoid fallback', () => {
+  it('labels ellipsoid and failed terrain modes as explicit fallback', () => {
     const { rerender } = render(
       <MapInstrumentation
         headingDeg={0}
@@ -55,7 +57,9 @@ describe('MapInstrumentation', () => {
       />,
     );
 
-    expect(screen.getByText('TERRAIN ELLIPSOID')).toBeVisible();
+    const terrain = screen.getByLabelText(/terrain state/i);
+    expect(terrain).toHaveTextContent('ELLIPSOID FALLBACK');
+    expect(terrain).toHaveAttribute('data-terrain-state', 'fallback');
 
     rerender(
       <MapInstrumentation
@@ -69,6 +73,7 @@ describe('MapInstrumentation', () => {
       />,
     );
 
-    expect(screen.getByText('TERRAIN ELLIPSOID')).toBeVisible();
+    expect(screen.getByLabelText(/terrain state/i)).toHaveTextContent('ELLIPSOID FALLBACK');
+    expect(screen.getByLabelText(/terrain state/i)).toHaveAttribute('data-terrain-state', 'fallback');
   });
 });
