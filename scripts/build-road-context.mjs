@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url';
 
 const DEFAULT_BUFFER_DEGREES = 0.25;
 const SUPPORTED_GEOMETRY_TYPES = new Set(['LineString', 'MultiLineString']);
+const IGN_TRANSPORT_TYPE_BY_CODE = new Map([
+  [40, 'Ruta'],
+  [41, 'Autopista'],
+  [47, 'Autovía'],
+]);
 const IGN_PROVIDER = 'Instituto Geográfico Nacional de la República Argentina';
 const IGN_SOURCE_URL = 'https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG';
 const IGN_LICENSE_URL = 'https://www.ign.gob.ar/descargas/tyc1.html';
@@ -128,14 +133,29 @@ function normalizeSourceId(value) {
   throw new Error('IGN road-context feature requires a stable gid');
 }
 
-export function normalizeRoadFeature(feature) {
+function validateIgnSourceFeature(feature) {
   if (!feature || feature.type !== 'Feature') throw new Error('Road-context source entry must be a GeoJSON Feature');
   const properties = feature.properties ?? {};
   if (!hasIgnSignature(properties)) throw new Error('Road-context source feature lacks an IGN provenance signature');
   collectGeometryCoordinates(feature.geometry);
+  normalizeSourceId(properties.gid);
+  return properties;
+}
 
-  const objectType = firstNonEmptyString(properties.objeto);
-  if (!objectType) throw new Error('IGN road-context feature requires objeto');
+function resolveObjectType(properties) {
+  const explicit = firstNonEmptyString(properties.objeto);
+  if (explicit) return explicit;
+
+  const typ = Number(properties.typ);
+  const documented = Number.isFinite(typ) ? IGN_TRANSPORT_TYPE_BY_CODE.get(typ) : null;
+  if (documented) return documented;
+
+  throw new Error(`IGN road-context selected feature requires objeto or documented TYP 40/41/47; received ${properties.typ ?? 'missing'}`);
+}
+
+export function normalizeRoadFeature(feature) {
+  const properties = validateIgnSourceFeature(feature);
+  const objectType = resolveObjectType(properties);
 
   return {
     type: 'Feature',
@@ -155,7 +175,7 @@ export function validateIgnSource(source) {
   }
   if (source.features.length === 0) throw new Error('IGN road-context source must contain features');
 
-  for (const feature of source.features) normalizeRoadFeature(feature);
+  for (const feature of source.features) validateIgnSourceFeature(feature);
   return source;
 }
 
