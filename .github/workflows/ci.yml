@@ -44,7 +44,7 @@ jobs:
         run: npm run qa:visual
 
       - name: Terrain WebGL smoke
-        run: npm run qa:terrain
+        run: xvfb-run -a env TERRAIN_SMOKE_HEADED=1 npm run qa:terrain
 
       - name: Upload visual QA screenshots
         if: always()
