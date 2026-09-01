@@ -119,7 +119,7 @@ function firstNonEmptyString(...values) {
 
 function hasIgnSignature(properties = {}) {
   return [properties.sag, properties.fdc, properties.fuente, properties.source]
-    .some((value) => typeof value === 'string' && /(^|\b)IGN(\b|$)/i.test(value));
+    .some((value) => typeof value === 'string' && /(^|\b)IGN(?:\d+)?(\b|\/|$)/i.test(value));
 }
 
 function normalizeSourceId(value) {
