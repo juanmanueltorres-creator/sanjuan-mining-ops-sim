@@ -57,6 +57,7 @@ try {
   await mkdir(OUTPUT_DIR, { recursive: true });
 
   const headed = process.env.TERRAIN_SMOKE_HEADED === '1';
+  console.log(`Terrain smoke browser mode: ${headed ? 'headed-xvfb' : 'headless'}`);
   browser = await puppeteer.launch({
     executablePath: findChrome(),
     headless: !headed,
