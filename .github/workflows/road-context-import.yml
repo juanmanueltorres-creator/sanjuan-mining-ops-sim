@@ -1,0 +1,59 @@
+name: Road context artifact import
+
+on:
+  push:
+    branches:
+      - feat/v0.1.1-terrain-road-context
+    paths:
+      - .github/workflows/road-context-import.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v0.1.1-terrain-road-context
+
+      - name: Download verified derived artifact
+        shell: bash
+        env:
+          ARTIFACT_URL: 'https://sdmntprbrazilsouth.oaiusercontent.com/files/00000000-5d14-820e-9dae-96f2eb499990/raw?se=2026-09-01T18%3A29%3A08Z&sp=r&sv=2026-02-06&sr=b&scid=46718e0f-91bb-5fec-9144-067b0d546445&skoid=33096a49-a96b-4506-9fc4-04a7517f8175&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-01T13%3A20%3A20Z&ske=2026-09-02T13%3A20%3A20Z&sks=b&skv=2026-02-06&sig=JQUsMR%2BthP3067edHSZ7C3GaoQq9fWTSVgU91inqFwQ%3D'
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error "$ARTIFACT_URL" --output /tmp/road-context-v0.1.1.zip
+          echo '68668d7fee911639e7d2cdee02c6441b0d2aa03080d7aba8feac2a39352c5559  /tmp/road-context-v0.1.1.zip' | sha256sum --check --strict
+          rm -rf /tmp/road-context-import
+          mkdir -p /tmp/road-context-import
+          unzip -q /tmp/road-context-v0.1.1.zip -d /tmp/road-context-import
+          test "$(find /tmp/road-context-import -maxdepth 1 -type f | wc -l)" -eq 3
+          echo '27263045d9d22bec619d9cba53ac3b10db152990cd2a3fca43e3258711f98001  /tmp/road-context-import/roads-context.v1.geojson' | sha256sum --check --strict
+          echo 'bb1c0c182afb8d1b1038a0def06f517e0037a4a5ac1098e6d77517dad8d30af4  /tmp/road-context-import/roads-context.v1.json' | sha256sum --check --strict
+          grep -F '27263045d9d22bec619d9cba53ac3b10db152990cd2a3fca43e3258711f98001' /tmp/road-context-import/SHA256SUMS.txt
+          grep -F 'bb1c0c182afb8d1b1038a0def06f517e0037a4a5ac1098e6d77517dad8d30af4' /tmp/road-context-import/SHA256SUMS.txt
+
+      - name: Install derived public artifacts and validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/data/context
+          cp /tmp/road-context-import/roads-context.v1.geojson public/data/context/roads-context.v1.geojson
+          cp /tmp/road-context-import/roads-context.v1.json public/data/context/roads-context.v1.json
+          node scripts/validate-road-context.mjs
+          echo '27263045d9d22bec619d9cba53ac3b10db152990cd2a3fca43e3258711f98001  public/data/context/roads-context.v1.geojson' | sha256sum --check --strict
+          echo 'bb1c0c182afb8d1b1038a0def06f517e0037a4a5ac1098e6d77517dad8d30af4  public/data/context/roads-context.v1.json' | sha256sum --check --strict
+
+      - name: Commit exact derived public artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/context/roads-context.v1.geojson public/data/context/roads-context.v1.json
+          git diff --cached --quiet && { echo 'Expected derived artifact changes'; exit 1; }
+          git commit -m 'data: materialize deterministic IGN road context'
+          git push origin HEAD:feat/v0.1.1-terrain-road-context
