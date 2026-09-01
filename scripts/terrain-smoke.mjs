@@ -145,6 +145,21 @@ try {
     fullPage: false,
   });
 
+  // With the fixed regional preset, Veladero sits near the upper-left third of
+  // the 1440×900 canvas. Cesium wheel zoom uses the cursor pick as its focus,
+  // so this QA-only interaction produces a deterministic high-Andes close-up
+  // without adding a production-only camera control.
+  await page.mouse.move(525, 145);
+  for (let i = 0; i < 4; i += 1) {
+    await page.mouse.wheel({ deltaY: -500 });
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  }
+  await new Promise((resolve) => setTimeout(resolve, 6_000));
+  await page.screenshot({
+    path: path.join(OUTPUT_DIR, 'veladero-terrain-closeup-1440x900.png'),
+    fullPage: false,
+  });
+
   console.log(`Terrain smoke passed: ${JSON.stringify(state)}`);
   if (diagnostics.length) console.log(`Terrain smoke diagnostics: ${JSON.stringify(diagnostics)}`);
   await page.close();
