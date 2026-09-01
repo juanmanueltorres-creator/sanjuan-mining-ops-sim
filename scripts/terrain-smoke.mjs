@@ -156,12 +156,12 @@ try {
   }
   await new Promise((resolve) => setTimeout(resolve, 4_000));
 
-  // Cesium's default 3D controls map middle-drag to tilt. Use the same input a
-  // person would use to make high-mountain relief legible, rather than adding
-  // a QA-only camera API to the production bundle.
-  await page.mouse.move(720, 430);
+  // Cesium's default 3D controls map middle-drag to tilt. Drag upward toward
+  // the horizon so the high-Andes terrain becomes visibly oblique instead of
+  // returning toward a near-nadir view.
+  await page.mouse.move(720, 680);
   await page.mouse.down({ button: 'middle' });
-  await page.mouse.move(720, 680, { steps: 20 });
+  await page.mouse.move(720, 430, { steps: 20 });
   await page.mouse.up({ button: 'middle' });
   await new Promise((resolve) => setTimeout(resolve, 6_000));
 
