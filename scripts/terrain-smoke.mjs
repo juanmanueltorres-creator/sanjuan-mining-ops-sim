@@ -61,10 +61,13 @@ try {
     headless: true,
     args: [
       '--no-sandbox',
+      '--disable-gpu-sandbox',
       '--disable-dev-shm-usage',
       '--enable-webgl',
       '--ignore-gpu-blocklist',
-      '--use-gl=swiftshader',
+      '--use-gl=angle',
+      '--use-angle=swiftshader',
+      '--enable-unsafe-swiftshader',
     ],
   });
 
