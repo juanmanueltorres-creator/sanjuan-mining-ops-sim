@@ -17,8 +17,9 @@ import {
   UrlTemplateImageryProvider,
   Viewer,
 } from 'cesium';
-import type { OperationalSnapshot } from '../domain/contracts';
+import type { RoadContextData } from '../data/loadRoadContext';
 import type { StaticOperationData } from '../data/loadOperation';
+import type { OperationalSnapshot } from '../domain/contracts';
 import type { BackgroundTrafficVehicle } from '../simulation/backgroundTraffic';
 import { MapInstrumentation } from '../ui/MapInstrumentation';
 import {
@@ -29,12 +30,14 @@ import {
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
 import { REGIONAL_VIEW } from './regionalView';
+import { roadContextStyle } from './roadContextStyle';
 import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
 import { visualHeightOffsetM } from './terrainPlacement';
 import { installPreferredTerrain, normalizeTerrainToken } from './terrainRuntime';
 
 export interface CesiumStageProps {
   data: StaticOperationData | null;
+  roadContext: RoadContextData | null;
   snapshot: OperationalSnapshot;
   fleetIds: string[];
   backgroundIds: string[];
@@ -215,6 +218,32 @@ function addStaticTerritory(dataSource: CustomDataSource, data: StaticOperationD
   });
 }
 
+function addRoadContext(dataSource: CustomDataSource, roadContext: RoadContextData): void {
+  for (const feature of roadContext.features) {
+    const style = roadContextStyle(feature.properties.objectType);
+    const parts = feature.geometry.type === 'LineString'
+      ? [feature.geometry.coordinates]
+      : feature.geometry.coordinates;
+
+    parts.forEach((coordinates, partIndex) => {
+      const positions = coordinates.map(([lon, lat]) => Cartesian3.fromDegrees(lon, lat, 0));
+      if (positions.length < 2) return;
+
+      dataSource.entities.add({
+        id: `road-context:${feature.properties.id}:${partIndex}`,
+        name: `${feature.properties.objectType} · IGN context`,
+        polyline: {
+          positions,
+          width: style.width,
+          material: Color.fromCssColorString(style.color).withAlpha(style.alpha),
+          clampToGround: true,
+          zIndex: 0,
+        },
+      });
+    });
+  }
+}
+
 function setRegionalView(viewer: Viewer): void {
   viewer.camera.setView({
     destination: Cartesian3.fromDegrees(REGIONAL_VIEW.lon, REGIONAL_VIEW.lat, REGIONAL_VIEW.heightM),
@@ -265,6 +294,7 @@ function measureScale(viewer: Viewer): Pick<MapInstrumentState, 'scaleLabel' | '
 
 export function CesiumStage({
   data,
+  roadContext,
   snapshot,
   fleetIds,
   backgroundIds,
@@ -277,6 +307,7 @@ export function CesiumStage({
   const adapterRef = useRef<OperationalMapAdapter | null>(null);
   const backgroundSinkRef = useRef<VehicleEntitySink | null>(null);
   const staticTerritoryReadyRef = useRef(false);
+  const roadContextReadyRef = useRef(false);
   const onVehicleSelectRef = useRef(onVehicleSelect);
   const terrainStateRef = useRef<TerrainDisplayState>('ELLIPSOID');
   const [mapAvailable, setMapAvailable] = useState(canUseWebGl);
@@ -407,11 +438,22 @@ export function CesiumStage({
       adapterRef.current = null;
       backgroundSinkRef.current = null;
       staticTerritoryReadyRef.current = false;
+      roadContextReadyRef.current = false;
       dataSourceRef.current = null;
       viewerRef.current = null;
       if (!viewer.isDestroyed()) viewer.destroy();
     };
   }, []);
+
+  useEffect(() => {
+    const dataSource = dataSourceRef.current;
+    const viewer = viewerRef.current;
+    if (!dataSource || !viewer || !roadContext || roadContextReadyRef.current) return;
+
+    addRoadContext(dataSource, roadContext);
+    roadContextReadyRef.current = true;
+    viewer.scene.requestRender();
+  }, [roadContext]);
 
   useEffect(() => {
     const dataSource = dataSourceRef.current;

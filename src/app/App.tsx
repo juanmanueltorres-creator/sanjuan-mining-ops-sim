@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { OperationalSnapshot } from '../domain/contracts';
 import { buildV0OperationSpec } from '../data/buildOperationSpec';
+import { loadRoadContext, type RoadContextData } from '../data/loadRoadContext';
 import {
   loadStaticOperationData,
   loadStaticRunArtifacts,
@@ -36,6 +37,7 @@ export function App() {
   const [data, setData] = useState<StaticOperationData | null>(null);
   const [runArtifacts, setRunArtifacts] = useState<StaticRunArtifacts | null>(null);
   const [trafficCalibration, setTrafficCalibration] = useState<StaticTrafficCalibration | null>(null);
+  const [roadContext, setRoadContext] = useState<RoadContextData | null>(null);
   const [dataError, setDataError] = useState<string | null>(null);
   const [clock, setClock] = useState(createClock);
   const [playback, setPlayback] = useState<Playback>(300);
@@ -61,6 +63,17 @@ export function App() {
       .catch((error: unknown) => {
         if (cancelled) return;
         setDataError(error instanceof Error ? error.message : 'Operational data unavailable');
+      });
+
+    void loadRoadContext(fetcher)
+      .then((loaded) => {
+        if (!cancelled) setRoadContext(loaded);
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          console.warn('Road context unavailable; continuing without contextual roads.', error);
+          setRoadContext(null);
+        }
       });
 
     return () => {
@@ -146,6 +159,7 @@ export function App() {
     <main className="app-shell">
       <CesiumStage
         data={data}
+        roadContext={roadContext}
         snapshot={snapshot}
         fleetIds={fleetIds}
         backgroundIds={backgroundIds}
@@ -190,6 +204,7 @@ export function App() {
         operation={data}
         runArtifacts={runArtifacts}
         traffic={trafficCalibration}
+        roadContext={roadContext}
       />
 
       {!started && <IntroOverlay onStart={() => setStarted(true)} />}

@@ -1,3 +1,4 @@
+import type { RoadContextData } from '../data/loadRoadContext';
 import type { EvidenceRef, GeometrySourceRecord } from '../domain/contracts';
 import type { StaticOperationData, StaticRunArtifacts, StaticTrafficCalibration } from '../data/loadOperation';
 import { SourceState } from './SourceState';
@@ -8,6 +9,7 @@ export interface AnalysisDrawerProps {
   operation: StaticOperationData | null;
   runArtifacts: StaticRunArtifacts | null;
   traffic: StaticTrafficCalibration | null;
+  roadContext: RoadContextData | null;
 }
 
 function EvidenceCard({ evidence }: { evidence: EvidenceRef }) {
@@ -64,7 +66,7 @@ function GeometrySourceCard({ source }: { source: GeometrySourceRecord }) {
   );
 }
 
-export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic }: AnalysisDrawerProps) {
+export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic, roadContext }: AnalysisDrawerProps) {
   if (!open) return null;
   const geometrySources = usedGeometrySources(operation);
 
@@ -123,6 +125,29 @@ export function AnalysisDrawer({ open, onClose, operation, runArtifacts, traffic
             <p className="source-note">
               Public, reconstructed and approximate geometry are evidence classes, not operator navigation, access authorization or current road-status claims.
             </p>
+          </section>
+        ) : null}
+
+        {roadContext ? (
+          <section className="source-section">
+            <div className="source-section-heading"><strong>ROAD CONTEXT</strong></div>
+            <p className="source-primary">{roadContext.metadata.provider}</p>
+            <dl className="source-metadata">
+              <div><dt>Features</dt><dd>{roadContext.metadata.featureCount}</dd></div>
+              <div><dt>Source commit</dt><dd>{roadContext.metadata.sourceCommit}</dd></div>
+              <div><dt>Authoring source</dt><dd>{roadContext.metadata.authoringSource}</dd></div>
+            </dl>
+            <p>{roadContext.metadata.attribution}</p>
+            <div className="evidence-list">
+              <a href={roadContext.metadata.sourceUrl} target="_blank" rel="noreferrer">Road context source ↗</a>
+              <a href={roadContext.metadata.licenseUrl} target="_blank" rel="noreferrer">Road context terms ↗</a>
+            </div>
+            <p className="source-note">
+              Cartographic context only. This network does not drive vehicle movement, ETA, access, routing or road-status decisions.
+            </p>
+            <ul>
+              {roadContext.metadata.limitations.map((item) => <li key={`road-context:${item}`}>{item}</li>)}
+            </ul>
           </section>
         ) : null}
 
