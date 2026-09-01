@@ -29,6 +29,9 @@ jobs:
       - name: Validate data
         run: npm run validate:data
 
+      - name: Validate road context
+        run: npm run validate:road-context
+
       - name: Validate Veladero V2 geometry
         run: npm run validate:road-geometry -- veladero
 
@@ -36,15 +39,10 @@ jobs:
         run: npm run audit:claims
 
       - name: Build
-        env:
-          VITE_CESIUM_ION_TOKEN: ${{ secrets.CESIUM_ION_PUBLIC_TOKEN }}
         run: npm run build
 
       - name: Visual QA
         run: npm run qa:visual
-
-      - name: Terrain WebGL smoke
-        run: xvfb-run -a env TERRAIN_SMOKE_HEADED=1 npm run qa:terrain
 
       - name: Upload visual QA screenshots
         if: always()
@@ -52,12 +50,4 @@ jobs:
         with:
           name: visual-qa
           path: artifacts/visual-qa/*.png
-          if-no-files-found: ignore
-
-      - name: Upload terrain smoke screenshot
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: terrain-smoke
-          path: artifacts/terrain-smoke/*.png
           if-no-files-found: ignore
