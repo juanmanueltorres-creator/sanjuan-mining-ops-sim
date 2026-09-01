@@ -1,0 +1,50 @@
+name: Generate package lock
+
+on:
+  push:
+    branches: [fix/deterministic-cesium-install]
+    paths:
+      - package.json
+      - .github/workflows/generate-package-lock.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate lockfile
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Verify Cesium family
+        run: |
+          node - <<'NODE'
+          const lock = require('./package-lock.json');
+          const expected = {
+            cesium: '1.132.0',
+            '@cesium/engine': '19.0.0',
+            '@cesium/widgets': '13.0.0',
+          };
+          for (const [name, version] of Object.entries(expected)) {
+            const actual = lock.packages[`node_modules/${name}`]?.version;
+            if (actual !== version) throw new Error(`${name}: expected ${version}, got ${actual}`);
+            console.log(`${name}=${actual}`);
+          }
+          NODE
+
+      - name: Emit lockfile
+        run: |
+          echo PACKAGE_LOCK_BASE64_BEGIN
+          base64 -w 0 package-lock.json
+          echo
+          echo PACKAGE_LOCK_BASE64_END
