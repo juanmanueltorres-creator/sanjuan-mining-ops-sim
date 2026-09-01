@@ -1,3 +1,5 @@
+import './terrainObservability.css';
+
 export interface MapInstrumentationProps {
   headingDeg: number;
   scaleLabel: string | null;
@@ -6,6 +8,7 @@ export interface MapInstrumentationProps {
   webGlAvailable: boolean;
   terrainState: 'READY' | 'ELLIPSOID' | 'FAILED';
   onRegionalView: () => void;
+  onVeladeroView?: () => void;
 }
 
 export function MapInstrumentation({
@@ -16,6 +19,7 @@ export function MapInstrumentation({
   webGlAvailable,
   terrainState,
   onRegionalView,
+  onVeladeroView,
 }: MapInstrumentationProps) {
   const terrainReady = terrainState === 'READY';
 
@@ -58,6 +62,11 @@ export function MapInstrumentation({
       <button className="regional-view-button" type="button" aria-label="Regional view" onClick={onRegionalView}>
         REGIONAL VIEW
       </button>
+      {onVeladeroView && (
+        <button className="regional-view-button" type="button" aria-label="Veladero 3D" onClick={onVeladeroView}>
+          VELADERO 3D
+        </button>
+      )}
     </div>
   );
 }
