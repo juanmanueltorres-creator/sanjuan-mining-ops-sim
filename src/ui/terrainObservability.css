@@ -1,0 +1,25 @@
+.terrain-state {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid rgba(222, 232, 235, 0.14);
+  border-radius: 7px;
+  background: rgba(11, 17, 21, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.terrain-state[data-terrain-state='ready'] {
+  border-color: rgba(112, 200, 215, 0.34);
+  color: #9edbe4;
+}
+
+.terrain-state[data-terrain-state='fallback'] {
+  border-color: rgba(227, 170, 84, 0.42);
+  color: #f4d29b;
+}
