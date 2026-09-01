@@ -154,7 +154,17 @@ try {
     await page.mouse.wheel({ deltaY: -500 });
     await new Promise((resolve) => setTimeout(resolve, 300));
   }
+  await new Promise((resolve) => setTimeout(resolve, 4_000));
+
+  // Cesium's default 3D controls map middle-drag to tilt. Use the same input a
+  // person would use to make high-mountain relief legible, rather than adding
+  // a QA-only camera API to the production bundle.
+  await page.mouse.move(720, 430);
+  await page.mouse.down({ button: 'middle' });
+  await page.mouse.move(720, 680, { steps: 20 });
+  await page.mouse.up({ button: 'middle' });
   await new Promise((resolve) => setTimeout(resolve, 6_000));
+
   await page.screenshot({
     path: path.join(OUTPUT_DIR, 'veladero-terrain-closeup-1440x900.png'),
     fullPage: false,
