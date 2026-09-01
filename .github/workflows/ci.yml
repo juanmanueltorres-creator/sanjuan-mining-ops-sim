@@ -36,10 +36,15 @@ jobs:
         run: npm run audit:claims
 
       - name: Build
+        env:
+          VITE_CESIUM_ION_TOKEN: ${{ secrets.CESIUM_ION_PUBLIC_TOKEN }}
         run: npm run build
 
       - name: Visual QA
         run: npm run qa:visual
+
+      - name: Terrain WebGL smoke
+        run: npm run qa:terrain
 
       - name: Upload visual QA screenshots
         if: always()
@@ -47,4 +52,12 @@ jobs:
         with:
           name: visual-qa
           path: artifacts/visual-qa/*.png
+          if-no-files-found: ignore
+
+      - name: Upload terrain smoke screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terrain-smoke
+          path: artifacts/terrain-smoke/*.png
           if-no-files-found: ignore
