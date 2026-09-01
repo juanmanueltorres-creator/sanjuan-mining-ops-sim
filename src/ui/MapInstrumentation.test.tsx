@@ -76,4 +76,23 @@ describe('MapInstrumentation', () => {
     expect(screen.getByLabelText(/terrain state/i)).toHaveTextContent('ELLIPSOID FALLBACK');
     expect(screen.getByLabelText(/terrain state/i)).toHaveAttribute('data-terrain-state', 'fallback');
   });
+
+  it('exposes a dedicated Veladero 3D verification action', () => {
+    const onVeladeroView = vi.fn();
+    const props = {
+      headingDeg: 0,
+      scaleLabel: '5 km',
+      scaleWidthPx: 80,
+      cursorText: null,
+      webGlAvailable: true,
+      terrainState: 'READY' as const,
+      onRegionalView: vi.fn(),
+      onVeladeroView,
+    } as Parameters<typeof MapInstrumentation>[0] & { onVeladeroView: () => void };
+
+    render(<MapInstrumentation {...props} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /veladero 3d/i }));
+    expect(onVeladeroView).toHaveBeenCalledTimes(1);
+  });
 });
