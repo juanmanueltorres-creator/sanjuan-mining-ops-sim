@@ -1,3 +1,5 @@
+import './terrainObservability.css';
+
 export interface MapInstrumentationProps {
   headingDeg: number;
   scaleLabel: string | null;
@@ -6,6 +8,7 @@ export interface MapInstrumentationProps {
   webGlAvailable: boolean;
   terrainState: 'READY' | 'ELLIPSOID' | 'FAILED';
   onRegionalView: () => void;
+  onVeladeroView?: () => void;
 }
 
 export function MapInstrumentation({
@@ -16,7 +19,10 @@ export function MapInstrumentation({
   webGlAvailable,
   terrainState,
   onRegionalView,
+  onVeladeroView,
 }: MapInstrumentationProps) {
+  const terrainReady = terrainState === 'READY';
+
   return (
     <div className="map-instruments" aria-label="Cartographic instruments">
       <div className="north-indicator" aria-label="Map orientation">
@@ -41,8 +47,12 @@ export function MapInstrumentation({
         )}
       </div>
 
-      <div className="terrain-state" aria-label="Terrain state">
-        {terrainState === 'READY' ? 'TERRAIN 3D' : 'TERRAIN ELLIPSOID'}
+      <div
+        className="terrain-state"
+        aria-label="Terrain state"
+        data-terrain-state={terrainReady ? 'ready' : 'fallback'}
+      >
+        {terrainReady ? 'WORLD TERRAIN · 3D' : 'ELLIPSOID FALLBACK'}
       </div>
 
       <div className="cursor-readout" aria-label="Cursor coordinates and elevation">
@@ -52,6 +62,11 @@ export function MapInstrumentation({
       <button className="regional-view-button" type="button" aria-label="Regional view" onClick={onRegionalView}>
         REGIONAL VIEW
       </button>
+      {onVeladeroView && (
+        <button className="regional-view-button" type="button" aria-label="Veladero 3D" onClick={onVeladeroView}>
+          VELADERO 3D
+        </button>
+      )}
     </div>
   );
 }

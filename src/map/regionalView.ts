@@ -14,6 +14,19 @@ export const REGIONAL_VIEW: RegionalViewPreset = {
   pitchDeg: -70,
 };
 
+/**
+ * Low, oblique terrain-verification camera positioned south-east of Veladero
+ * and aimed north-west at the project area. This is visual QA only; it does not
+ * affect operational geometry, navigation or simulation state.
+ */
+export const VELADERO_VIEW: RegionalViewPreset = {
+  lon: -69.62,
+  lat: -29.65,
+  heightM: 38_000,
+  headingDeg: 315,
+  pitchDeg: -42,
+};
+
 export interface RegionalViewAimPoint {
   lat: number;
   lon: number;
@@ -22,8 +35,8 @@ export interface RegionalViewAimPoint {
 
 /**
  * Lightweight QA approximation for the ground point under the camera centre ray.
- * It is not used for navigation or Cesium placement; it only guards the regional
- * camera preset from drifting hundreds of kilometres away from the operation.
+ * It is not used for navigation or Cesium placement; it only guards camera
+ * presets from drifting away from the intended territory.
  */
 export function estimateRegionalViewAimPoint(view: RegionalViewPreset): RegionalViewAimPoint {
   const pitchRad = Math.abs(view.pitchDeg) * Math.PI / 180;

@@ -29,7 +29,7 @@ import {
   type VehicleEntitySink,
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
-import { REGIONAL_VIEW } from './regionalView';
+import { REGIONAL_VIEW, VELADERO_VIEW, type RegionalViewPreset } from './regionalView';
 import { roadContextStyle } from './roadContextStyle';
 import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
 import { visualHeightOffsetM } from './terrainPlacement';
@@ -244,16 +244,20 @@ function addRoadContext(dataSource: CustomDataSource, roadContext: RoadContextDa
   }
 }
 
-function setRegionalView(viewer: Viewer): void {
+function setCameraView(viewer: Viewer, view: RegionalViewPreset): void {
   viewer.camera.setView({
-    destination: Cartesian3.fromDegrees(REGIONAL_VIEW.lon, REGIONAL_VIEW.lat, REGIONAL_VIEW.heightM),
+    destination: Cartesian3.fromDegrees(view.lon, view.lat, view.heightM),
     orientation: {
-      heading: CesiumMath.toRadians(REGIONAL_VIEW.headingDeg),
-      pitch: CesiumMath.toRadians(REGIONAL_VIEW.pitchDeg),
+      heading: CesiumMath.toRadians(view.headingDeg),
+      pitch: CesiumMath.toRadians(view.pitchDeg),
       roll: 0,
     },
   });
   viewer.scene.requestRender();
+}
+
+function setRegionalView(viewer: Viewer): void {
+  setCameraView(viewer, REGIONAL_VIEW);
 }
 
 function pickGlobe(viewer: Viewer, position: Cartesian2): Cartesian3 | null {
@@ -518,6 +522,10 @@ export function CesiumStage({
         onRegionalView={() => {
           const viewer = viewerRef.current;
           if (viewer) setRegionalView(viewer);
+        }}
+        onVeladeroView={() => {
+          const viewer = viewerRef.current;
+          if (viewer) setCameraView(viewer, VELADERO_VIEW);
         }}
       />
     </section>
