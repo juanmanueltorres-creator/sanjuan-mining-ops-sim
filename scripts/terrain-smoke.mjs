@@ -81,6 +81,12 @@ try {
     const failure = request.failure();
     diagnostics.push(`requestfailed: ${request.url()} ${failure?.errorText ?? ''}`.trim());
   });
+  page.on('response', (response) => {
+    if (response.status() >= 400) {
+      const sanitizedUrl = response.url().replace(/([?&]access_token=)[^&]+/i, '$1[REDACTED]');
+      diagnostics.push(`response:${response.status()}: ${sanitizedUrl}`);
+    }
+  });
 
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.goto(SERVER_URL, { waitUntil: 'domcontentloaded', timeout: 30_000 });
