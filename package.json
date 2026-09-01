@@ -11,6 +11,8 @@
     "acquire:road-sources": "node scripts/acquire-road-sources.mjs",
     "build:road-geometry": "node scripts/build-road-geometry.mjs",
     "validate:road-geometry": "node scripts/validate-road-geometry.mjs",
+    "build:road-context": "node scripts/build-road-context.mjs",
+    "validate:road-context": "node scripts/validate-road-context.mjs",
     "qa:visual": "node scripts/visual-qa.mjs",
     "qa:terrain": "node scripts/terrain-smoke.mjs",
     "audit:claims": "node scripts/audit-claims.mjs"
