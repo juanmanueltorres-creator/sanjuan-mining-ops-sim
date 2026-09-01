@@ -113,6 +113,70 @@ describe('IGN road-context builder', () => {
     });
   });
 
+  it.each([
+    [40, 'Ruta'],
+    [41, 'Autopista'],
+    [47, 'Autovía'],
+  ])('uses documented IGN TYP %s when objeto is null', (typ, expectedObjectType) => {
+    expect(normalizeRoadFeature({
+      type: 'Feature',
+      properties: {
+        gid: typ,
+        objeto: null,
+        typ,
+        rtn: '150',
+        sag: 'IGN',
+      },
+      geometry: insideGeometry,
+    }).properties).toEqual({
+      id: `ign:${typ}`,
+      objectType: expectedObjectType,
+      roadRef: '150',
+      sourceAgency: 'IGN',
+    });
+  });
+
+  it('validates an IGN source structurally without requiring non-selected TYP values to be publishable', () => {
+    const outsideUnmappedTyp = {
+      type: 'Feature',
+      properties: { gid: 49, objeto: null, typ: 49, rtn: 'OUTSIDE', sag: 'IGN' },
+      geometry: outsideGeometry,
+    };
+    expect(() => validateIgnSource({ type: 'FeatureCollection', features: [outsideUnmappedTyp] })).not.toThrow();
+
+    const built = buildRoadContext({
+      source: {
+        type: 'FeatureCollection',
+        features: [
+          outsideUnmappedTyp,
+          {
+            type: 'Feature',
+            properties: { gid: 40, objeto: null, typ: 40, rtn: '150', sag: 'IGN' },
+            geometry: insideGeometry,
+          },
+        ],
+      },
+      routeDocuments,
+      sourceIdentity,
+    });
+    expect(built.geojson.features.map((feature) => feature.properties.objectType)).toEqual(['Ruta']);
+  });
+
+  it('fails closed when a selected feature has neither objeto nor a documented TYP mapping', () => {
+    expect(() => buildRoadContext({
+      source: {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          properties: { gid: 49, objeto: null, typ: 49, rtn: 'UNMAPPED', sag: 'IGN' },
+          geometry: insideGeometry,
+        }],
+      },
+      routeDocuments,
+      sourceIdentity,
+    })).toThrow(/TYP|object/i);
+  });
+
   it('accepts numbered compound IGN provenance signatures but still rejects non-IGN sources', () => {
     expect(normalizeRoadFeature({
       type: 'Feature',
