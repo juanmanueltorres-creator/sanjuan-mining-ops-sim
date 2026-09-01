@@ -4,6 +4,7 @@ export interface MapInstrumentationProps {
   scaleWidthPx: number | null;
   cursorText: string | null;
   webGlAvailable: boolean;
+  terrainState: 'READY' | 'ELLIPSOID' | 'FAILED';
   onRegionalView: () => void;
 }
 
@@ -13,6 +14,7 @@ export function MapInstrumentation({
   scaleWidthPx,
   cursorText,
   webGlAvailable,
+  terrainState,
   onRegionalView,
 }: MapInstrumentationProps) {
   return (
@@ -37,6 +39,10 @@ export function MapInstrumentation({
         ) : (
           <span>SCALE UNAVAILABLE</span>
         )}
+      </div>
+
+      <div className="terrain-state" aria-label="Terrain state">
+        {terrainState === 'READY' ? 'TERRAIN 3D' : 'TERRAIN ELLIPSOID'}
       </div>
 
       <div className="cursor-readout" aria-label="Cursor coordinates and elevation">

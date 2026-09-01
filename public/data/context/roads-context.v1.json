@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "sanjuan.road-context/v1",
+  "id": "san-juan-ign-road-context-v1",
+  "provider": "Instituto Geográfico Nacional de la República Argentina",
+  "authoringSource": "Geo_Platform/web/public/data/san_juan_rutas.geojson",
+  "sourceCommit": "a4812d053f4f381b9d3e1d5ff30abb9fed7d6772",
+  "sourceBlobSha": "1f1cc0293508bb8102c3bcd1b9255a9b68bf4a70",
+  "sourceUrl": "https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG",
+  "licenseUrl": "https://www.ign.gob.ar/descargas/tyc1.html",
+  "attribution": "FUENTE: Instituto Geográfico Nacional de la República Argentina",
+  "selectionMethod": "feature-bbox intersection around active-corridor route-sample bbox + 0.25 degrees",
+  "contextPaddingDegrees": 0.25,
+  "featureCount": 5012,
+  "limitations": [
+    "Cartographic reference only; not an operational route, access authorization, road-status or navigation dataset.",
+    "The exact historical IGN download endpoint used when the GeoPlatform authoring file was added was not recorded; provider identity is retained in the source attributes and official IGN reuse terms are cited separately."
+  ]
+}

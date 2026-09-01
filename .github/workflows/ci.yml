@@ -29,6 +29,9 @@ jobs:
       - name: Validate data
         run: npm run validate:data
 
+      - name: Validate road context
+        run: npm run validate:road-context
+
       - name: Validate Veladero V2 geometry
         run: npm run validate:road-geometry -- veladero
 

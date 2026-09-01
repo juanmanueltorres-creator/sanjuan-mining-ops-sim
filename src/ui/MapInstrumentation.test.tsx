@@ -12,6 +12,7 @@ describe('MapInstrumentation', () => {
         scaleWidthPx={null}
         cursorText={null}
         webGlAvailable={false}
+        terrainState="FAILED"
         onRegionalView={onRegionalView}
       />,
     );
@@ -23,7 +24,7 @@ describe('MapInstrumentation', () => {
     expect(onRegionalView).toHaveBeenCalledTimes(1);
   });
 
-  it('renders measured scale and cursor text when available', () => {
+  it('renders measured scale, cursor text, and 3D terrain state when available', () => {
     render(
       <MapInstrumentation
         headingDeg={0}
@@ -31,11 +32,43 @@ describe('MapInstrumentation', () => {
         scaleWidthPx={80}
         cursorText="31.5376° S · 68.5364° W · ELEV 650 m"
         webGlAvailable
+        terrainState="READY"
         onRegionalView={vi.fn()}
       />,
     );
 
     expect(screen.getByText('5 km')).toBeVisible();
     expect(screen.getByText(/31\.5376° S/)).toBeVisible();
+    expect(screen.getByText('TERRAIN 3D')).toBeVisible();
+  });
+
+  it('labels ellipsoid and failed terrain modes as ellipsoid fallback', () => {
+    const { rerender } = render(
+      <MapInstrumentation
+        headingDeg={0}
+        scaleLabel="5 km"
+        scaleWidthPx={80}
+        cursorText={null}
+        webGlAvailable
+        terrainState="ELLIPSOID"
+        onRegionalView={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('TERRAIN ELLIPSOID')).toBeVisible();
+
+    rerender(
+      <MapInstrumentation
+        headingDeg={0}
+        scaleLabel="5 km"
+        scaleWidthPx={80}
+        cursorText={null}
+        webGlAvailable
+        terrainState="FAILED"
+        onRegionalView={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('TERRAIN ELLIPSOID')).toBeVisible();
   });
 });

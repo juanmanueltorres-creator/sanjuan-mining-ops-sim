@@ -76,7 +76,7 @@ function operationWithGeometrySources(usedSourceIds: string[]): StaticOperationD
 
 describe('AnalysisDrawer', () => {
   it('keeps modelled weather and synthetic traffic provenance explicit', () => {
-    render(<AnalysisDrawer open onClose={vi.fn()} operation={null} runArtifacts={runArtifacts} traffic={traffic} />);
+    render(<AnalysisDrawer open onClose={vi.fn()} operation={null} runArtifacts={runArtifacts} traffic={traffic} roadContext={null} />);
 
     expect(screen.getByRole('complementary', { name: /sources and limitations/i })).toBeVisible();
     expect(screen.getByText('MODELLED WEATHER')).toBeVisible();
@@ -95,6 +95,7 @@ describe('AnalysisDrawer', () => {
         operation={operationWithGeometrySources(['official', 'osm'])}
         runArtifacts={runArtifacts}
         traffic={traffic}
+        roadContext={null}
       />,
     );
 
@@ -112,6 +113,7 @@ describe('AnalysisDrawer', () => {
         operation={operationWithGeometrySources(['official'])}
         runArtifacts={runArtifacts}
         traffic={traffic}
+        roadContext={null}
       />,
     );
 

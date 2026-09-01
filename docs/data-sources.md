@@ -1,12 +1,12 @@
-# V0.1 data sources and evidence boundaries
+# V0.1 / V0.1.1 data sources and evidence boundaries
 
-Date: 2026-08-30
+Date: 2026-09-01
 
-San Juan Mining Ops Sim follows one rule throughout the data model: every value must remain distinguishable as sourced, derived, modelled, calibrated, analogue, or synthetic. The checked-in JSON/GeoJSON artifacts and their `evidenceRefs` are the runtime source of truth; this document is a human-readable index.
+San Juan Mining Ops Sim follows one rule throughout the data model: every value must remain distinguishable as sourced, derived, modelled, calibrated, analogue, synthetic, or visual-only context. Checked-in JSON/GeoJSON artifacts and their provenance metadata are the runtime source of truth; this document is the human-readable index.
 
 ## Evidence roles
 
-- `PRIMARY` — published source used directly for territorial, project, or provider context.
+- `PRIMARY` — published source used directly for territorial, project, provider, or geometry context.
 - `DERIVED` — artifact reconstructed or interpolated from cited public anchors.
 - `CALIBRATION` — real reference data used only to shape a synthetic display model.
 - `ANALOGUE` — evidence from a comparable geography used as context, not transferred as an observation of San Juan.
@@ -15,6 +15,8 @@ San Juan Mining Ops Sim follows one rule throughout the data model: every value 
 - `METHOD_REFERENCE` — reference supporting a method rather than a territorial observation.
 
 Geometry source records additionally use `PRIMARY`, `CORROBORATION`, and `FALLBACK` to describe their role in the physical road/access assembly.
+
+V0.1.1 introduces a separate **visual-only context** boundary for Cesium terrain and the IGN contextual-road layer. Neither becomes evidence for routing, movement, ETA, road status, access authorization, transitability, or safety.
 
 ## Project locations
 
@@ -67,10 +69,10 @@ Geometry source id: `dnv-rutas-nacionales-20260830`.
 - Catalog resource id: `d58b91ee-c46a-4260-8d89-69438417d73b`.
 - Frozen snapshot: `public/data/corridors/veladero/source-snapshots/dnv-national-roads.v1.geojson`.
 - Recorded license: `Otra (Abierta)`.
-- Used physical sections: A014, RN 40, RN 149, and RN 150.
-- Exact selected source feature IDs are frozen in `sources.v2.json`.
+- Used physical sections include A014, RN 40, RN 149, and RN 150.
+- Exact selected source feature IDs remain frozen in `sources.v2.json`.
 
-Limitations: this is a frozen reference geometry extract, not a live road-status or navigation feed. Publication cadence is eventual and the geometry may be stale relative to later road works.
+Limitation: this is a frozen reference geometry extract, not a live road-status or navigation feed. Publication cadence is eventual and geometry may be stale relative to later road works.
 
 ### IGN / provincial-road geometry
 
@@ -82,10 +84,10 @@ Geometry source id: `ign-rutas-provinciales-2016-20260830`.
 - Catalog resource id: `903edc8b-da5b-4f3e-b555-eef41b89c3f3`.
 - Frozen snapshot: `public/data/corridors/veladero/source-snapshots/ign-provincial-roads.v1.geojson`.
 - Recorded license: `Otra (Abierta)`.
-- Used physical sections: RP 436, RP 432, and RP 418.
-- Exact selected source feature IDs are frozen in `sources.v2.json`.
+- Used physical sections include RP 436, RP 432, and RP 418.
+- Exact selected source feature IDs remain frozen in `sources.v2.json`.
 
-Limitations: the published provincial-road dataset is an older reference (2016 vintage in the catalog context) and may not reflect later changes. It is not a current road-status or navigation feed.
+Limitation: the published provincial-road dataset is an older reference (2016 vintage in the catalog context) and may not reflect later changes. It is not a current road-status or navigation feed.
 
 ### UNIDE San Juan corroboration
 
@@ -108,7 +110,7 @@ Geometry source id: `osm-high-mountain-access-20260830`.
 - Frozen snapshot: `public/data/corridors/veladero/source-snapshots/osm-high-mountain-access.v1.geojson`.
 - License: `ODbL 1.0`.
 - Attribution: `© OpenStreetMap contributors`.
-- Exact selected OSM way IDs are frozen in `sources.v2.json`.
+- Exact selected OSM way IDs remain frozen in `sources.v2.json`.
 - Use: publicly mapped Tudcum-to-Veladero high-mountain road/access geometry where the official road layers do not provide the complete physical chain needed by the V0.1 representation.
 
 OSM geometry is publicly mapped fallback/completion geometry. It is not operator-supplied evidence and does not establish current road condition, closure, safety, transitability, or access authorization.
@@ -135,7 +137,7 @@ The assembled V2 geometry contains:
 
 The complete corridor still carries conservative corridor-level `RECONSTRUCTED_ACCESS` classification.
 
-Measured validator values are recorded in `docs/qa/v0-1-road-geometry-acceptance.md`. The checked-in V2 currently measures 365.904918 km of physical chainage, with 641 geometry vertices and 1,482 operationally calibrated route samples. Maximum explicit source gap is 0.045 m and maximum derived chord is 1.566006 km.
+Measured validator values are recorded in `docs/qa/v0-1-road-geometry-acceptance.md`. The checked-in V2 measures 365.904918 km of physical chainage, with 641 geometry vertices and 1,482 operationally calibrated route samples. Maximum explicit source gap is 0.045 m and maximum derived chord is 1.566006 km.
 
 Required build/QA anchors occur in this order: San Juan → Tudcum → Conconta → Despoblados → Veladero. Conconta and Despoblados are not runtime operational nodes and therefore do not create new passage events.
 
@@ -154,13 +156,62 @@ The deterministic distance axis is 276 km. The corridor is `RECONSTRUCTED_ACCESS
 
 Runtime bundle: `public/data/corridors/los-azules/`.
 
-## Elevation
+## Elevation and terrain — three separate concepts
 
-Route elevation is carried in the versioned route/profile artifacts and derived from the documented public anchors/ranges used by each corridor bundle. Profiles are analytical context, not an engineering-grade DEM survey or road survey.
+V0.1.1 intentionally prevents visual topography from silently redefining simulation data.
+
+### 1. Analytical elevation
+
+**Analytical elevation → checked-in profile/route samples; simulation/context semantics.**
+
+Route elevation is carried in versioned route/profile artifacts and derived from the documented public anchors/ranges used by each corridor bundle. Profiles are analytical context, not an engineering-grade DEM survey or road survey.
 
 Veladero V0.1 deliberately reuses `profile.v1.json`. V2 route samples interpolate that same analytical profile on the unchanged operational km axis; the release does not reinterpret the profile against measured physical chainage.
 
-Vehicle elevation is resolved from vehicle distance along versioned route samples. It is not fetched from a provider on each simulation frame.
+Vehicle analytical elevation is resolved from vehicle distance along versioned route samples. It is not fetched from a terrain provider on each simulation frame.
+
+### 2. Cesium terrain
+
+**Cesium terrain → visual topographic surface only; external render provider.**
+
+V0.1.1 can install Cesium World Terrain when a dedicated browser token is supplied. Terrain affects only rendered placement and topographic reading. It does not regenerate profiles, change route samples, alter speeds, move the operational distance axis, modify ETA, trigger events, redefine modelled weather-at-passage, or make a navigation/safety assertion.
+
+The viewer boots on the Cesium ellipsoid first. Missing/invalid terrain configuration keeps the application usable on that fallback. Normal PR CI intentionally runs without a terrain token to keep this fallback path continuously tested.
+
+The Pages workflow injects `CESIUM_ION_PUBLIC_TOKEN` only at build time. Because browser-side tokens are observable after compilation, deployment security relies on least-privilege public access plus asset/URL restrictions rather than secrecy in the browser.
+
+### 3. IGN road context
+
+**IGN road context → checked-in cartographic reference only; never routing/movement.**
+
+Canonical artifacts:
+
+- `public/data/context/roads-context.v1.geojson` — selected contextual road features;
+- `public/data/context/roads-context.v1.json` — provenance and limitations sidecar.
+
+Recorded provenance:
+
+- provider: `Instituto Geográfico Nacional de la República Argentina`;
+- authoring source: `Geo_Platform/web/public/data/san_juan_rutas.geojson`;
+- source commit: `a4812d053f4f381b9d3e1d5ff30abb9fed7d6772`;
+- source blob SHA: `1f1cc0293508bb8102c3bcd1b9255a9b68bf4a70`;
+- official IGN layer portal: `https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG`;
+- official terms URL: `https://www.ign.gob.ar/descargas/tyc1.html`;
+- required attribution: `FUENTE: Instituto Geográfico Nacional de la República Argentina`.
+
+Selection method: feature-bbox intersection around the active-corridor route-sample bounding box expanded by exactly **0.25 degrees** on every side. V0.1.1 does not simplify or alter selected source coordinates for this visual layer. The generated artifact contains **5,012 features**.
+
+Git blob hashes of the checked-in V0.1.1 candidate artifacts:
+
+- `roads-context.v1.geojson`: `2c7d671951fa0da456587f3d2b92b3311164073f`;
+- `roads-context.v1.json`: `2eb92a4a55c182d588eb03ff3f2799a020050fb8`.
+
+Limitations from the sidecar:
+
+- cartographic reference only; not an operational route, access authorization, road-status or navigation dataset;
+- the exact historical IGN download endpoint used when the GeoPlatform authoring file was added was not recorded; provider identity is retained in source attributes and official IGN reuse terms are cited separately.
+
+The contextual layer is loaded independently from the operational data bundle. A 404, invalid sidecar, invalid GeoJSON, provider mismatch, count mismatch, or provenance mismatch causes the layer to fail closed without changing the operational simulation. The Sources drawer labels this material separately as `ROAD CONTEXT`; it is not merged with `ROAD GEOMETRY` provenance.
 
 ## Modelled environment
 
@@ -180,15 +231,9 @@ The checked-in snapshot:
 - is queried by corridor position on the **operational distance axis** and passage time;
 - is modelled weather, not a station observation or road-condition measurement.
 
-**V0.1 does not regenerate this weather artifact against Veladero V2 physical geometry.** The same immutable snapshot is intentionally reused so the road-geometry release changes spatial position without changing weather-at-passage, ETA, movement, events, or other operational semantics.
+V0.1 and V0.1.1 do not regenerate this weather artifact against Veladero V2 physical geometry or Cesium terrain. The same immutable snapshot is intentionally reused so spatial rendering changes do not change weather-at-passage, ETA, movement, events, or other operational semantics.
 
-The environment evidence registry records provider name, provider endpoint, retrieval time, build method, and limitations separately from the operational scenario. This keeps the architecture explicit: operational/synthetic evidence lives with `OperationSpec`, while provider evidence for modelled weather lives with the versioned environment artifact. `OperationalRun.provenance` references the weather evidence ID without duplicating the provider record into the operational spec.
-
-The loader and acceptance tests fail closed if the snapshot references missing environment evidence, if the evidence registry belongs to another snapshot, or if the run omits the environment evidence reference from its provenance. The Sources drawer renders the structured weather evidence alongside model/source state and limitations.
-
-The browser does not call Open-Meteo per vehicle or per simulation tick. `scripts/build-environment.mjs` writes both the snapshot and its companion evidence registry. A new provider refresh should create a new versioned environment/run artifact instead of mutating an old run.
-
-Upstream licensing/usage rights are not asserted by this repository beyond what is explicitly documented in the source artifact. Consult the provider's current terms for redistribution or downstream use.
+The browser does not call Open-Meteo per vehicle or per simulation tick. A provider refresh should create a new versioned environment/run artifact instead of mutating an old run.
 
 ## Background road traffic
 
@@ -196,8 +241,8 @@ Runtime artifact: `public/data/calibration/traffic.v1.json`.
 
 Evidence split:
 
-- Dirección Nacional de Vialidad TMDA historical traffic — `CALIBRATION`.
-- Chile Dirección de Vialidad, Plan Nacional de Censo Vial Zona Norte 2025 — `ANALOGUE`.
+- Dirección Nacional de Vialidad TMDA historical traffic — `CALIBRATION`;
+- Chile Dirección de Vialidad, Plan Nacional de Censo Vial Zona Norte 2025 — `ANALOGUE`;
 - V0 time bands and near-even corridor weights — `SYNTHETIC_ASSUMPTION`.
 
 The simulator does **not** transfer an Argentine or Chilean absolute vehicle count onto the three mining corridors. Background `BG-*` vehicles are deterministic synthetic territorial context only. They do not represent live San Juan traffic and do not model lanes, congestion, signals, overtaking, closures, or traffic-control decisions.
@@ -206,20 +251,15 @@ The simulator does **not** transfer an Argentine or Chilean absolute vehicle cou
 
 Exactly 24 highlighted units are generated from the checked-in run seed: 12 `PERSONNEL`, 6 `FIELD`, and 6 `LOGISTICS` vehicles. Departure times, assignments, planned dwell, speed profiles, return timing, and context display rules are `SYNTHETIC_ASSUMPTION` inputs.
 
-Two scenario-level evidence records make that authorship explicit:
-
-- `synthetic-operating-plan-v1` — deterministic movement/schedule assumptions;
-- `scenario-display-rules-v1` — thresholds used only to surface contextual signals.
-
-The canonical `buildV0OperationSpec()` registers these records and fails closed if any project, corridor, fleet, planned-stop, calibration, or context-rule evidence reference is missing. The same builder is used by both the application and deterministic acceptance replay so production and QA cannot silently construct different provenance graphs.
-
 The operating plan is not operator dispatch and is not based on live company telemetry. Display-rule thresholds are not safety, transitability, occupational-health, or operational decision thresholds.
 
 ## Runtime source boundary
 
-Road/network providers are acquisition-time dependencies only. Runtime does not call DNV, IGN, UNIDE, or Overpass for corridor geometry. V2 reads the frozen checked-in manifest/snapshots and generated assets.
+Operational road/network providers are acquisition-time dependencies only. Runtime does not call DNV, IGN, UNIDE, or Overpass to construct corridor geometry or move vehicles. V2 reads frozen checked-in manifests/snapshots and generated assets.
 
-The separate manual `.github/workflows/road-geometry-acquisition.yml` can reproduce a source-acquisition artifact without mutating runtime data automatically. Source selection and freezing remain an explicit audited step.
+The V0.1.1 IGN road-context layer is also checked in. Runtime fetches the local artifact from the deployed application; it does not call the IGN portal to refresh, route, snap, or infer status.
+
+Cesium World Terrain is the exception only in the narrow sense that it is an external **visual render provider**. It remains outside the operational model and can disappear without changing the synthetic run.
 
 ## Community / qualitative material
 
@@ -229,8 +269,8 @@ Community discussions and Reddit-style qualitative research may inform future qu
 
 The Cesium scene uses OpenStreetMap tiles and keeps the provider credit visible through Cesium's credit display. The configured credit links to OpenStreetMap copyright and identifies the ODbL attribution. The public `tile.openstreetmap.org` service is a basemap dependency, not an operational data source or service-level guarantee for this product.
 
-Separately, when Veladero V2 uses the frozen OSM high-mountain geometry source, the Sources drawer exposes that geometry source's ODbL license and `© OpenStreetMap contributors` attribution. Unused geometry sources are not presented as if they contributed to the rendered route.
+Separately, when Veladero V2 uses the frozen OSM high-mountain geometry source, the Sources drawer exposes that geometry source's ODbL license and `© OpenStreetMap contributors` attribution. The V0.1.1 IGN contextual layer exposes its own provider, official portal/terms links, source commit/blob and required IGN attribution string.
 
 ## Repository license vs upstream data
 
-Repository-authored software is released under the repository's MIT License. That license does not re-license third-party source material or imply ownership of upstream datasets, maps, reports, APIs, or imagery. Source-specific terms continue to apply.
+Repository-authored software is released under the repository's MIT License. That license does not re-license third-party source material or imply ownership of upstream datasets, maps, reports, APIs, terrain, or imagery. Source-specific terms continue to apply.
