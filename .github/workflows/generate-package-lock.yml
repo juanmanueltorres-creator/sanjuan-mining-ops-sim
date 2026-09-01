@@ -42,9 +42,9 @@ jobs:
           }
           NODE
 
-      - name: Emit lockfile
-        run: |
-          echo PACKAGE_LOCK_BASE64_BEGIN
-          base64 -w 0 package-lock.json
-          echo
-          echo PACKAGE_LOCK_BASE64_END
+      - name: Upload lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock
+          path: package-lock.json
+          if-no-files-found: error
