@@ -8,6 +8,19 @@ const IGN_PROVIDER = 'Instituto Geográfico Nacional de la República Argentina'
 const IGN_SOURCE_URL = 'https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG';
 const IGN_LICENSE_URL = 'https://www.ign.gob.ar/descargas/tyc1.html';
 const IGN_ATTRIBUTION = 'FUENTE: Instituto Geográfico Nacional de la República Argentina';
+const AUTHORING_SOURCE = {
+  repository: 'juanmanueltorres-creator/Geo_Platform',
+  path: 'web/public/data/san_juan_rutas.geojson',
+  commit: 'a4812d053f4f381b9d3e1d5ff30abb9fed7d6772',
+  blobSha: '1f1cc0293508bb8102c3bcd1b9255a9b68bf4a70',
+};
+const ROUTE_SAMPLE_PATHS = [
+  'public/data/corridors/hualilan/route-samples.v1.json',
+  'public/data/corridors/veladero/route-samples.v2.json',
+  'public/data/corridors/los-azules/route-samples.v1.json',
+];
+const OUTPUT_GEOJSON_PATH = 'public/data/context/roads-context.v1.geojson';
+const OUTPUT_METADATA_PATH = 'public/data/context/roads-context.v1.json';
 
 function requireFiniteNumber(value, label) {
   if (!Number.isFinite(value)) throw new Error(`${label} must be a finite number`);
@@ -132,8 +145,6 @@ export function normalizeRoadFeature(feature) {
       roadRef: firstNonEmptyString(properties.rtn),
       sourceAgency: 'IGN',
     },
-    // Preserve source coordinates exactly. V0.1.1 performs feature-level
-    // selection only: no clipping, simplification, snapping or mutation.
     geometry: feature.geometry,
   };
 }
@@ -144,10 +155,7 @@ export function validateIgnSource(source) {
   }
   if (source.features.length === 0) throw new Error('IGN road-context source must contain features');
 
-  for (const feature of source.features) {
-    normalizeRoadFeature(feature);
-  }
-
+  for (const feature of source.features) normalizeRoadFeature(feature);
   return source;
 }
 
@@ -199,33 +207,26 @@ export function buildRoadContext({ source, routeDocuments, sourceIdentity }) {
   return { geojson, metadata };
 }
 
-function parseArgs(argv) {
-  const parsed = { routeSamplePaths: [] };
-  for (let index = 0; index < argv.length; index += 1) {
-    const arg = argv[index];
-    const value = argv[index + 1];
-    if (arg === '--route-samples') {
-      if (!value) throw new Error('--route-samples requires a path');
-      parsed.routeSamplePaths.push(value);
-      index += 1;
-      continue;
-    }
-    const keyByArg = {
-      '--source': 'sourcePath',
-      '--output-geojson': 'outputGeojsonPath',
-      '--output-metadata': 'outputMetadataPath',
-      '--source-repository': 'sourceRepository',
-      '--source-path': 'sourceRepoPath',
-      '--source-commit': 'sourceCommit',
-      '--source-blob-sha': 'sourceBlobSha',
-    };
-    const key = keyByArg[arg];
-    if (!key) throw new Error(`Unknown argument: ${arg}`);
-    if (!value) throw new Error(`${arg} requires a value`);
-    parsed[key] = value;
-    index += 1;
+export function resolveRoadContextCli(argv) {
+  if (!Array.isArray(argv) || argv.length !== 2 || argv[0] !== '--input') {
+    const unknown = Array.isArray(argv) && argv.length > 0 && argv[0] !== '--input' ? ` Unknown argument: ${argv[0]}.` : '';
+    throw new Error(`Road-context builder requires exactly: --input <san_juan_rutas.geojson>.${unknown}`);
   }
-  return parsed;
+  const sourcePath = argv[1];
+  if (typeof sourcePath !== 'string' || !sourcePath.trim()) throw new Error('--input requires a path');
+
+  return {
+    sourcePath: sourcePath.trim(),
+    routeSamplePaths: [...ROUTE_SAMPLE_PATHS],
+    outputGeojsonPath: OUTPUT_GEOJSON_PATH,
+    outputMetadataPath: OUTPUT_METADATA_PATH,
+    sourceIdentity: { ...AUTHORING_SOURCE },
+    provenance: {
+      sourceUrl: IGN_SOURCE_URL,
+      licenseUrl: IGN_LICENSE_URL,
+      attribution: IGN_ATTRIBUTION,
+    },
+  };
 }
 
 async function readJson(filePath) {
@@ -238,36 +239,17 @@ async function writeJson(filePath, value) {
 }
 
 export async function runCli(argv = process.argv.slice(2)) {
-  const args = parseArgs(argv);
-  const required = [
-    'sourcePath',
-    'outputGeojsonPath',
-    'outputMetadataPath',
-    'sourceRepository',
-    'sourceRepoPath',
-    'sourceCommit',
-    'sourceBlobSha',
-  ];
-  for (const key of required) {
-    if (!args[key]) throw new Error(`Missing required road-context argument: ${key}`);
-  }
-  if (args.routeSamplePaths.length === 0) throw new Error('At least one --route-samples path is required');
-
-  const source = await readJson(args.sourcePath);
-  const routeDocuments = await Promise.all(args.routeSamplePaths.map(readJson));
+  const config = resolveRoadContextCli(argv);
+  const source = await readJson(config.sourcePath);
+  const routeDocuments = await Promise.all(config.routeSamplePaths.map(readJson));
   const result = buildRoadContext({
     source,
     routeDocuments,
-    sourceIdentity: {
-      repository: args.sourceRepository,
-      path: args.sourceRepoPath,
-      commit: args.sourceCommit,
-      blobSha: args.sourceBlobSha,
-    },
+    sourceIdentity: config.sourceIdentity,
   });
 
-  await writeJson(args.outputGeojsonPath, result.geojson);
-  await writeJson(args.outputMetadataPath, result.metadata);
+  await writeJson(config.outputGeojsonPath, result.geojson);
+  await writeJson(config.outputMetadataPath, result.metadata);
   return result;
 }
 
