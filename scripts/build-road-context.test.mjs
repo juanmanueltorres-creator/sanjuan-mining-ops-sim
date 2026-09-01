@@ -113,6 +113,30 @@ describe('IGN road-context builder', () => {
     });
   });
 
+  it('accepts numbered compound IGN provenance signatures but still rejects non-IGN sources', () => {
+    expect(normalizeRoadFeature({
+      type: 'Feature',
+      properties: {
+        gid: 11,
+        objeto: 'Huella',
+        rtn: null,
+        sag: 'IGN01/ESRI World Imagery',
+      },
+      geometry: insideGeometry,
+    }).properties.sourceAgency).toBe('IGN');
+
+    expect(() => normalizeRoadFeature({
+      type: 'Feature',
+      properties: {
+        gid: 12,
+        objeto: 'Huella',
+        rtn: null,
+        sag: 'ESRI World Imagery',
+      },
+      geometry: insideGeometry,
+    })).toThrow(/IGN/i);
+  });
+
   it('fails closed when any authoring-source record lacks an IGN provenance signature', () => {
     expect(() => validateIgnSource({
       type: 'FeatureCollection',
