@@ -28,6 +28,7 @@ import {
   type VehicleEntitySink,
 } from './cesiumAdapter';
 import { formatCoordinates, formatElevation, selectScaleBarMeters } from './cartographicReadout';
+import { REGIONAL_VIEW } from './regionalView';
 import { buildCorridorRenderLines, routeGeometryStyle } from './routeGeometryStyle';
 import { visualHeightOffsetM } from './terrainPlacement';
 import { installPreferredTerrain, normalizeTerrainToken } from './terrainRuntime';
@@ -49,14 +50,6 @@ interface MapInstrumentState {
 }
 
 type TerrainDisplayState = 'READY' | 'ELLIPSOID' | 'FAILED';
-
-const REGIONAL_VIEW = {
-  lon: -69.25,
-  lat: -30.65,
-  heightM: 760_000,
-  headingDeg: 2,
-  pitchDeg: -53,
-};
 
 function canUseWebGl(): boolean {
   return typeof window !== 'undefined' && typeof WebGLRenderingContext !== 'undefined';
