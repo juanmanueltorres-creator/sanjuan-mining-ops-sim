@@ -208,10 +208,19 @@ export function buildRoadContext({ source, routeDocuments, sourceIdentity }) {
 }
 
 export function resolveRoadContextCli(argv) {
-  if (!Array.isArray(argv) || argv.length !== 2 || argv[0] !== '--input') {
-    const unknown = Array.isArray(argv) && argv.length > 0 && argv[0] !== '--input' ? ` Unknown argument: ${argv[0]}.` : '';
-    throw new Error(`Road-context builder requires exactly: --input <san_juan_rutas.geojson>.${unknown}`);
+  if (!Array.isArray(argv)) {
+    throw new Error('Road-context builder requires exactly: --input <san_juan_rutas.geojson>.');
   }
+  if (argv.length > 0 && argv[0] !== '--input') {
+    throw new Error(`Unknown argument: ${argv[0]}. Road-context builder requires exactly: --input <san_juan_rutas.geojson>.`);
+  }
+  if (argv.length > 2) {
+    throw new Error(`Unknown argument: ${argv[2]}. Road-context builder accepts only --input <san_juan_rutas.geojson>.`);
+  }
+  if (argv.length !== 2) {
+    throw new Error('Road-context builder requires exactly: --input <san_juan_rutas.geojson>.');
+  }
+
   const sourcePath = argv[1];
   if (typeof sourcePath !== 'string' || !sourcePath.trim()) throw new Error('--input requires a path');
 
