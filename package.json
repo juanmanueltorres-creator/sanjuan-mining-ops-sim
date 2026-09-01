@@ -12,6 +12,7 @@
     "build:road-geometry": "node scripts/build-road-geometry.mjs",
     "validate:road-geometry": "node scripts/validate-road-geometry.mjs",
     "qa:visual": "node scripts/visual-qa.mjs",
+    "qa:terrain": "node scripts/terrain-smoke.mjs",
     "audit:claims": "node scripts/audit-claims.mjs"
   },
   "dependencies": {
@@ -27,8 +28,7 @@
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.2",
-    "jsdom": "^26.1.0",
+    "@types/node": "^24.3.0",
     "puppeteer-core": "^24.16.0",
     "typescript": "~5.8.3",
     "vite": "^7.1.3",
