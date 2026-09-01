@@ -4,6 +4,10 @@ import { fileURLToPath } from 'node:url';
 
 const DEFAULT_BUFFER_DEGREES = 0.25;
 const SUPPORTED_GEOMETRY_TYPES = new Set(['LineString', 'MultiLineString']);
+const IGN_PROVIDER = 'Instituto Geográfico Nacional de la República Argentina';
+const IGN_SOURCE_URL = 'https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG';
+const IGN_LICENSE_URL = 'https://www.ign.gob.ar/descargas/tyc1.html';
+const IGN_ATTRIBUTION = 'FUENTE: Instituto Geográfico Nacional de la República Argentina';
 
 function requireFiniteNumber(value, label) {
   if (!Number.isFinite(value)) throw new Error(`${label} must be a finite number`);
@@ -100,25 +104,38 @@ function firstNonEmptyString(...values) {
   return null;
 }
 
-export function normalizeRoadProperties(properties = {}) {
-  const sourceClass = firstNonEmptyString(properties.objeto, properties.tipo, properties.clase) ?? 'Road context';
-  const sourceLabel = firstNonEmptyString(
-    properties.nomencla,
-    properties.nomenclatura,
-    properties.nombre,
-    properties.name,
-    properties.ruta,
-  );
-
-  return {
-    sourceClass,
-    sourceLabel,
-  };
-}
-
 function hasIgnSignature(properties = {}) {
   return [properties.sag, properties.fdc, properties.fuente, properties.source]
     .some((value) => typeof value === 'string' && /(^|\b)IGN(\b|$)/i.test(value));
+}
+
+function normalizeSourceId(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  throw new Error('IGN road-context feature requires a stable gid');
+}
+
+export function normalizeRoadFeature(feature) {
+  if (!feature || feature.type !== 'Feature') throw new Error('Road-context source entry must be a GeoJSON Feature');
+  const properties = feature.properties ?? {};
+  if (!hasIgnSignature(properties)) throw new Error('Road-context source feature lacks an IGN provenance signature');
+  collectGeometryCoordinates(feature.geometry);
+
+  const objectType = firstNonEmptyString(properties.objeto);
+  if (!objectType) throw new Error('IGN road-context feature requires objeto');
+
+  return {
+    type: 'Feature',
+    properties: {
+      id: `ign:${normalizeSourceId(properties.gid)}`,
+      objectType,
+      roadRef: firstNonEmptyString(properties.rtn),
+      sourceAgency: 'IGN',
+    },
+    // Preserve source coordinates exactly. V0.1.1 performs feature-level
+    // selection only: no clipping, simplification, snapping or mutation.
+    geometry: feature.geometry,
+  };
 }
 
 export function validateIgnSource(source) {
@@ -126,25 +143,12 @@ export function validateIgnSource(source) {
     throw new Error('IGN road-context source must be a GeoJSON FeatureCollection');
   }
   if (source.features.length === 0) throw new Error('IGN road-context source must contain features');
-  if (!source.features.some((feature) => hasIgnSignature(feature?.properties))) {
-    throw new Error('Road-context source does not contain an IGN provenance signature');
-  }
 
   for (const feature of source.features) {
-    if (!feature || feature.type !== 'Feature') throw new Error('IGN road-context source contains a non-Feature entry');
-    collectGeometryCoordinates(feature.geometry);
+    normalizeRoadFeature(feature);
   }
 
   return source;
-}
-
-function stableFeatureKey(feature) {
-  const properties = normalizeRoadProperties(feature.properties);
-  return [
-    properties.sourceLabel ?? '',
-    properties.sourceClass,
-    JSON.stringify(feature.geometry.coordinates),
-  ].join('\u0000');
 }
 
 function normalizeSourceIdentity(sourceIdentity) {
@@ -165,15 +169,8 @@ export function buildRoadContext({ source, routeDocuments, sourceIdentity }) {
 
   const selected = source.features
     .filter((feature) => featureIntersectsBounds(feature, bounds))
-    .sort((left, right) => stableFeatureKey(left).localeCompare(stableFeatureKey(right)))
-    .map((feature, index) => ({
-      type: 'Feature',
-      id: `ign-road-context-${String(index + 1).padStart(4, '0')}`,
-      properties: normalizeRoadProperties(feature.properties),
-      // Preserve source coordinates exactly. Context selection is feature-level;
-      // V0.1.1 does not clip, simplify, snap or otherwise mutate geometry.
-      geometry: feature.geometry,
-    }));
+    .map(normalizeRoadFeature)
+    .sort((left, right) => left.properties.id.localeCompare(right.properties.id));
 
   const geojson = {
     type: 'FeatureCollection',
@@ -182,20 +179,20 @@ export function buildRoadContext({ source, routeDocuments, sourceIdentity }) {
 
   const metadata = {
     schemaVersion: 'sanjuan.road-context/v1',
-    purpose: 'CARTOGRAPHIC_REFERENCE',
-    source: sourceRef,
-    operationalBounds: bounds,
-    transformation: {
-      selectionMethod: 'feature-bbox-intersects-expanded-operational-bbox',
-      bufferDegrees: DEFAULT_BUFFER_DEGREES,
-      geometryMutation: 'none',
-      propertyNormalization: ['sourceClass', 'sourceLabel'],
-    },
+    id: 'san-juan-ign-road-context-v1',
+    provider: IGN_PROVIDER,
+    authoringSource: `Geo_Platform/${sourceRef.path}`,
+    sourceCommit: sourceRef.commit,
+    sourceBlobSha: sourceRef.blobSha,
+    sourceUrl: IGN_SOURCE_URL,
+    licenseUrl: IGN_LICENSE_URL,
+    attribution: IGN_ATTRIBUTION,
+    selectionMethod: 'feature-bbox intersection around active-corridor route-sample bbox + 0.25 degrees',
+    contextPaddingDegrees: DEFAULT_BUFFER_DEGREES,
     featureCount: selected.length,
     limitations: [
-      'Cartographic reference only; this layer is not used for routing, snapping, ETA, dispatch or vehicle motion.',
-      'Published geometry does not establish current road condition, closure, transitability, access authorization or safety.',
-      'The historical Geo_Platform authoring snapshot does not record its exact original IGN acquisition endpoint.',
+      'Cartographic reference only; not an operational route, access authorization, road-status or navigation dataset.',
+      'The exact historical IGN download endpoint used when the GeoPlatform authoring file was added was not recorded; provider identity is retained in the source attributes and official IGN reuse terms are cited separately.',
     ],
   };
 
