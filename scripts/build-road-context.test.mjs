@@ -3,7 +3,7 @@ import {
   buildRoadContext,
   deriveExpandedOperationalBounds,
   featureIntersectsBounds,
-  normalizeRoadProperties,
+  normalizeRoadFeature,
   validateIgnSource,
 } from './build-road-context.mjs';
 
@@ -62,6 +62,16 @@ const outsideGeometry = {
   ],
 };
 
+const forbiddenOperationalKeys = [
+  'corridorId',
+  'distanceKm',
+  'segmentId',
+  'speedKph',
+  'eta',
+  'accessAllowed',
+  'routeMembership',
+];
+
 describe('IGN road-context builder', () => {
   it('derives one combined operational bbox and expands every side by exactly 0.25 degrees', () => {
     expect(deriveExpandedOperationalBounds(routeDocuments)).toEqual({
@@ -79,37 +89,57 @@ describe('IGN road-context builder', () => {
     expect(featureIntersectsBounds({ type: 'Feature', properties: {}, geometry: outsideGeometry }, bounds)).toBe(false);
   });
 
-  it('normalizes only the minimal cartographic properties', () => {
-    expect(normalizeRoadProperties({ objeto: 'Huella', nomencla: 'RP 999', sag: 'IGN', noisy: 'drop-me' })).toEqual({
-      sourceClass: 'Huella',
-      sourceLabel: 'RP 999',
+  it('normalizes a source feature to stable cartographic-only properties', () => {
+    expect(normalizeRoadFeature({
+      type: 'Feature',
+      properties: {
+        gid: 10,
+        objeto: 'Huella',
+        rtn: null,
+        sag: 'IGN',
+        corridorId: 'must-drop',
+        speedKph: 80,
+      },
+      geometry: insideGeometry,
+    })).toEqual({
+      type: 'Feature',
+      properties: {
+        id: 'ign:10',
+        objectType: 'Huella',
+        roadRef: null,
+        sourceAgency: 'IGN',
+      },
+      geometry: insideGeometry,
     });
   });
 
-  it('fails closed when the authoring source does not carry an IGN provenance signature', () => {
+  it('fails closed when any authoring-source record lacks an IGN provenance signature', () => {
     expect(() => validateIgnSource({
       type: 'FeatureCollection',
-      features: [{ type: 'Feature', properties: { objeto: 'Huella', sag: 'UNKNOWN' }, geometry: insideGeometry }],
+      features: [
+        { type: 'Feature', properties: { gid: 1, objeto: 'Huella', sag: 'IGN' }, geometry: insideGeometry },
+        { type: 'Feature', properties: { gid: 2, objeto: 'Huella', sag: 'UNKNOWN' }, geometry: insideGeometry },
+      ],
     })).toThrow(/IGN/i);
   });
 
-  it('builds deterministic cartographic-only output with pinned source identity and untouched geometry', () => {
+  it('builds deterministic cartographic-only output with complete provenance and untouched geometry', () => {
     const source = {
       type: 'FeatureCollection',
       features: [
         {
           type: 'Feature',
-          properties: { objeto: 'Huella', nomencla: 'B', sag: 'IGN', noisy: 'drop-me' },
+          properties: { gid: 20, objeto: 'Huella', rtn: null, sag: 'IGN', noisy: 'drop-me' },
           geometry: insideGeometry,
         },
         {
           type: 'Feature',
-          properties: { objeto: 'Ruta', nomencla: 'OUTSIDE', sag: 'IGN' },
+          properties: { gid: 30, objeto: 'Ruta', rtn: 'OUTSIDE', sag: 'IGN' },
           geometry: outsideGeometry,
         },
         {
           type: 'Feature',
-          properties: { objeto: 'Ruta', nomencla: 'A', sag: 'IGN' },
+          properties: { gid: 10, objeto: 'Ruta', rtn: 'RN 40', sag: 'IGN' },
           geometry: {
             type: 'LineString',
             coordinates: [
@@ -127,22 +157,38 @@ describe('IGN road-context builder', () => {
     expect(first).toEqual(second);
     expect(first.geojson.type).toBe('FeatureCollection');
     expect(first.geojson.features).toHaveLength(2);
-    expect(first.geojson.features.map((feature) => feature.properties.sourceLabel)).toEqual(['A', 'B']);
+    expect(first.geojson.features.map((feature) => feature.properties.id)).toEqual(['ign:10', 'ign:20']);
     expect(first.geojson.features[1].geometry).toEqual(insideGeometry);
-    expect(first.geojson.features[1].properties).toEqual({ sourceClass: 'Huella', sourceLabel: 'B' });
-
-    expect(first.metadata).toMatchObject({
-      schemaVersion: 'sanjuan.road-context/v1',
-      purpose: 'CARTOGRAPHIC_REFERENCE',
-      source: sourceIdentity,
-      transformation: {
-        selectionMethod: 'feature-bbox-intersects-expanded-operational-bbox',
-        bufferDegrees: 0.25,
-        geometryMutation: 'none',
-      },
-      featureCount: 2,
+    expect(first.geojson.features[1].properties).toEqual({
+      id: 'ign:20',
+      objectType: 'Huella',
+      roadRef: null,
+      sourceAgency: 'IGN',
     });
-    expect(first.metadata.limitations.join(' ')).toMatch(/not.*routing/i);
-    expect(first.metadata.limitations.join(' ')).toMatch(/not.*road condition/i);
+
+    for (const feature of first.geojson.features) {
+      for (const key of forbiddenOperationalKeys) {
+        expect(feature.properties).not.toHaveProperty(key);
+      }
+    }
+
+    expect(first.metadata).toEqual({
+      schemaVersion: 'sanjuan.road-context/v1',
+      id: 'san-juan-ign-road-context-v1',
+      provider: 'Instituto Geográfico Nacional de la República Argentina',
+      authoringSource: 'Geo_Platform/web/public/data/san_juan_rutas.geojson',
+      sourceCommit: 'a4812d053f4f381b9d3e1d5ff30abb9fed7d6772',
+      sourceBlobSha: '1f1cc0293508bb8102c3bcd1b9255a9b68bf4a70',
+      sourceUrl: 'https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG',
+      licenseUrl: 'https://www.ign.gob.ar/descargas/tyc1.html',
+      attribution: 'FUENTE: Instituto Geográfico Nacional de la República Argentina',
+      selectionMethod: 'feature-bbox intersection around active-corridor route-sample bbox + 0.25 degrees',
+      contextPaddingDegrees: 0.25,
+      featureCount: 2,
+      limitations: [
+        'Cartographic reference only; not an operational route, access authorization, road-status or navigation dataset.',
+        'The exact historical IGN download endpoint used when the GeoPlatform authoring file was added was not recorded; provider identity is retained in the source attributes and official IGN reuse terms are cited separately.',
+      ],
+    });
   });
 });
