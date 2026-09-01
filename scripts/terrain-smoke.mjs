@@ -56,9 +56,10 @@ try {
   await waitForServer();
   await mkdir(OUTPUT_DIR, { recursive: true });
 
+  const headed = process.env.TERRAIN_SMOKE_HEADED === '1';
   browser = await puppeteer.launch({
     executablePath: findChrome(),
-    headless: true,
+    headless: !headed,
     args: [
       '--no-sandbox',
       '--disable-gpu-sandbox',
@@ -122,6 +123,15 @@ try {
       const rect = element.getBoundingClientRect();
       const style = getComputedStyle(element);
       return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+    })(),
+    canvas: (() => {
+      const canvas = document.querySelector('.cesium-host canvas');
+      if (!(canvas instanceof HTMLCanvasElement)) return null;
+      const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
+      if (!gl) return { width: canvas.width, height: canvas.height, renderer: null };
+      const ext = gl.getExtension('WEBGL_debug_renderer_info');
+      const renderer = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+      return { width: canvas.width, height: canvas.height, renderer };
     })(),
   }));
 
