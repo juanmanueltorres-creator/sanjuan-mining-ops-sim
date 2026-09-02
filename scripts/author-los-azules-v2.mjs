@@ -257,7 +257,6 @@ export function buildLosAzulesAuthoringBundle({
   const rn40End = endpoints(dnvRegional).end;
   const rp436End = endpoints(ignRp436).end;
   const rn149End = endpoints(dnvRn149).end;
-  const rp406End = endpoints(ignRp406).end;
   const lastMappedAccess = endpoints(selected.osm).end;
 
   const manifest = {
@@ -285,7 +284,6 @@ export function buildLosAzulesAuthoringBundle({
       { id: 'rp436-rn149-junction', lat: rp436End[1], lon: rp436End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-ign-road-geometry-v2', 'los-azules-dnv-road-geometry-v2'] },
       { id: 'rn149-rp406-junction', lat: rn149End[1], lon: rn149End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-dnv-road-geometry-v2', 'los-azules-ign-road-geometry-v2'] },
       { id: 'calingasta', lat: calingasta[1], lon: calingasta[0], operationalKm: 164, maxDistanceToRouteKm: 2, evidenceRefs: ['calingasta-public-locality'] },
-      { id: 'rp406-osm-access-junction', lat: rp406End[1], lon: rp406End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-ign-road-geometry-v2', 'los-azules-osm-access-geometry-v2'] },
       { id: 'los-azules', lat: destination[1], lon: destination[0], operationalKm: 276, maxDistanceToRouteKm: 2 },
     ],
     sources: [
