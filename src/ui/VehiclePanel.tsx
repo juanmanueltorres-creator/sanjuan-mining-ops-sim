@@ -7,10 +7,18 @@ export interface VehiclePanelProps {
 
 function formatMinuteOfDay(value: number | null): string {
   if (value === null) return '—';
-  const minuteOfDay = Math.max(0, Math.min(1439, Math.round(value)));
+  const totalMinutes = Math.max(0, Math.round(value));
+  const dayOffset = Math.floor(totalMinutes / 1440);
+  const minuteOfDay = totalMinutes % 1440;
   const hour = Math.floor(minuteOfDay / 60);
   const minute = minuteOfDay % 60;
-  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  return dayOffset > 0 ? `${time} +${dayOffset}d` : time;
+}
+
+function etaLabel(vehicle: VehicleSnapshot): string {
+  if (vehicle.etaMinute === null) return 'ETA';
+  return vehicle.direction === 'TO_PROJECT' ? 'Project ETA' : 'Base ETA';
 }
 
 function formatValue(value: number | null, unit: string): string {
@@ -62,7 +70,7 @@ export function VehiclePanel({ vehicle, corridorName }: VehiclePanelProps) {
         <div><dt>Type</dt><dd>{vehicle.type}</dd></div>
         <div><dt>Distance</dt><dd>{vehicle.distanceKm.toFixed(1)} km</dd></div>
         <div><dt>Elevation</dt><dd>{Math.round(vehicle.elevationM).toLocaleString('en-US')} m</dd></div>
-        <div><dt>ETA</dt><dd>{formatMinuteOfDay(vehicle.etaMinute)}</dd></div>
+        <div><dt>{etaLabel(vehicle)}</dt><dd>{formatMinuteOfDay(vehicle.etaMinute)}</dd></div>
       </dl>
 
       <EnvironmentBlock context={vehicle.environmentContext} />
