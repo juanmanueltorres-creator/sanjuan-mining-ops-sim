@@ -5,12 +5,14 @@ import {
   Cartographic,
   Color,
   ConstantPositionProperty,
+  ConstantProperty,
   Credit,
   CustomDataSource,
   EllipsoidTerrainProvider,
   Entity,
   HeightReference,
   Math as CesiumMath,
+  NearFarScalar,
   PolylineDashMaterialProperty,
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
@@ -42,6 +44,7 @@ export interface CesiumStageProps {
   fleetIds: string[];
   backgroundIds: string[];
   backgroundTraffic: BackgroundTrafficVehicle[];
+  selectedVehicleId?: string | null;
   onVehicleSelect?: (vehicleId: string) => void;
 }
 
@@ -81,10 +84,11 @@ function createVehicleSink(dataSource: CustomDataSource): VehicleEntitySink {
         name: vehicleId,
         position: new ConstantPositionProperty(Cartesian3.fromDegrees(-68.5364, -31.5375, 0)),
         point: {
-          pixelSize: 9,
+          pixelSize: 8,
           color: vehicleColor(vehicleId),
           outlineColor: Color.fromCssColorString('#0b1115'),
-          outlineWidth: 2,
+          outlineWidth: 1.5,
+          scaleByDistance: new NearFarScalar(50_000, 0.95, 1_500_000, 0.58),
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
           heightReference: HeightReference.RELATIVE_TO_GROUND,
         },
@@ -103,6 +107,26 @@ function createVehicleSink(dataSource: CustomDataSource): VehicleEntitySink {
       requireEntity(vehicleId).show = visible;
     },
   };
+}
+
+function applyVehiclePointEmphasis(
+  dataSource: CustomDataSource,
+  fleetIds: string[],
+  selectedVehicleId: string | null | undefined,
+): void {
+  for (const vehicleId of fleetIds) {
+    const entity = dataSource.entities.getById(`vehicle:${vehicleId}`);
+    if (!entity?.point) continue;
+
+    const selected = selectedVehicleId === vehicleId;
+    entity.point.pixelSize = new ConstantProperty(selected ? 11 : 8);
+    entity.point.outlineWidth = new ConstantProperty(selected ? 3 : 1.5);
+    entity.point.scaleByDistance = new ConstantProperty(
+      selected
+        ? new NearFarScalar(50_000, 1, 1_500_000, 0.85)
+        : new NearFarScalar(50_000, 0.95, 1_500_000, 0.58),
+    );
+  }
 }
 
 function createBackgroundTrafficSink(dataSource: CustomDataSource): VehicleEntitySink {
@@ -127,6 +151,7 @@ function createBackgroundTrafficSink(dataSource: CustomDataSource): VehicleEntit
           color: Color.fromCssColorString('#b9c3c8').withAlpha(0.42),
           outlineColor: Color.fromCssColorString('#0b1115').withAlpha(0.55),
           outlineWidth: 1,
+          scaleByDistance: new NearFarScalar(50_000, 0.9, 1_500_000, 0.45),
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
           heightReference: HeightReference.RELATIVE_TO_GROUND,
         },
@@ -303,6 +328,7 @@ export function CesiumStage({
   fleetIds,
   backgroundIds,
   backgroundTraffic,
+  selectedVehicleId,
   onVehicleSelect,
 }: CesiumStageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -480,6 +506,15 @@ export function CesiumStage({
 
     viewer.scene.requestRender();
   }, [data, fleetIds, backgroundIds]);
+
+  useEffect(() => {
+    const dataSource = dataSourceRef.current;
+    const viewer = viewerRef.current;
+    if (!dataSource || !viewer) return;
+
+    applyVehiclePointEmphasis(dataSource, fleetIds, selectedVehicleId);
+    viewer.scene.requestRender();
+  }, [fleetIds, selectedVehicleId]);
 
   useEffect(() => {
     const adapter = adapterRef.current;

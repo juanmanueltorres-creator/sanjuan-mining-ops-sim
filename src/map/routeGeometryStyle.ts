@@ -30,20 +30,20 @@ export interface CorridorRenderLine {
 const VISUAL_STYLES: Record<RenderableGeometryClass, RouteGeometryVisualStyle> = {
   PUBLIC_ROAD: {
     pattern: 'solid',
-    width: 3.5,
-    alpha: 0.92,
+    width: 4,
+    alpha: 0.96,
   },
   RECONSTRUCTED_ACCESS: {
     pattern: 'dash',
-    width: 3,
-    alpha: 0.72,
+    width: 3.25,
+    alpha: 0.78,
     dashLength: 18,
     dashPattern: 0xf0f0,
   },
   APPROXIMATE_APPROACH: {
     pattern: 'dot',
     width: 2.25,
-    alpha: 0.5,
+    alpha: 0.55,
     dashLength: 10,
     dashPattern: 0x1111,
   },
