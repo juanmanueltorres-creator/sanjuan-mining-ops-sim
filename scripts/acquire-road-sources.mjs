@@ -14,6 +14,7 @@ export const OFFICIAL_RESOURCES = [
     format: 'wfs',
     url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_nacional',
     catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b',
+    license: 'Otra (Abierta)',
   },
   {
     id: 'ign-rutas-provinciales-2016-20260830',
@@ -24,14 +25,32 @@ export const OFFICIAL_RESOURCES = [
     format: 'wfs',
     url: 'https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_provincial',
     catalogUrl: 'https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3',
+    license: 'Otra (Abierta)',
   },
 ];
 export const OVERPASS_ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
 ];
-export const VELADERO_REGIONAL_BBOX = [-69.5, -31.8, -68.3, -29.9];
-export const VELADERO_HIGH_MOUNTAIN_BBOX = [-70.1, -30.25, -69.2, -29.25];
+
+export const ROAD_SOURCE_ACQUISITION_CONFIG = {
+  veladero: {
+    regionalBbox: [-69.5, -31.8, -68.3, -29.9],
+    fallbackBbox: [-70.1, -30.25, -69.2, -29.25],
+  },
+  hualilan: {
+    regionalBbox: [-69.25, -31.75, -68.35, -30.55],
+    fallbackBbox: [-69.25, -31.25, -68.70, -30.55],
+  },
+  'los-azules': {
+    regionalBbox: [-70.40, -31.80, -68.30, -30.85],
+    fallbackBbox: [-70.45, -31.55, -69.20, -30.85],
+  },
+};
+
+// Backward-compatible aliases retained for existing Veladero tests and provenance notes.
+export const VELADERO_REGIONAL_BBOX = ROAD_SOURCE_ACQUISITION_CONFIG.veladero.regionalBbox;
+export const VELADERO_HIGH_MOUNTAIN_BBOX = ROAD_SOURCE_ACQUISITION_CONFIG.veladero.fallbackBbox;
 
 function asRecord(input, label) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error(`${label}: expected object`);
@@ -130,8 +149,10 @@ function inventoryOfficialSource(result, generatedAt) {
     resourceId: result.source.resourceId,
     resourceName: result.source.name,
     sourceUrl: result.source.url,
+    catalogUrl: result.source.catalogUrl,
     requestUrl: result.requestUrl,
     format: result.source.format,
+    ...(result.source.license ? { license: result.source.license } : {}),
     retrievedAt: generatedAt,
     featureCount: featureIds.length,
     featureIds,
@@ -221,7 +242,7 @@ function resolvedResource(descriptor, result, label) {
     ...descriptor,
     resourceId: typeof record.id === 'string' && record.id.length > 0 ? record.id : descriptor.resourceId,
     name: typeof record.name === 'string' ? record.name : descriptor.id,
-    format: typeof record.format === 'string' ? record.format : '',
+    format: typeof record.format === 'string' ? record.format : descriptor.format ?? '',
     url: record.url,
     lastModified: typeof record.last_modified === 'string' ? record.last_modified : undefined,
   };
@@ -319,7 +340,7 @@ export async function fetchOverpassRoadSource(bbox, fetcher = fetch, endpoints =
         headers: {
           'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
           accept: 'application/json',
-          'user-agent': 'sanjuan-mining-ops-sim/0.1 (+https://github.com/juanmanueltorres-creator/sanjuan-mining-ops-sim)',
+          'user-agent': 'sanjuan-mining-ops-sim/0.2 (+https://github.com/juanmanueltorres-creator/sanjuan-mining-ops-sim)',
           referer: 'https://github.com/juanmanueltorres-creator/sanjuan-mining-ops-sim',
         },
         body,
@@ -344,26 +365,42 @@ export async function fetchOverpassRoadSource(bbox, fetcher = fetch, endpoints =
   throw new Error(`Overpass acquisition failed: ${failures.join('; ')}`);
 }
 
-export async function acquireVeladeroSources({
+function osmInventoryId(corridorId) {
+  return corridorId === 'veladero'
+    ? 'osm-high-mountain-access-20260830'
+    : `osm-road-access-${corridorId}-v2`;
+}
+
+function osmSnapshotName(corridorId) {
+  return corridorId === 'veladero'
+    ? 'osm-high-mountain-access.v1.geojson'
+    : 'osm-access.v1.geojson';
+}
+
+export async function acquireRoadSources(corridorId, {
   fetcher = fetch,
-  outputDir = path.join('artifacts', 'road-geometry-acquisition'),
+  outputDir = path.join('artifacts', `road-geometry-acquisition-${corridorId}`),
   overpassEndpoints = OVERPASS_ENDPOINTS,
   now = () => new Date().toISOString(),
 } = {}) {
+  const config = ROAD_SOURCE_ACQUISITION_CONFIG[corridorId];
+  if (!config) throw new Error(`Unsupported corridor ${corridorId ?? '(missing)'}`);
+
   const generatedAt = now();
   if (typeof generatedAt !== 'string' || generatedAt.length === 0) throw new Error('Acquisition timestamp required');
 
   const officialResults = [];
   for (const resource of OFFICIAL_RESOURCES) {
-    officialResults.push(await fetchOfficialRoadSource(resource, VELADERO_REGIONAL_BBOX, fetcher));
+    officialResults.push(await fetchOfficialRoadSource(resource, config.regionalBbox, fetcher));
   }
-  const osmResult = await fetchOverpassRoadSource(VELADERO_HIGH_MOUNTAIN_BBOX, fetcher, overpassEndpoints);
+  const osmResult = await fetchOverpassRoadSource(config.fallbackBbox, fetcher, overpassEndpoints);
 
   await mkdir(outputDir, { recursive: true });
+  const osmFileName = osmSnapshotName(corridorId);
   const snapshots = {
     'dnv-national-roads.v1.geojson': officialResults[0].featureCollection,
     'ign-provincial-roads.v1.geojson': officialResults[1].featureCollection,
-    'osm-high-mountain-access.v1.geojson': osmResult.featureCollection,
+    [osmFileName]: osmResult.featureCollection,
   };
   for (const [fileName, document] of Object.entries(snapshots)) {
     await writeJson(path.join(outputDir, fileName), document);
@@ -372,16 +409,17 @@ export async function acquireVeladeroSources({
   const osmFeatureIds = osmResult.featureCollection.features.map((feature) => String(feature.id));
   const inventory = {
     schemaVersion: 'sanjuan.road-source-inventory/v1',
-    corridorId: 'veladero',
+    corridorId,
     generatedAt,
     acquisitionBboxes: {
-      regional: [...VELADERO_REGIONAL_BBOX],
-      highMountain: [...VELADERO_HIGH_MOUNTAIN_BBOX],
+      regional: [...config.regionalBbox],
+      fallback: [...config.fallbackBbox],
+      ...(corridorId === 'veladero' ? { highMountain: [...config.fallbackBbox] } : {}),
     },
     sources: [
       ...officialResults.map((result) => inventoryOfficialSource(result, generatedAt)),
       {
-        id: 'osm-high-mountain-access-20260830',
+        id: osmInventoryId(corridorId),
         provider: 'OpenStreetMap via Overpass API',
         sourceUrl: osmResult.endpoint,
         format: 'OSM',
@@ -390,6 +428,7 @@ export async function acquireVeladeroSources({
         attribution: '© OpenStreetMap contributors',
         retrievedAt: generatedAt,
         query: osmResult.query,
+        snapshotFile: osmFileName,
         featureCount: osmFeatureIds.length,
         featureIds: osmFeatureIds,
       },
@@ -400,25 +439,32 @@ export async function acquireVeladeroSources({
   return { inventory, outputDir, snapshots };
 }
 
+export async function acquireVeladeroSources(options = {}) {
+  return acquireRoadSources('veladero', {
+    outputDir: path.join('artifacts', 'road-geometry-acquisition'),
+    ...options,
+  });
+}
+
 export async function runRoadSourceAcquisitionCli(
   args = process.argv.slice(2),
   {
-    acquire = acquireVeladeroSources,
-    outputDir = path.join('artifacts', 'road-geometry-acquisition'),
+    acquire = acquireRoadSources,
+    outputDir,
   } = {},
 ) {
   const [corridorId] = args;
-  if (corridorId !== 'veladero') {
-    throw new Error('Road source acquisition currently supports only Veladero.');
+  if (!ROAD_SOURCE_ACQUISITION_CONFIG[corridorId]) {
+    throw new Error(`Unsupported corridor ${corridorId ?? '(missing)'}`);
   }
-  return acquire({ outputDir });
+  return acquire(corridorId, outputDir ? { outputDir } : {});
 }
 
 const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : '';
 if (invokedPath === fileURLToPath(import.meta.url)) {
   runRoadSourceAcquisitionCli()
     .then(({ inventory, outputDir }) => {
-      console.log(`Veladero road source acquisition written to ${outputDir}`);
+      console.log(`${inventory.corridorId} road source acquisition written to ${outputDir}`);
       for (const source of inventory.sources) {
         console.log(`${source.id}: ${source.featureCount} features`);
       }
