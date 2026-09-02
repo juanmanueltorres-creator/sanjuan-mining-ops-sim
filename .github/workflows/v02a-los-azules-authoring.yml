@@ -15,7 +15,7 @@ on:
       - scripts/lib/road-geometry.mjs
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   author-build-validate:
@@ -91,3 +91,37 @@ jobs:
             public/data/corridors/los-azules/route-samples.v2.json
             artifacts/los-azules-v2/validation.txt
           if-no-files-found: error
+
+      - name: Version validated Los Azules V2
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          expected_paths="$(printf '%s\n' \
+            public/data/corridors/los-azules/corridor.v2.geojson \
+            public/data/corridors/los-azules/metadata.v2.json \
+            public/data/corridors/los-azules/route-samples.v2.json \
+            public/data/corridors/los-azules/segments.v2.geojson \
+            public/data/corridors/los-azules/source-snapshots/dnv-national-roads.v1.geojson \
+            public/data/corridors/los-azules/source-snapshots/ign-provincial-roads.v1.geojson \
+            public/data/corridors/los-azules/source-snapshots/osm-access.v1.geojson \
+            public/data/corridors/los-azules/sources.v2.json | sort)"
+
+          git add -- \
+            public/data/corridors/los-azules/corridor.v2.geojson \
+            public/data/corridors/los-azules/metadata.v2.json \
+            public/data/corridors/los-azules/route-samples.v2.json \
+            public/data/corridors/los-azules/segments.v2.geojson \
+            public/data/corridors/los-azules/source-snapshots/dnv-national-roads.v1.geojson \
+            public/data/corridors/los-azules/source-snapshots/ign-provincial-roads.v1.geojson \
+            public/data/corridors/los-azules/source-snapshots/osm-access.v1.geojson \
+            public/data/corridors/los-azules/sources.v2.json
+
+          git diff --cached --check
+          actual_paths="$(git diff --cached --name-only | sort)"
+          test "$actual_paths" = "$expected_paths"
+
+          git commit -m "data: version Los Azules V2 corridor"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
