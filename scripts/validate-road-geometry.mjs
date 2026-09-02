@@ -10,6 +10,7 @@ import {
 
 const EPS = 1e-7;
 const VALID_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH']);
+const ACTIVE_CORRIDORS = new Set(['hualilan', 'veladero', 'los-azules']);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -70,9 +71,10 @@ function nearestSampleToAnchor(samples, anchor) {
 
 export function validateRoadGeometry(bundle) {
   const { manifest, sourceDocs, v1Metadata, metadata, corridor, segments, routeSamples } = bundle;
-  assert(manifest?.corridorId === 'veladero', `Unsupported corridor ${manifest?.corridorId ?? '(missing)'}`);
-  assert(v1Metadata?.id === 'veladero', 'V1 Veladero metadata required');
-  assert(metadata?.id === 'veladero', 'V2 metadata id mismatch');
+  assert(typeof manifest?.corridorId === 'string' && manifest.corridorId.length > 0, 'manifest corridorId required');
+  assert(ACTIVE_CORRIDORS.has(manifest.corridorId), `Unsupported corridor ${manifest.corridorId}`);
+  assert(v1Metadata?.id === manifest.corridorId, 'V1 metadata id mismatch');
+  assert(metadata?.id === manifest.corridorId, 'V2 metadata id mismatch');
   assert(metadata.schemaVersion === 'sanjuan.corridor-metadata/v2', 'V2 metadata schemaVersion mismatch');
   assert(deepEqual(metadata.segments, v1Metadata.segments), 'V2 operational segments differ from V1 operational segments');
   assert(deepEqual(metadata.nodes, v1Metadata.nodes), 'V2 runtime nodes differ from V1 runtime nodes');
@@ -82,7 +84,7 @@ export function validateRoadGeometry(bundle) {
   assert(corridor.properties?.geometryClass === 'RECONSTRUCTED_ACCESS', 'V2 combined corridor must remain RECONSTRUCTED_ACCESS');
   assert(segments?.type === 'FeatureCollection' && Array.isArray(segments.features) && segments.features.length > 0, 'V2 geometry segments required');
   assert(routeSamples?.schemaVersion === 'sanjuan.route-samples/v2', 'V2 route-sample schemaVersion mismatch');
-  assert(routeSamples.corridorId === 'veladero', 'V2 route-sample corridor id mismatch');
+  assert(routeSamples.corridorId === manifest.corridorId, 'V2 route-sample corridor id mismatch');
   assert(Array.isArray(routeSamples.samples) && routeSamples.samples.length >= 2, 'V2 route samples require >=2 entries');
 
   const sources = new Map((manifest.sources ?? []).map((source) => [source.id, source]));
@@ -142,12 +144,15 @@ export function validateRoadGeometry(bundle) {
   assert(measuredChainageKm >= minChainageKm && measuredChainageKm <= maxChainageKm, `measured chainage ${measuredChainageKm.toFixed(3)} km outside ${minChainageKm}-${maxChainageKm} km`);
 
   const locatedAnchors = validateAnchorOrder((manifest.anchors ?? []).map((anchor) => locateAnchor(chainage, anchor)));
-  const expectedAnchorOrder = ['san-juan', 'tudcum', 'conconta', 'despoblados', 'veladero'];
+  const expectedAnchorOrder = (manifest.anchors ?? []).map((anchor) => anchor.id);
   assert(deepEqual(locatedAnchors.map((anchor) => anchor.id), expectedAnchorOrder), `anchor order must be ${expectedAnchorOrder.join(' → ')}`);
 
   const samples = routeSamples.samples;
   assert(Math.abs(samples[0].distanceKm) <= EPS, 'V2 operational samples must start at 0 km');
-  assert(Math.abs(samples.at(-1).distanceKm - 360) <= EPS, 'V2 operational samples must end at 360 km');
+  assert(
+    Math.abs(samples.at(-1).distanceKm - v1Metadata.totalDistanceKm) <= EPS,
+    `V2 operational samples must end at ${v1Metadata.totalDistanceKm} km`,
+  );
   for (let index = 0; index < samples.length; index += 1) {
     const sample = samples[index];
     assert(Number.isFinite(sample.distanceKm) && Number.isFinite(sample.geometryChainageKm), `route sample ${index}: finite distances required`);
@@ -161,17 +166,27 @@ export function validateRoadGeometry(bundle) {
     }
   }
 
-  const tudcum = manifest.anchors.find((anchor) => anchor.id === 'tudcum');
-  assert(tudcum, 'Tudcum anchor required');
-  const nearestTudcum = nearestSampleToAnchor(samples, tudcum);
-  assert(nearestTudcum, 'Unable to locate Tudcum route sample');
-  assert(Math.abs(nearestTudcum.sample.distanceKm - 205) <= EPS, `nearest Tudcum sample must equal operational km 205, got ${nearestTudcum.sample.distanceKm}`);
+  const operationalAnchors = {};
+  for (const anchor of manifest.anchors ?? []) {
+    if (!Number.isFinite(anchor.operationalKm)) continue;
+    const nearest = nearestSampleToAnchor(samples, anchor);
+    assert(nearest, `Unable to locate route sample for ${anchor.id}`);
+    assert(
+      Math.abs(nearest.sample.distanceKm - anchor.operationalKm) <= EPS,
+      `${anchor.id} sample must equal operational km ${anchor.operationalKm}`,
+    );
+    operationalAnchors[anchor.id] = {
+      operationalKm: nearest.sample.distanceKm,
+      geometryChainageKm: nearest.sample.geometryChainageKm,
+    };
+  }
 
   if (Number.isFinite(manifest.selectionMetrics?.expectedMeasuredChainageKm)) {
     const deltaKm = Math.abs(measuredChainageKm - manifest.selectionMetrics.expectedMeasuredChainageKm);
     assert(deltaKm <= 0.02, `measured chainage differs from frozen-manifest expectation by ${deltaKm.toFixed(3)} km`);
   }
 
+  const tudcum = operationalAnchors.tudcum;
   return {
     measuredChainageKm: Math.round(measuredChainageKm * 1e6) / 1e6,
     geometryVertexCount: corridor.geometry.coordinates.length,
@@ -179,8 +194,11 @@ export function validateRoadGeometry(bundle) {
     geometrySegmentCount: segments.features.length,
     operationalStartKm: samples[0].distanceKm,
     operationalEndKm: samples.at(-1).distanceKm,
-    tudcumOperationalKm: nearestTudcum.sample.distanceKm,
-    tudcumGeometryChainageKm: nearestTudcum.sample.geometryChainageKm,
+    operationalAnchors,
+    ...(tudcum ? {
+      tudcumOperationalKm: tudcum.operationalKm,
+      tudcumGeometryChainageKm: tudcum.geometryChainageKm,
+    } : {}),
     anchorDistancesKm: Object.fromEntries(locatedAnchors.map((anchor) => [anchor.id, Math.round(anchor.distanceToRouteKm * 1e6) / 1e6])),
     maxExplicitGapMeters: Math.round(maxExplicitGapMeters * 1000) / 1000,
     maxDerivedChordKm: Math.round(maxDerivedChordSeenKm * 1e6) / 1e6,
@@ -196,7 +214,7 @@ async function readJson(filePath) {
 }
 
 async function validateFromDisk(corridorId) {
-  if (corridorId !== 'veladero') throw new Error(`Unsupported corridor ${corridorId}`);
+  if (!ACTIVE_CORRIDORS.has(corridorId)) throw new Error(`Unsupported corridor ${corridorId}`);
   const base = path.join(process.cwd(), 'public', 'data', 'corridors', corridorId);
   const [manifest, v1Metadata, metadata, corridor, segments, routeSamples] = await Promise.all([
     readJson(path.join(base, 'sources.v2.json')),
