@@ -4,9 +4,9 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const CORRIDORS = ['hualilan', 'veladero', 'los-azules'];
 const CORRIDOR_ASSET_VERSIONS = {
-  hualilan: 'v1',
+  hualilan: 'v2',
   veladero: 'v2',
-  'los-azules': 'v1',
+  'los-azules': 'v2',
 };
 const GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH', 'PROJECT_LOCATION']);
 const ROAD_GEOMETRY_CLASSES = new Set(['PUBLIC_ROAD', 'RECONSTRUCTED_ACCESS', 'APPROXIMATE_APPROACH']);
@@ -55,7 +55,7 @@ const corridorTotals = new Map();
 for (const corridorId of CORRIDORS) {
   const base = `public/data/corridors/${corridorId}`;
   const version = CORRIDOR_ASSET_VERSIONS[corridorId];
-  assert(version === 'v1' || (corridorId === 'veladero' && version === 'v2'), `${corridorId}: unsupported asset version ${version}`);
+  assert(version === 'v1' || version === 'v2', `${corridorId}: unsupported asset version ${version}`);
 
   const [metadata, feature, profile, routeDoc] = await Promise.all([
     readJson(`${base}/metadata.${version}.json`),
