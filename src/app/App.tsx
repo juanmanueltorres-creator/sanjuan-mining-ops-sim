@@ -164,6 +164,7 @@ export function App() {
         fleetIds={fleetIds}
         backgroundIds={backgroundIds}
         backgroundTraffic={backgroundTraffic}
+        selectedVehicleId={selectedVehicleId}
         onVehicleSelect={setSelectedVehicleId}
       />
 
