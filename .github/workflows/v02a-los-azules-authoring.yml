@@ -34,7 +34,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Test Los Azules authoring
-        run: node --test scripts/author-los-azules-v2.test.mjs
+        run: npm test -- --run scripts/author-los-azules-v2.test.mjs
 
       - name: Acquire Los Azules sources
         run: npm run acquire:road-sources -- los-azules
