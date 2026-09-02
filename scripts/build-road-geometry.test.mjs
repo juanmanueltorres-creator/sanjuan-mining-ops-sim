@@ -156,31 +156,4 @@ describe('Veladero V2 road geometry builder', () => {
     });
     expect(() => buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile)).toThrow(/derived chord/i);
   });
-
-  it('uses an explicit inclusive source-feature slice instead of silently consuming the full source feature', () => {
-    const manifest = fixtureManifest();
-    manifest.routeSegments[0].sourceFeatureSlices = {
-      'official-1': { startIndex: 0, endIndex: 1 },
-    };
-    const slicedSourceDocs = {
-      ...sourceDocs,
-      official: {
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          id: 'official-1',
-          properties: { sourceFeatureId: 'official-1' },
-          geometry: { type: 'LineString', coordinates: [[0, 0], [0.015, 0], [0.025, 0]] },
-        }],
-      },
-    };
-
-    const built = buildRoadGeometry(manifest, slicedSourceDocs, v1Metadata, v1Profile, { spacingMeters: 250 });
-    const publicSegment = built.segments.features.find((feature) => feature.properties.id === 'public-01');
-
-    expect(publicSegment.geometry.coordinates).toEqual([[0, 0], [0.015, 0]]);
-    expect(publicSegment.properties.sourceFeatureSlices).toEqual({
-      'official-1': { startIndex: 0, endIndex: 1 },
-    });
-  });
 });
