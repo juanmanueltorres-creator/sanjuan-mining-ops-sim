@@ -21,6 +21,14 @@ function etaLabel(vehicle: VehicleSnapshot): string {
   return vehicle.direction === 'TO_PROJECT' ? 'Project ETA' : 'Base ETA';
 }
 
+function operationalCorridorLabel(vehicle: VehicleSnapshot, corridorName?: string): string {
+  const label = corridorName ?? vehicle.corridorId;
+  if (vehicle.direction !== 'RETURN_TO_BASE' || !label.includes('→')) return label;
+
+  const stops = label.split('→').map((stop) => stop.trim()).filter(Boolean);
+  return stops.length > 1 ? stops.reverse().join(' → ') : label;
+}
+
 function formatValue(value: number | null, unit: string): string {
   return value === null ? '—' : `${value.toFixed(1)} ${unit}`;
 }
@@ -64,7 +72,7 @@ export function VehiclePanel({ vehicle, corridorName }: VehiclePanelProps) {
         <span className="state-chip">{vehicle.state.replaceAll('_', ' ')}</span>
       </div>
 
-      <p className="vehicle-corridor">{corridorName ?? vehicle.corridorId}</p>
+      <p className="vehicle-corridor">{operationalCorridorLabel(vehicle, corridorName)}</p>
 
       <dl className="vehicle-stats">
         <div><dt>Type</dt><dd>{vehicle.type}</dd></div>
