@@ -13,6 +13,7 @@ import {
 } from './lib/road-geometry.mjs';
 
 const EPS = 1e-8;
+const ACTIVE_CORRIDORS = new Set(['hualilan', 'veladero', 'los-azules']);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -224,7 +225,8 @@ function assembleSegments(manifest, sourceDocs) {
 }
 
 export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, options = {}) {
-  assert(manifest?.corridorId === 'veladero', `Unsupported corridor ${manifest?.corridorId ?? '(missing)'}`);
+  assert(typeof manifest?.corridorId === 'string' && manifest.corridorId.length > 0, 'corridorId required');
+  assert(ACTIVE_CORRIDORS.has(manifest.corridorId), `Unsupported corridor ${manifest.corridorId}`);
   assert(v1Metadata?.id === manifest.corridorId, 'V1 metadata corridor id mismatch');
   assert(Array.isArray(v1Metadata.segments) && v1Metadata.segments.length > 0, 'V1 operational segments required');
   assert(Array.isArray(v1Metadata.nodes), 'V1 nodes required');
@@ -249,7 +251,7 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
       operationalKm: anchor.operationalKm,
       evidenceRefs: [...(anchor.evidenceRefs ?? [])],
     }));
-  assert(calibrationAnchors.length >= 3, 'Operational calibration requires San Juan, Tudcum and Veladero anchors');
+  assert(calibrationAnchors.length >= 2, 'Operational calibration requires at least origin and destination anchors');
   assert(Math.abs(calibrationAnchors[0].operationalKm) <= EPS, 'Operational calibration must start at 0 km');
   assert(Math.abs(calibrationAnchors.at(-1).operationalKm - v1Metadata.totalDistanceKm) <= EPS, 'Operational calibration must end at V1 totalDistanceKm');
 
@@ -287,7 +289,12 @@ export function buildRoadGeometry(manifest, sourceDocs, v1Metadata, v1Profile, o
     ? legacyRouteSamples[0].segmentId
     : [...v1Metadata.segments].sort((a, b) => a.startKm - b.startKm)[0].id;
   routeSamples.at(-1).distanceKm = v1Metadata.totalDistanceKm;
-  assert(routeSamples.some((sample) => Math.abs(sample.distanceKm - 205) <= EPS), 'Generated samples must include exact operational km 205');
+  for (const anchor of calibrationAnchors) {
+    assert(
+      routeSamples.some((sample) => Math.abs(sample.distanceKm - anchor.operationalKm) <= EPS),
+      `Generated samples must include exact operational km ${anchor.operationalKm} for anchor ${anchor.id}`,
+    );
+  }
 
   const segmentFeatures = assembled.map((segment) => ({
     type: 'Feature',
@@ -383,7 +390,7 @@ async function readJson(filePath) {
 }
 
 async function buildFromDisk(corridorId) {
-  if (corridorId !== 'veladero') throw new Error(`Unsupported corridor ${corridorId}`);
+  if (!ACTIVE_CORRIDORS.has(corridorId)) throw new Error(`Unsupported corridor ${corridorId}`);
   const corridorDir = path.join(process.cwd(), 'public', 'data', 'corridors', corridorId);
   const [manifest, v1Metadata, v1Profile, v1RouteSamples] = await Promise.all([
     readJson(path.join(corridorDir, 'sources.v2.json')),
