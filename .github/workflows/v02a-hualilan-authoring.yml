@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - feat/v0.2a-route-refinement
+    paths:
+      - .github/workflows/v02a-hualilan-authoring.yml
 
 permissions:
   contents: read
 
 jobs:
   acquire:
-    if: github.event.head_commit.message == 'chore: run Hualilan road-source authoring'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
