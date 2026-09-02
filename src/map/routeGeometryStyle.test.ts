@@ -26,10 +26,10 @@ function corridor(overrides: Partial<CorridorDefinition> = {}): CorridorDefiniti
 }
 
 describe('route geometry rendering contract', () => {
-  it('maps evidence classes to distinct visual patterns', () => {
-    expect(routeGeometryStyle('PUBLIC_ROAD')).toMatchObject({ pattern: 'solid', alpha: 0.92 });
-    expect(routeGeometryStyle('RECONSTRUCTED_ACCESS')).toMatchObject({ pattern: 'dash', alpha: 0.72 });
-    expect(routeGeometryStyle('APPROXIMATE_APPROACH')).toMatchObject({ pattern: 'dot', alpha: 0.5 });
+  it('keeps evidence classes distinct while strengthening the operational corridor hierarchy', () => {
+    expect(routeGeometryStyle('PUBLIC_ROAD')).toMatchObject({ pattern: 'solid', width: 4, alpha: 0.96 });
+    expect(routeGeometryStyle('RECONSTRUCTED_ACCESS')).toMatchObject({ pattern: 'dash', width: 3.25, alpha: 0.78 });
+    expect(routeGeometryStyle('APPROXIMATE_APPROACH')).toMatchObject({ pattern: 'dot', width: 2.25, alpha: 0.55 });
     expect(routeGeometryStyle('APPROXIMATE_APPROACH').width).toBeLessThan(routeGeometryStyle('PUBLIC_ROAD').width);
   });
 
