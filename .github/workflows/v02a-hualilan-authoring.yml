@@ -1,0 +1,36 @@
+name: V0.2A Hualilan road-source authoring
+
+on:
+  push:
+    branches:
+      - feat/v0.2a-route-refinement
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    if: github.event.head_commit.message == 'chore: run Hualilan road-source authoring'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Acquire Hualilan sources
+        run: npm run acquire:road-sources -- hualilan
+
+      - name: Upload authoring artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v02a-hualilan-road-sources
+          path: artifacts/road-geometry-acquisition-hualilan/
+          if-no-files-found: error
