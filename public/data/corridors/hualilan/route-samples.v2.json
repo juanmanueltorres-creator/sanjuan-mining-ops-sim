@@ -1,0 +1,5096 @@
+{
+  "schemaVersion": "sanjuan.route-samples/v2",
+  "corridorId": "hualilan",
+  "samples": [
+    {
+      "distanceKm": 0,
+      "lon": -68.5364,
+      "lat": -31.5375,
+      "elevationM": 650,
+      "segmentId": "hualilan-01",
+      "geometryChainageKm": 0,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 0.240879678,
+      "lon": -68.539033115,
+      "lat": -31.537635919,
+      "elevationM": 651.343367,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 0.25,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 0.481759356,
+      "lon": -68.541666231,
+      "lat": -31.537771839,
+      "elevationM": 652.686735,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 0.5,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 0.722639034,
+      "lon": -68.544299346,
+      "lat": -31.537907758,
+      "elevationM": 654.030102,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 0.75,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 0.963518712,
+      "lon": -68.546932461,
+      "lat": -31.538043677,
+      "elevationM": 655.37347,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 1,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 1.20439839,
+      "lon": -68.549565577,
+      "lat": -31.538179597,
+      "elevationM": 656.716837,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 1.25,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 1.445278068,
+      "lon": -68.552198692,
+      "lat": -31.538315516,
+      "elevationM": 658.060205,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 1.5,
+      "geometrySegmentId": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 1.508872652,
+      "lon": -68.55289386,
+      "lat": -31.5383514,
+      "elevationM": 658.414867,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 1.566002438,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 1.686157746,
+      "lon": -68.553153969,
+      "lat": -31.536715655,
+      "elevationM": 659.403572,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 1.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 1.927037424,
+      "lon": -68.554639625,
+      "lat": -31.534893394,
+      "elevationM": 660.746939,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 2,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 2.167917102,
+      "lon": -68.556504651,
+      "lat": -31.533303671,
+      "elevationM": 662.090307,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 2.25,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 2.40879678,
+      "lon": -68.55770603,
+      "lat": -31.531337781,
+      "elevationM": 663.433674,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 2.5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 2.649676458,
+      "lon": -68.55758564,
+      "lat": -31.529107064,
+      "elevationM": 664.777042,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 2.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 2.890556136,
+      "lon": -68.556791388,
+      "lat": -31.526975914,
+      "elevationM": 666.120409,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 3,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 3.131435814,
+      "lon": -68.555191847,
+      "lat": -31.525203572,
+      "elevationM": 667.463777,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 3.25,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 3.372315492,
+      "lon": -68.552958101,
+      "lat": -31.524034115,
+      "elevationM": 668.807144,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 3.5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 3.61319517,
+      "lon": -68.550382043,
+      "lat": -31.523610941,
+      "elevationM": 670.150512,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 3.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 3.854074848,
+      "lon": -68.547748805,
+      "lat": -31.523685889,
+      "elevationM": 671.493879,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 4,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 4.094954526,
+      "lon": -68.545121616,
+      "lat": -31.523507422,
+      "elevationM": 672.837246,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 4.25,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 4.335834204,
+      "lon": -68.542553946,
+      "lat": -31.522999363,
+      "elevationM": 674.180614,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 4.5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 4.576713882,
+      "lon": -68.540093463,
+      "lat": -31.52219708,
+      "elevationM": 675.523981,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 4.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 4.81759356,
+      "lon": -68.537777703,
+      "lat": -31.521125913,
+      "elevationM": 676.867349,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 5.058473238,
+      "lon": -68.535513046,
+      "lat": -31.51997355,
+      "elevationM": 678.210716,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 5.25,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 5.299352916,
+      "lon": -68.533255638,
+      "lat": -31.518810925,
+      "elevationM": 679.554084,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 5.5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 5.540232594,
+      "lon": -68.530954869,
+      "lat": -31.517714824,
+      "elevationM": 680.897451,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 5.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 5.781112272,
+      "lon": -68.528502047,
+      "lat": -31.516893757,
+      "elevationM": 682.240818,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 6,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.02199195,
+      "lon": -68.525950971,
+      "lat": -31.516328224,
+      "elevationM": 683.584186,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 6.25,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.262871628,
+      "lon": -68.523336308,
+      "lat": -31.516044117,
+      "elevationM": 684.927553,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 6.5,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.503751306,
+      "lon": -68.520701843,
+      "lat": -31.516055488,
+      "elevationM": 686.270921,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 6.75,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.744630984,
+      "lon": -68.51807157,
+      "lat": -31.516219744,
+      "elevationM": 687.614288,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 7,
+      "geometrySegmentId": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.802916538,
+      "lon": -68.5174353,
+      "lat": -31.51626151,
+      "elevationM": 687.939342,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 7.060492395,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 6.985510662,
+      "lon": -68.517952774,
+      "lat": -31.514617618,
+      "elevationM": 688.957656,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 7.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 7.22639034,
+      "lon": -68.517767645,
+      "lat": -31.512381613,
+      "elevationM": 690.301023,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 7.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 7.467270018,
+      "lon": -68.51759941,
+      "lat": -31.510138732,
+      "elevationM": 691.64439,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 7.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 7.708149696,
+      "lon": -68.51762438,
+      "lat": -31.507890554,
+      "elevationM": 692.987758,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 8,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 7.949029374,
+      "lon": -68.517722168,
+      "lat": -31.505643845,
+      "elevationM": 694.331125,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 8.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 8.189909052,
+      "lon": -68.517807634,
+      "lat": -31.503396799,
+      "elevationM": 695.674493,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 8.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 8.43078873,
+      "lon": -68.517907637,
+      "lat": -31.501150264,
+      "elevationM": 697.01786,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 8.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 8.671668408,
+      "lon": -68.518076769,
+      "lat": -31.498906681,
+      "elevationM": 698.361228,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 9,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 8.912548086,
+      "lon": -68.518393738,
+      "lat": -31.496675478,
+      "elevationM": 699.704595,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 9.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 9.153427764,
+      "lon": -68.518781132,
+      "lat": -31.494451579,
+      "elevationM": 701.047963,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 9.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 9.394307442,
+      "lon": -68.519154306,
+      "lat": -31.492225928,
+      "elevationM": 702.39133,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 9.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 9.63518712,
+      "lon": -68.519536492,
+      "lat": -31.490001532,
+      "elevationM": 703.734697,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 10,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 9.876066798,
+      "lon": -68.519939636,
+      "lat": -31.487779855,
+      "elevationM": 705.078065,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 10.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 10.116946476,
+      "lon": -68.520331058,
+      "lat": -31.48555647,
+      "elevationM": 706.421432,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 10.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 10.357826154,
+      "lon": -68.520727875,
+      "lat": -31.483333788,
+      "elevationM": 707.7648,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 10.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 10.598705832,
+      "lon": -68.521080596,
+      "lat": -31.481106014,
+      "elevationM": 709.108167,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 11,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 10.83958551,
+      "lon": -68.521263558,
+      "lat": -31.478866327,
+      "elevationM": 710.451535,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 11.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 11.080465188,
+      "lon": -68.520925686,
+      "lat": -31.476637714,
+      "elevationM": 711.794902,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 11.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 11.321344866,
+      "lon": -68.52057673,
+      "lat": -31.474409252,
+      "elevationM": 713.138269,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 11.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 11.562224544,
+      "lon": -68.520144777,
+      "lat": -31.472191422,
+      "elevationM": 714.481637,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 12,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 11.803104222,
+      "lon": -68.519749603,
+      "lat": -31.469968571,
+      "elevationM": 715.825004,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 12.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 12.0439839,
+      "lon": -68.519625894,
+      "lat": -31.467723526,
+      "elevationM": 717.168372,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 12.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 12.284863578,
+      "lon": -68.519516048,
+      "lat": -31.465477196,
+      "elevationM": 718.511739,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 12.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 12.525743256,
+      "lon": -68.519390121,
+      "lat": -31.463231601,
+      "elevationM": 719.855107,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 13,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 12.766622934,
+      "lon": -68.519272899,
+      "lat": -31.460985902,
+      "elevationM": 721.198474,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 13.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 13.007502612,
+      "lon": -68.519096201,
+      "lat": -31.458742666,
+      "elevationM": 722.541841,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 13.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 13.24838229,
+      "lon": -68.518940539,
+      "lat": -31.456498296,
+      "elevationM": 723.885209,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 13.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 13.489261968,
+      "lon": -68.518774039,
+      "lat": -31.45425449,
+      "elevationM": 725.228576,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 14,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 13.730141646,
+      "lon": -68.518623946,
+      "lat": -31.452009838,
+      "elevationM": 726.571944,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 14.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 13.971021324,
+      "lon": -68.518489056,
+      "lat": -31.449764538,
+      "elevationM": 727.915311,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 14.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 14.211901002,
+      "lon": -68.518543334,
+      "lat": -31.447521857,
+      "elevationM": 729.258679,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 14.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 14.45278068,
+      "lon": -68.519930307,
+      "lat": -31.445616702,
+      "elevationM": 730.602046,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 15,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 14.693660358,
+      "lon": -68.521405953,
+      "lat": -31.443754079,
+      "elevationM": 731.945414,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 15.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 14.934540036,
+      "lon": -68.522868322,
+      "lat": -31.441883715,
+      "elevationM": 733.288781,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 15.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 15.175419714,
+      "lon": -68.524647553,
+      "lat": -31.44024433,
+      "elevationM": 734.632148,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 15.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 15.416299392,
+      "lon": -68.526808264,
+      "lat": -31.438957525,
+      "elevationM": 735.975516,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 16,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 15.65717907,
+      "lon": -68.528969699,
+      "lat": -31.437671639,
+      "elevationM": 737.318883,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 16.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 15.898058748,
+      "lon": -68.531130439,
+      "lat": -31.436384768,
+      "elevationM": 738.662251,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 16.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 16.138938426,
+      "lon": -68.533295221,
+      "lat": -31.435102949,
+      "elevationM": 740.005618,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 16.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 16.379818104,
+      "lon": -68.535575907,
+      "lat": -31.433981324,
+      "elevationM": 741.348986,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 17,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 16.620697783,
+      "lon": -68.537957456,
+      "lat": -31.433019222,
+      "elevationM": 742.692353,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 17.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 16.861577461,
+      "lon": -68.540339735,
+      "lat": -31.432058498,
+      "elevationM": 744.03572,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 17.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 17.102457139,
+      "lon": -68.542623735,
+      "lat": -31.430948604,
+      "elevationM": 745.379088,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 17.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 17.343336817,
+      "lon": -68.544421133,
+      "lat": -31.429317575,
+      "elevationM": 746.722455,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 18,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 17.584216495,
+      "lon": -68.545867672,
+      "lat": -31.427438446,
+      "elevationM": 748.065823,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 18.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 17.825096173,
+      "lon": -68.547322102,
+      "lat": -31.425563731,
+      "elevationM": 749.40919,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 18.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 18.065975851,
+      "lon": -68.548775653,
+      "lat": -31.423688559,
+      "elevationM": 750.752558,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 18.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 18.306855529,
+      "lon": -68.550226012,
+      "lat": -31.421811605,
+      "elevationM": 752.095925,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 19,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 18.547735207,
+      "lon": -68.551678176,
+      "lat": -31.419935672,
+      "elevationM": 753.439292,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 19.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 18.788614885,
+      "lon": -68.55313034,
+      "lat": -31.418059739,
+      "elevationM": 754.78266,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 19.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 19.029494563,
+      "lon": -68.554582504,
+      "lat": -31.416183806,
+      "elevationM": 756.126027,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 19.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 19.270374241,
+      "lon": -68.556034749,
+      "lat": -31.414307921,
+      "elevationM": 757.469395,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 20,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 19.511253919,
+      "lon": -68.557485819,
+      "lat": -31.412431424,
+      "elevationM": 758.812762,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 20.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 19.752133597,
+      "lon": -68.558939028,
+      "lat": -31.410556215,
+      "elevationM": 760.15613,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 20.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 19.993013275,
+      "lon": -68.560390047,
+      "lat": -31.408679749,
+      "elevationM": 761.499497,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 20.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 20.233892953,
+      "lon": -68.561841768,
+      "lat": -31.406803662,
+      "elevationM": 762.842865,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 21,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 20.474772631,
+      "lon": -68.563291104,
+      "lat": -31.404926254,
+      "elevationM": 764.186232,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 21.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 20.715652309,
+      "lon": -68.564740909,
+      "lat": -31.403049118,
+      "elevationM": 765.529599,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 21.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 20.956531987,
+      "lon": -68.56619127,
+      "lat": -31.40117232,
+      "elevationM": 766.872967,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 21.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 21.197411665,
+      "lon": -68.567641637,
+      "lat": -31.399295547,
+      "elevationM": 768.216334,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 22,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 21.438291343,
+      "lon": -68.569092004,
+      "lat": -31.397418775,
+      "elevationM": 769.559702,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 22.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 21.679171021,
+      "lon": -68.570573085,
+      "lat": -31.39556082,
+      "elevationM": 770.903069,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 22.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 21.920050699,
+      "lon": -68.572627316,
+      "lat": -31.394179462,
+      "elevationM": 772.246437,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 22.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 22.160930377,
+      "lon": -68.574925793,
+      "lat": -31.39308164,
+      "elevationM": 773.589804,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 23,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 22.401810055,
+      "lon": -68.577322294,
+      "lat": -31.392165441,
+      "elevationM": 774.933171,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 23.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 22.642689733,
+      "lon": -68.579928761,
+      "lat": -31.391857739,
+      "elevationM": 776.276539,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 23.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 22.883569411,
+      "lon": -68.582482051,
+      "lat": -31.391325799,
+      "elevationM": 777.619906,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 23.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 23.124449089,
+      "lon": -68.585004963,
+      "lat": -31.39068032,
+      "elevationM": 778.963274,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 24,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 23.365328767,
+      "lon": -68.587463345,
+      "lat": -31.389887613,
+      "elevationM": 780.306641,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 24.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 23.606208445,
+      "lon": -68.589582261,
+      "lat": -31.388569184,
+      "elevationM": 781.650009,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 24.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 23.847088123,
+      "lon": -68.591457263,
+      "lat": -31.386998469,
+      "elevationM": 782.993376,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 24.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 24.087967801,
+      "lon": -68.593690579,
+      "lat": -31.385810062,
+      "elevationM": 784.336744,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 24.328847479,
+      "lon": -68.596179625,
+      "lat": -31.385089801,
+      "elevationM": 785.680111,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 25.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 24.569727157,
+      "lon": -68.598536101,
+      "lat": -31.384164311,
+      "elevationM": 787.023478,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 25.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 24.810606835,
+      "lon": -68.600420314,
+      "lat": -31.382593615,
+      "elevationM": 788.366846,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 25.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 25.051486513,
+      "lon": -68.602315439,
+      "lat": -31.381032717,
+      "elevationM": 789.710213,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 26,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 25.292366191,
+      "lon": -68.604272059,
+      "lat": -31.379536752,
+      "elevationM": 791.053581,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 26.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 25.533245869,
+      "lon": -68.606567255,
+      "lat": -31.378436179,
+      "elevationM": 792.396948,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 26.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 25.774125547,
+      "lon": -68.608197311,
+      "lat": -31.376730275,
+      "elevationM": 793.740316,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 26.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 26.015005225,
+      "lon": -68.608512977,
+      "lat": -31.374590344,
+      "elevationM": 795.083683,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 27,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 26.255884903,
+      "lon": -68.607522406,
+      "lat": -31.372507343,
+      "elevationM": 796.42705,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 27.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 26.496764581,
+      "lon": -68.60652818,
+      "lat": -31.370425528,
+      "elevationM": 797.770418,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 27.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 26.737644259,
+      "lon": -68.606007651,
+      "lat": -31.36823246,
+      "elevationM": 799.113785,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 27.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 26.978523937,
+      "lon": -68.606037188,
+      "lat": -31.365984604,
+      "elevationM": 800.457153,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 28,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 27.219403615,
+      "lon": -68.606088929,
+      "lat": -31.363736746,
+      "elevationM": 801.80052,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 28.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 27.460283293,
+      "lon": -68.606134064,
+      "lat": -31.361488785,
+      "elevationM": 803.143888,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 28.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 27.701162971,
+      "lon": -68.606182612,
+      "lat": -31.359240869,
+      "elevationM": 804.487255,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 28.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 27.942042649,
+      "lon": -68.606216178,
+      "lat": -31.356992759,
+      "elevationM": 805.830622,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 29,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 28.182922327,
+      "lon": -68.606264231,
+      "lat": -31.35474491,
+      "elevationM": 807.17399,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 29.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 28.423802005,
+      "lon": -68.606309737,
+      "lat": -31.352496953,
+      "elevationM": 808.517357,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 29.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 28.664681683,
+      "lon": -68.606356361,
+      "lat": -31.35024905,
+      "elevationM": 809.860725,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 29.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 28.905561361,
+      "lon": -68.606400463,
+      "lat": -31.348001077,
+      "elevationM": 811.204092,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 30,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 29.146441039,
+      "lon": -68.606450304,
+      "lat": -31.345753183,
+      "elevationM": 812.54746,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 30.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 29.387320717,
+      "lon": -68.606485904,
+      "lat": -31.343505113,
+      "elevationM": 813.890827,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 30.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 29.628200395,
+      "lon": -68.606520123,
+      "lat": -31.341257012,
+      "elevationM": 815.234195,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 30.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 29.869080073,
+      "lon": -68.60656429,
+      "lat": -31.339009028,
+      "elevationM": 816.577562,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 31,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 30.109959751,
+      "lon": -68.606592762,
+      "lat": -31.336760867,
+      "elevationM": 817.920929,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 31.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 30.350839429,
+      "lon": -68.606627355,
+      "lat": -31.334512798,
+      "elevationM": 819.264297,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 31.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 30.591719107,
+      "lon": -68.606663194,
+      "lat": -31.332264715,
+      "elevationM": 820.607664,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 31.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 30.832598785,
+      "lon": -68.606697193,
+      "lat": -31.330016601,
+      "elevationM": 821.951032,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 32,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 31.073478463,
+      "lon": -68.606728086,
+      "lat": -31.327768478,
+      "elevationM": 823.294399,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 32.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 31.314358141,
+      "lon": -68.606765188,
+      "lat": -31.325520407,
+      "elevationM": 824.637767,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 32.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 31.555237819,
+      "lon": -68.606800403,
+      "lat": -31.323272309,
+      "elevationM": 825.981134,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 32.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 31.796117497,
+      "lon": -68.606837697,
+      "lat": -31.321024234,
+      "elevationM": 827.324501,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 33,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 32.036997175,
+      "lon": -68.606877063,
+      "lat": -31.318776186,
+      "elevationM": 828.667869,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 33.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 32.277876853,
+      "lon": -68.606913161,
+      "lat": -31.3165281,
+      "elevationM": 830.011236,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 33.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 32.518756531,
+      "lon": -68.606946134,
+      "lat": -31.314279976,
+      "elevationM": 831.354604,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 33.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 32.759636209,
+      "lon": -68.606985973,
+      "lat": -31.312031935,
+      "elevationM": 832.697971,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 34,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 33.000515887,
+      "lon": -68.607027973,
+      "lat": -31.309783933,
+      "elevationM": 834.041339,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 34.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 33.241395565,
+      "lon": -68.607064742,
+      "lat": -31.307535852,
+      "elevationM": 835.384706,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 34.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 33.482275243,
+      "lon": -68.607101953,
+      "lat": -31.30528778,
+      "elevationM": 836.728073,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 34.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 33.723154921,
+      "lon": -68.607145782,
+      "lat": -31.303039799,
+      "elevationM": 838.071441,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 35,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 33.964034599,
+      "lon": -68.607567622,
+      "lat": -31.300830047,
+      "elevationM": 839.414808,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 35.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 34.204914277,
+      "lon": -68.608451662,
+      "lat": -31.29871261,
+      "elevationM": 840.758176,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 35.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 34.445793955,
+      "lon": -68.609597237,
+      "lat": -31.296697911,
+      "elevationM": 842.101543,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 35.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 34.686673633,
+      "lon": -68.611381997,
+      "lat": -31.295056538,
+      "elevationM": 843.444911,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 36,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 34.927553311,
+      "lon": -68.613222225,
+      "lat": -31.293461661,
+      "elevationM": 844.788278,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 36.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 35.168432989,
+      "lon": -68.6149291,
+      "lat": -31.29177024,
+      "elevationM": 846.131646,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 36.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 35.409312667,
+      "lon": -68.617153695,
+      "lat": -31.290570857,
+      "elevationM": 847.475013,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 36.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 35.650192345,
+      "lon": -68.619196694,
+      "lat": -31.289155778,
+      "elevationM": 848.81838,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 37,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 35.891072023,
+      "lon": -68.620655186,
+      "lat": -31.287317305,
+      "elevationM": 850.161748,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 37.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 36.131951701,
+      "lon": -68.621596344,
+      "lat": -31.285221645,
+      "elevationM": 851.505115,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 37.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 36.372831379,
+      "lon": -68.622838565,
+      "lat": -31.283239804,
+      "elevationM": 852.848483,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 37.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 36.613711057,
+      "lon": -68.624286268,
+      "lat": -31.281368163,
+      "elevationM": 854.19185,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 38,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 36.854590735,
+      "lon": -68.625939211,
+      "lat": -31.279619128,
+      "elevationM": 855.535218,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 38.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 37.095470413,
+      "lon": -68.627567779,
+      "lat": -31.277854138,
+      "elevationM": 856.878585,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 38.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 37.336350091,
+      "lon": -68.628339083,
+      "lat": -31.275731129,
+      "elevationM": 858.221952,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 38.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 37.577229769,
+      "lon": -68.628463818,
+      "lat": -31.27348556,
+      "elevationM": 859.56532,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 39,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 37.818109447,
+      "lon": -68.628576347,
+      "lat": -31.271239324,
+      "elevationM": 860.908687,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 39.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 38.058989125,
+      "lon": -68.628691716,
+      "lat": -31.268993199,
+      "elevationM": 862.252055,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 39.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 38.299868803,
+      "lon": -68.628807094,
+      "lat": -31.266747062,
+      "elevationM": 863.595422,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 39.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 38.540748481,
+      "lon": -68.628914576,
+      "lat": -31.26450065,
+      "elevationM": 864.93879,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 40,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 38.781628159,
+      "lon": -68.629278989,
+      "lat": -31.262286644,
+      "elevationM": 866.282157,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 40.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 39.022507837,
+      "lon": -68.630553341,
+      "lat": -31.260324644,
+      "elevationM": 867.625524,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 40.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 39.263387515,
+      "lon": -68.631926239,
+      "lat": -31.258406964,
+      "elevationM": 868.968892,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 40.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 39.504267193,
+      "lon": -68.63330719,
+      "lat": -31.256493527,
+      "elevationM": 870.312259,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 41,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 39.745146871,
+      "lon": -68.634683979,
+      "lat": -31.254577936,
+      "elevationM": 871.655627,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 41.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 39.986026549,
+      "lon": -68.636054843,
+      "lat": -31.252659298,
+      "elevationM": 872.998994,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 41.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 40.226906227,
+      "lon": -68.63743713,
+      "lat": -31.250746646,
+      "elevationM": 874.342362,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 41.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 40.467785905,
+      "lon": -68.638817689,
+      "lat": -31.248833049,
+      "elevationM": 875.685729,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 42,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 40.708665583,
+      "lon": -68.640338758,
+      "lat": -31.247003596,
+      "elevationM": 877.029097,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 42.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 40.949545261,
+      "lon": -68.642277035,
+      "lat": -31.245487417,
+      "elevationM": 878.372464,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 42.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 41.190424939,
+      "lon": -68.644292582,
+      "lat": -31.244043803,
+      "elevationM": 879.715831,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 42.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 41.431304617,
+      "lon": -68.646294241,
+      "lat": -31.242585823,
+      "elevationM": 881.059199,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 43,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 41.672184295,
+      "lon": -68.648300401,
+      "lat": -31.241132286,
+      "elevationM": 882.402566,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 43.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 41.913063973,
+      "lon": -68.650320582,
+      "lat": -31.239693031,
+      "elevationM": 883.745934,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 43.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 42.153943651,
+      "lon": -68.652304917,
+      "lat": -31.238219093,
+      "elevationM": 885.089301,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 43.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 42.394823329,
+      "lon": -68.653898896,
+      "lat": -31.236437647,
+      "elevationM": 886.432669,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 44,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 42.635703007,
+      "lon": -68.654996504,
+      "lat": -31.234399441,
+      "elevationM": 887.776036,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 44.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 42.876582685,
+      "lon": -68.655911335,
+      "lat": -31.232291648,
+      "elevationM": 889.119403,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 44.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 43.117462363,
+      "lon": -68.656713702,
+      "lat": -31.230152493,
+      "elevationM": 890.462771,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 44.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 43.358342041,
+      "lon": -68.656971256,
+      "lat": -31.227920007,
+      "elevationM": 891.806138,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 45,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 43.599221719,
+      "lon": -68.656608084,
+      "lat": -31.225700789,
+      "elevationM": 893.149506,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 45.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 43.840101397,
+      "lon": -68.655717799,
+      "lat": -31.223585852,
+      "elevationM": 894.492873,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 45.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 44.080981075,
+      "lon": -68.654809876,
+      "lat": -31.221475874,
+      "elevationM": 895.836241,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 45.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 44.321860753,
+      "lon": -68.653892555,
+      "lat": -31.21936892,
+      "elevationM": 897.179608,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 46,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 44.562740431,
+      "lon": -68.652976262,
+      "lat": -31.217261615,
+      "elevationM": 898.522975,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 46.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 44.803620109,
+      "lon": -68.652062918,
+      "lat": -31.215153384,
+      "elevationM": 899.866343,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 46.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 45.044499787,
+      "lon": -68.651149166,
+      "lat": -31.213045305,
+      "elevationM": 901.20971,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 46.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 45.285379465,
+      "lon": -68.650227665,
+      "lat": -31.210939672,
+      "elevationM": 902.553078,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 47,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 45.526259143,
+      "lon": -68.649313887,
+      "lat": -31.208831577,
+      "elevationM": 903.896445,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 47.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 45.767138821,
+      "lon": -68.648396497,
+      "lat": -31.20672465,
+      "elevationM": 905.239813,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 47.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 46.008018499,
+      "lon": -68.647473218,
+      "lat": -31.204619603,
+      "elevationM": 906.58318,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 47.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 46.248898177,
+      "lon": -68.64654994,
+      "lat": -31.202514557,
+      "elevationM": 907.926548,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 48,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 46.489777855,
+      "lon": -68.645626661,
+      "lat": -31.20040951,
+      "elevationM": 909.269915,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 48.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 46.730657533,
+      "lon": -68.64471395,
+      "lat": -31.198301118,
+      "elevationM": 910.613282,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 48.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 46.971537211,
+      "lon": -68.643800182,
+      "lat": -31.196193058,
+      "elevationM": 911.95665,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 48.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 47.212416889,
+      "lon": -68.642886352,
+      "lat": -31.194085032,
+      "elevationM": 913.300017,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 49,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 47.453296567,
+      "lon": -68.641967999,
+      "lat": -31.191978445,
+      "elevationM": 914.643385,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 49.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 47.694176245,
+      "lon": -68.64114992,
+      "lat": -31.189844123,
+      "elevationM": 915.986752,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 49.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 47.935055923,
+      "lon": -68.640900017,
+      "lat": -31.187611695,
+      "elevationM": 917.33012,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 49.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 48.175935601,
+      "lon": -68.641059041,
+      "lat": -31.185367571,
+      "elevationM": 918.673487,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 50,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 48.416815279,
+      "lon": -68.641221582,
+      "lat": -31.183123578,
+      "elevationM": 920.016854,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 50.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 48.657694957,
+      "lon": -68.641391189,
+      "lat": -31.180879965,
+      "elevationM": 921.360222,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 50.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 48.898574635,
+      "lon": -68.641561478,
+      "lat": -31.178636389,
+      "elevationM": 922.703589,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 50.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 49.139454313,
+      "lon": -68.641720649,
+      "lat": -31.176392223,
+      "elevationM": 924.046957,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 51,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 49.380333991,
+      "lon": -68.641880557,
+      "lat": -31.174148088,
+      "elevationM": 925.390324,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 51.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 49.62121367,
+      "lon": -68.642040465,
+      "lat": -31.171903954,
+      "elevationM": 926.733692,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 51.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 49.862093348,
+      "lon": -68.642196931,
+      "lat": -31.169659652,
+      "elevationM": 928.077059,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 51.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 50.102973026,
+      "lon": -68.642357075,
+      "lat": -31.167415531,
+      "elevationM": 929.420426,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 52,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 50.343852704,
+      "lon": -68.642517218,
+      "lat": -31.16517141,
+      "elevationM": 930.763794,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 52.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 50.584732382,
+      "lon": -68.642704333,
+      "lat": -31.162928878,
+      "elevationM": 932.107161,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 52.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 50.82561206,
+      "lon": -68.642851168,
+      "lat": -31.16068409,
+      "elevationM": 933.450529,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 52.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 51.066491738,
+      "lon": -68.643006465,
+      "lat": -31.158439733,
+      "elevationM": 934.793896,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 53,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 51.307371416,
+      "lon": -68.643161568,
+      "lat": -31.156195359,
+      "elevationM": 936.137264,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 53.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 51.548251094,
+      "lon": -68.64331454,
+      "lat": -31.153950924,
+      "elevationM": 937.480631,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 53.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 51.789130772,
+      "lon": -68.643471342,
+      "lat": -31.151706634,
+      "elevationM": 938.823999,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 53.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52,
+      "lon": -68.643611409,
+      "lat": -31.149742096,
+      "elevationM": 940,
+      "segmentId": "hualilan-02",
+      "geometryChainageKm": 53.968853278,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52.03001045,
+      "lon": -68.643631343,
+      "lat": -31.149462507,
+      "elevationM": 940.339249,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 54,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52.270890128,
+      "lon": -68.643792234,
+      "lat": -31.14721847,
+      "elevationM": 943.062236,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 54.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52.511769806,
+      "lon": -68.643939544,
+      "lat": -31.144973708,
+      "elevationM": 945.785224,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 54.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52.752649484,
+      "lon": -68.644088849,
+      "lat": -31.142729042,
+      "elevationM": 948.508212,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 54.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 52.993529162,
+      "lon": -68.644237413,
+      "lat": -31.14048434,
+      "elevationM": 951.231199,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 55,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 53.23440884,
+      "lon": -68.644398727,
+      "lat": -31.138240284,
+      "elevationM": 953.954187,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 55.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 53.475288518,
+      "lon": -68.644550551,
+      "lat": -31.135995761,
+      "elevationM": 956.677175,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 55.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 53.716168196,
+      "lon": -68.644689617,
+      "lat": -31.133750828,
+      "elevationM": 959.400162,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 55.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 53.957047874,
+      "lon": -68.644297395,
+      "lat": -31.131536831,
+      "elevationM": 962.12315,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 56,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 54.197927552,
+      "lon": -68.643180347,
+      "lat": -31.129510827,
+      "elevationM": 964.846138,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 56.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 54.43880723,
+      "lon": -68.641752432,
+      "lat": -31.127625882,
+      "elevationM": 967.569125,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 56.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 54.679686908,
+      "lon": -68.639884518,
+      "lat": -31.126047755,
+      "elevationM": 970.292113,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 56.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 54.920566586,
+      "lon": -68.637967453,
+      "lat": -31.124510986,
+      "elevationM": 973.015101,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 57,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 55.161446264,
+      "lon": -68.636081619,
+      "lat": -31.122948748,
+      "elevationM": 975.738088,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 57.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 55.402325942,
+      "lon": -68.635107581,
+      "lat": -31.120913367,
+      "elevationM": 978.461076,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 57.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 55.64320562,
+      "lon": -68.635835765,
+      "lat": -31.118772477,
+      "elevationM": 981.184064,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 57.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 55.884085298,
+      "lon": -68.636930084,
+      "lat": -31.11672873,
+      "elevationM": 983.907051,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 58,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 56.124964976,
+      "lon": -68.637955574,
+      "lat": -31.114662991,
+      "elevationM": 986.630039,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 58.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 56.365844654,
+      "lon": -68.63824905,
+      "lat": -31.112430313,
+      "elevationM": 989.353027,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 58.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 56.606724332,
+      "lon": -68.638476567,
+      "lat": -31.110190476,
+      "elevationM": 992.076014,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 58.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 56.84760401,
+      "lon": -68.638702307,
+      "lat": -31.107950504,
+      "elevationM": 994.799002,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 59,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 57.088483688,
+      "lon": -68.638933225,
+      "lat": -31.105710997,
+      "elevationM": 997.52199,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 59.25,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 57.329363366,
+      "lon": -68.639150889,
+      "lat": -31.103470548,
+      "elevationM": 1000.244977,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 59.5,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 57.570243044,
+      "lon": -68.638916775,
+      "lat": -31.101237539,
+      "elevationM": 1002.967965,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 59.75,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 57.811122722,
+      "lon": -68.638366108,
+      "lat": -31.099039539,
+      "elevationM": 1005.690953,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 60,
+      "geometrySegmentId": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 57.815655449,
+      "lon": -68.6383556,
+      "lat": -31.0989982,
+      "elevationM": 1005.742192,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 60.004704348,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 58.0520024,
+      "lon": -68.639881309,
+      "lat": -31.097477466,
+      "elevationM": 1008.41394,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 60.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 58.292882078,
+      "lon": -68.641767876,
+      "lat": -31.096032511,
+      "elevationM": 1011.136928,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 60.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 58.533761756,
+      "lon": -68.643149205,
+      "lat": -31.094120662,
+      "elevationM": 1013.859916,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 60.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 58.774641434,
+      "lon": -68.644520345,
+      "lat": -31.092203308,
+      "elevationM": 1016.582903,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 61,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 59.015521112,
+      "lon": -68.645904473,
+      "lat": -31.090292834,
+      "elevationM": 1019.305891,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 61.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 59.25640079,
+      "lon": -68.647288655,
+      "lat": -31.088382389,
+      "elevationM": 1022.028878,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 61.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 59.497280468,
+      "lon": -68.648664656,
+      "lat": -31.086468134,
+      "elevationM": 1024.751866,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 61.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 59.738160146,
+      "lon": -68.650296819,
+      "lat": -31.084710678,
+      "elevationM": 1027.474854,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 62,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 59.979039824,
+      "lon": -68.65174035,
+      "lat": -31.082837607,
+      "elevationM": 1030.197841,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 62.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 60.219919502,
+      "lon": -68.653130587,
+      "lat": -31.080941032,
+      "elevationM": 1032.920829,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 62.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 60.46079918,
+      "lon": -68.65526538,
+      "lat": -31.079636331,
+      "elevationM": 1035.643817,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 62.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 60.701678858,
+      "lon": -68.657443895,
+      "lat": -31.078381954,
+      "elevationM": 1038.366804,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 63,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 60.942558536,
+      "lon": -68.659644176,
+      "lat": -31.077156119,
+      "elevationM": 1041.089792,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 63.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 61.183438214,
+      "lon": -68.66188085,
+      "lat": -31.075981821,
+      "elevationM": 1043.81278,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 63.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 61.424317892,
+      "lon": -68.664167225,
+      "lat": -31.074877254,
+      "elevationM": 1046.535767,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 63.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 61.66519757,
+      "lon": -68.666591448,
+      "lat": -31.074037229,
+      "elevationM": 1049.258755,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 64,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 61.906077248,
+      "lon": -68.669110152,
+      "lat": -31.073403993,
+      "elevationM": 1051.981743,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 64.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 62.146956926,
+      "lon": -68.67163052,
+      "lat": -31.072775705,
+      "elevationM": 1054.70473,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 64.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 62.387836604,
+      "lon": -68.673941436,
+      "lat": -31.071748471,
+      "elevationM": 1057.427718,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 64.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 62.628716282,
+      "lon": -68.676051713,
+      "lat": -31.07041141,
+      "elevationM": 1060.150706,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 65,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 62.86959596,
+      "lon": -68.67816064,
+      "lat": -31.069072819,
+      "elevationM": 1062.873693,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 65.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 63.110475638,
+      "lon": -68.680270971,
+      "lat": -31.067735895,
+      "elevationM": 1065.596681,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 65.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 63.351355316,
+      "lon": -68.68238234,
+      "lat": -31.066400348,
+      "elevationM": 1068.319669,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 65.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 63.592234994,
+      "lon": -68.684488503,
+      "lat": -31.065058665,
+      "elevationM": 1071.042656,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 66,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 63.833114672,
+      "lon": -68.686598557,
+      "lat": -31.063721509,
+      "elevationM": 1073.765644,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 66.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 64.07399435,
+      "lon": -68.688707881,
+      "lat": -31.062383542,
+      "elevationM": 1076.488632,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 66.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 64.314874028,
+      "lon": -68.690822995,
+      "lat": -31.061052363,
+      "elevationM": 1079.211619,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 66.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 64.555753706,
+      "lon": -68.692930779,
+      "lat": -31.05971273,
+      "elevationM": 1081.934607,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 67,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 64.796633384,
+      "lon": -68.695038563,
+      "lat": -31.058373097,
+      "elevationM": 1084.657595,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 67.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 65.037513062,
+      "lon": -68.697146346,
+      "lat": -31.057033464,
+      "elevationM": 1087.380582,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 67.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 65.27839274,
+      "lon": -68.699252253,
+      "lat": -31.055691699,
+      "elevationM": 1090.10357,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 67.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 65.519272418,
+      "lon": -68.70135227,
+      "lat": -31.054343564,
+      "elevationM": 1092.826558,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 68,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 65.760152096,
+      "lon": -68.703459646,
+      "lat": -31.053003648,
+      "elevationM": 1095.549545,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 68.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 66.001031774,
+      "lon": -68.705572734,
+      "lat": -31.051670321,
+      "elevationM": 1098.272533,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 68.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 66.241911452,
+      "lon": -68.707677737,
+      "lat": -31.05032785,
+      "elevationM": 1100.995521,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 68.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 66.48279113,
+      "lon": -68.709786978,
+      "lat": -31.048990119,
+      "elevationM": 1103.718508,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 69,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 66.723670808,
+      "lon": -68.711899606,
+      "lat": -31.047656366,
+      "elevationM": 1106.441496,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 69.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 66.964550486,
+      "lon": -68.714003633,
+      "lat": -31.046312873,
+      "elevationM": 1109.164484,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 69.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 67.205430164,
+      "lon": -68.7161166,
+      "lat": -31.04497961,
+      "elevationM": 1111.887471,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 69.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 67.446309842,
+      "lon": -68.718229349,
+      "lat": -31.043646121,
+      "elevationM": 1114.610459,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 70,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 67.68718952,
+      "lon": -68.720327676,
+      "lat": -31.042296077,
+      "elevationM": 1117.333447,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 70.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 67.928069198,
+      "lon": -68.722440012,
+      "lat": -31.040962276,
+      "elevationM": 1120.056434,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 70.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 68.168948876,
+      "lon": -68.724549995,
+      "lat": -31.039625717,
+      "elevationM": 1122.779422,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 70.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 68.409828554,
+      "lon": -68.727000471,
+      "lat": -31.03890756,
+      "elevationM": 1125.50241,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 71,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 68.650708232,
+      "lon": -68.729589364,
+      "lat": -31.038541077,
+      "elevationM": 1128.225397,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 71.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 68.89158791,
+      "lon": -68.732171132,
+      "lat": -31.03814738,
+      "elevationM": 1130.948385,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 71.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 69.132467588,
+      "lon": -68.734499288,
+      "lat": -31.037117545,
+      "elevationM": 1133.671373,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 71.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 69.373347266,
+      "lon": -68.736660392,
+      "lat": -31.035861626,
+      "elevationM": 1136.39436,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 72,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 69.614226944,
+      "lon": -68.738434141,
+      "lat": -31.034214822,
+      "elevationM": 1139.117348,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 72.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 69.855106622,
+      "lon": -68.739855436,
+      "lat": -31.03232496,
+      "elevationM": 1141.840336,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 72.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 70.0959863,
+      "lon": -68.74126877,
+      "lat": -31.030430796,
+      "elevationM": 1144.563323,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 72.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 70.336865978,
+      "lon": -68.743315416,
+      "lat": -31.029042717,
+      "elevationM": 1147.286311,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 73,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 70.577745656,
+      "lon": -68.744812184,
+      "lat": -31.027260385,
+      "elevationM": 1150.009299,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 73.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 70.818625334,
+      "lon": -68.746276019,
+      "lat": -31.025408003,
+      "elevationM": 1152.732286,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 73.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 71.059505012,
+      "lon": -68.748234832,
+      "lat": -31.023964048,
+      "elevationM": 1155.455274,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 73.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 71.30038469,
+      "lon": -68.749152284,
+      "lat": -31.021948761,
+      "elevationM": 1158.178262,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 74,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 71.541264368,
+      "lon": -68.749907599,
+      "lat": -31.023920005,
+      "elevationM": 1160.901249,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 74.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 71.782144046,
+      "lon": -68.750814079,
+      "lat": -31.02599528,
+      "elevationM": 1163.624237,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 74.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 72.023023724,
+      "lon": -68.753180771,
+      "lat": -31.026610536,
+      "elevationM": 1166.347225,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 74.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 72.263903402,
+      "lon": -68.755559469,
+      "lat": -31.026025303,
+      "elevationM": 1169.070212,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 72.50478308,
+      "lon": -68.757792255,
+      "lat": -31.025307165,
+      "elevationM": 1171.7932,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 75.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 72.745662758,
+      "lon": -68.76035536,
+      "lat": -31.025776772,
+      "elevationM": 1174.516188,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 75.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 72.986542436,
+      "lon": -68.762002902,
+      "lat": -31.027482375,
+      "elevationM": 1177.239175,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 75.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 73.227422114,
+      "lon": -68.763514855,
+      "lat": -31.026977918,
+      "elevationM": 1179.962163,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 76,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 73.468301792,
+      "lon": -68.764274007,
+      "lat": -31.024829627,
+      "elevationM": 1182.685151,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 76.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 73.70918147,
+      "lon": -68.764959509,
+      "lat": -31.022675414,
+      "elevationM": 1185.408138,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 76.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 73.950061148,
+      "lon": -68.766055019,
+      "lat": -31.020638138,
+      "elevationM": 1188.131126,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 76.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 74.190940826,
+      "lon": -68.766088184,
+      "lat": -31.018393884,
+      "elevationM": 1190.854114,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 77,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 74.431820504,
+      "lon": -68.765833253,
+      "lat": -31.016161839,
+      "elevationM": 1193.577101,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 77.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 74.672700182,
+      "lon": -68.766115886,
+      "lat": -31.013939949,
+      "elevationM": 1196.300089,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 77.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 74.91357986,
+      "lon": -68.766071142,
+      "lat": -31.011737012,
+      "elevationM": 1199.023077,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 77.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 75,
+      "lon": -68.765883888,
+      "lat": -31.010955278,
+      "elevationM": 1200,
+      "segmentId": "hualilan-03",
+      "geometryChainageKm": 77.839692228,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 75.154459538,
+      "lon": -68.766987162,
+      "lat": -31.01023702,
+      "elevationM": 1201.7355,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 78,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 75.395339216,
+      "lon": -68.769531194,
+      "lat": -31.010096208,
+      "elevationM": 1204.442014,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 78.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 75.636218894,
+      "lon": -68.771939426,
+      "lat": -31.009221818,
+      "elevationM": 1207.148527,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 78.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 75.877098572,
+      "lon": -68.774477226,
+      "lat": -31.008933946,
+      "elevationM": 1209.85504,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 78.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 76.11797825,
+      "lon": -68.776568664,
+      "lat": -31.007681138,
+      "elevationM": 1212.561553,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 79,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 76.358857928,
+      "lon": -68.778020539,
+      "lat": -31.005836548,
+      "elevationM": 1215.268067,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 79.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 76.599737606,
+      "lon": -68.780384244,
+      "lat": -31.004867847,
+      "elevationM": 1217.97458,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 79.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 76.840617284,
+      "lon": -68.782795128,
+      "lat": -31.004051696,
+      "elevationM": 1220.681093,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 79.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 77.081496962,
+      "lon": -68.785417303,
+      "lat": -31.003993749,
+      "elevationM": 1223.387606,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 80,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 77.32237664,
+      "lon": -68.788039616,
+      "lat": -31.003944153,
+      "elevationM": 1226.09412,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 80.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 77.563256318,
+      "lon": -68.790522644,
+      "lat": -31.00455118,
+      "elevationM": 1228.800633,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 80.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 77.804135996,
+      "lon": -68.792823065,
+      "lat": -31.004349322,
+      "elevationM": 1231.507146,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 80.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 78.045015674,
+      "lon": -68.792382944,
+      "lat": -31.002234598,
+      "elevationM": 1234.213659,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 81,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 78.285895352,
+      "lon": -68.793517177,
+      "lat": -31.000444739,
+      "elevationM": 1236.920172,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 81.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 78.52677503,
+      "lon": -68.794598398,
+      "lat": -30.998458484,
+      "elevationM": 1239.626686,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 81.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 78.767654708,
+      "lon": -68.796409523,
+      "lat": -30.996838825,
+      "elevationM": 1242.333199,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 81.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 79.008534386,
+      "lon": -68.798236841,
+      "lat": -30.995264216,
+      "elevationM": 1245.039712,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 82,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 79.249414064,
+      "lon": -68.799670284,
+      "lat": -30.993394038,
+      "elevationM": 1247.746225,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 82.25,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 79.490293742,
+      "lon": -68.801220018,
+      "lat": -30.991647279,
+      "elevationM": 1250.452739,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 82.5,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 79.73117342,
+      "lon": -68.802721168,
+      "lat": -30.989860593,
+      "elevationM": 1253.159252,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 82.75,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 79.972053098,
+      "lon": -68.802707176,
+      "lat": -30.98765004,
+      "elevationM": 1255.865765,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 83,
+      "geometrySegmentId": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 80.190916279,
+      "lon": -68.8027955,
+      "lat": -30.9856283,
+      "elevationM": 1258.324902,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 83.227149902,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 80.212932776,
+      "lon": -68.80287019,
+      "lat": -30.985436613,
+      "elevationM": 1258.572278,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 83.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 80.453812454,
+      "lon": -68.803886086,
+      "lat": -30.983378728,
+      "elevationM": 1261.278792,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 83.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 80.694692132,
+      "lon": -68.804580376,
+      "lat": -30.981210675,
+      "elevationM": 1263.985305,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 83.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 80.93557181,
+      "lon": -68.805333346,
+      "lat": -30.979057563,
+      "elevationM": 1266.691818,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 84,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 81.176451488,
+      "lon": -68.80628587,
+      "lat": -30.976963099,
+      "elevationM": 1269.398331,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 84.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 81.417331166,
+      "lon": -68.807266767,
+      "lat": -30.974878017,
+      "elevationM": 1272.104845,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 84.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 81.658210844,
+      "lon": -68.808239762,
+      "lat": -30.972790252,
+      "elevationM": 1274.811358,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 84.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 81.899090522,
+      "lon": -68.80919236,
+      "lat": -30.970695562,
+      "elevationM": 1277.517871,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 85,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 82.1399702,
+      "lon": -68.810156782,
+      "lat": -30.968604872,
+      "elevationM": 1280.224384,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 85.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 82.380849878,
+      "lon": -68.810724948,
+      "lat": -30.966429496,
+      "elevationM": 1282.930898,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 85.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 82.621729557,
+      "lon": -68.810966015,
+      "lat": -30.964190718,
+      "elevationM": 1285.637411,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 85.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 82.862609235,
+      "lon": -68.811219013,
+      "lat": -30.961952918,
+      "elevationM": 1288.343924,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 86,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 83.103488913,
+      "lon": -68.81147269,
+      "lat": -30.959715166,
+      "elevationM": 1291.050437,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 86.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 83.344368591,
+      "lon": -68.811723066,
+      "lat": -30.957477141,
+      "elevationM": 1293.75695,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 86.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 83.585248269,
+      "lon": -68.811973201,
+      "lat": -30.955239096,
+      "elevationM": 1296.463464,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 86.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 83.826127947,
+      "lon": -68.812208391,
+      "lat": -30.953000082,
+      "elevationM": 1299.169977,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 87,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 84.067007625,
+      "lon": -68.812419094,
+      "lat": -30.95075939,
+      "elevationM": 1301.87649,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 87.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 84.307887303,
+      "lon": -68.812042506,
+      "lat": -30.948540543,
+      "elevationM": 1304.583003,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 87.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 84.548766981,
+      "lon": -68.811534131,
+      "lat": -30.946334923,
+      "elevationM": 1307.289517,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 87.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 84.789646659,
+      "lon": -68.811321993,
+      "lat": -30.944107985,
+      "elevationM": 1309.99603,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 88,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 85.030526337,
+      "lon": -68.811874883,
+      "lat": -30.941913026,
+      "elevationM": 1312.702543,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 88.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 85.271406015,
+      "lon": -68.811802096,
+      "lat": -30.939687072,
+      "elevationM": 1315.409056,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 88.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 85.512285693,
+      "lon": -68.811254773,
+      "lat": -30.937498985,
+      "elevationM": 1318.11557,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 88.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 85.753165371,
+      "lon": -68.81208628,
+      "lat": -30.935370162,
+      "elevationM": 1320.822083,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 89,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 85.994045049,
+      "lon": -68.812648592,
+      "lat": -30.933177975,
+      "elevationM": 1323.528596,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 89.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 86.234924727,
+      "lon": -68.812728665,
+      "lat": -30.930953746,
+      "elevationM": 1326.235109,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 89.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 86.475804405,
+      "lon": -68.811989819,
+      "lat": -30.928831794,
+      "elevationM": 1328.941623,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 89.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 86.716684083,
+      "lon": -68.812806878,
+      "lat": -30.926701717,
+      "elevationM": 1331.648136,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 90,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 86.957563761,
+      "lon": -68.812772137,
+      "lat": -30.924456578,
+      "elevationM": 1334.354649,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 90.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 87.198443439,
+      "lon": -68.811875065,
+      "lat": -30.922441037,
+      "elevationM": 1337.061162,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 90.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 87.439323117,
+      "lon": -68.810239694,
+      "lat": -30.920698318,
+      "elevationM": 1339.767675,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 90.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 87.680202795,
+      "lon": -68.810594663,
+      "lat": -30.918521247,
+      "elevationM": 1342.474189,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 91,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 87.921082473,
+      "lon": -68.811130376,
+      "lat": -30.916330411,
+      "elevationM": 1345.180702,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 91.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 88.161962151,
+      "lon": -68.812162267,
+      "lat": -30.914323311,
+      "elevationM": 1347.887215,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 91.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 88.402841829,
+      "lon": -68.813587823,
+      "lat": -30.912484896,
+      "elevationM": 1350.593728,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 91.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 88.643721507,
+      "lon": -68.814058715,
+      "lat": -30.910321501,
+      "elevationM": 1353.300242,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 92,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 88.884601185,
+      "lon": -68.813221662,
+      "lat": -30.908192206,
+      "elevationM": 1356.006755,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 92.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 89.125480863,
+      "lon": -68.812233084,
+      "lat": -30.906158307,
+      "elevationM": 1358.713268,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 92.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 89.366360541,
+      "lon": -68.812531668,
+      "lat": -30.903924834,
+      "elevationM": 1361.419781,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 92.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 89.607240219,
+      "lon": -68.813056665,
+      "lat": -30.90174528,
+      "elevationM": 1364.126295,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 93,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 89.848119897,
+      "lon": -68.81407152,
+      "lat": -30.899692346,
+      "elevationM": 1366.832808,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 93.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 90.088999575,
+      "lon": -68.815555563,
+      "lat": -30.898481108,
+      "elevationM": 1369.539321,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 93.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 90.329879253,
+      "lon": -68.817523904,
+      "lat": -30.899295002,
+      "elevationM": 1372.245834,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 93.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 90.570758931,
+      "lon": -68.819041772,
+      "lat": -30.899626793,
+      "elevationM": 1374.952348,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 94,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 90.811638609,
+      "lon": -68.820860636,
+      "lat": -30.899977761,
+      "elevationM": 1377.658861,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 94.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 91.052518287,
+      "lon": -68.821335452,
+      "lat": -30.900582369,
+      "elevationM": 1380.365374,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 94.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 91.293397965,
+      "lon": -68.82294299,
+      "lat": -30.90036632,
+      "elevationM": 1383.071887,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 94.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 91.534277643,
+      "lon": -68.824160381,
+      "lat": -30.898453004,
+      "elevationM": 1385.7784,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 95,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 91.775157321,
+      "lon": -68.825884022,
+      "lat": -30.898294102,
+      "elevationM": 1388.484914,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 95.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 92.016036999,
+      "lon": -68.828077679,
+      "lat": -30.898341065,
+      "elevationM": 1391.191427,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 95.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 92.256916677,
+      "lon": -68.829634286,
+      "lat": -30.899772074,
+      "elevationM": 1393.89794,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 95.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 92.497796355,
+      "lon": -68.831924,
+      "lat": -30.898832186,
+      "elevationM": 1396.604453,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 96,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 92.738676033,
+      "lon": -68.833967131,
+      "lat": -30.897587838,
+      "elevationM": 1399.310967,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 96.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 92.979555711,
+      "lon": -68.836558361,
+      "lat": -30.897284591,
+      "elevationM": 1402.01748,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 96.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 93.220435389,
+      "lon": -68.839178293,
+      "lat": -30.897290056,
+      "elevationM": 1404.723993,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 96.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 93.461315067,
+      "lon": -68.841798076,
+      "lat": -30.897326455,
+      "elevationM": 1407.430506,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 97,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 93.702194745,
+      "lon": -68.844417858,
+      "lat": -30.897362855,
+      "elevationM": 1410.13702,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 97.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 93.943074423,
+      "lon": -68.847020128,
+      "lat": -30.897183784,
+      "elevationM": 1412.843533,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 97.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 94.183954101,
+      "lon": -68.849500669,
+      "lat": -30.896462367,
+      "elevationM": 1415.550046,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 97.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 94.424833779,
+      "lon": -68.851964009,
+      "lat": -30.895696419,
+      "elevationM": 1418.256559,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 98,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 94.665713457,
+      "lon": -68.85442735,
+      "lat": -30.894930472,
+      "elevationM": 1420.963073,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 98.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 94.906593135,
+      "lon": -68.85689069,
+      "lat": -30.894164524,
+      "elevationM": 1423.669586,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 98.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 95.147472813,
+      "lon": -68.859352516,
+      "lat": -30.89339516,
+      "elevationM": 1426.376099,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 98.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 95.388352491,
+      "lon": -68.861813477,
+      "lat": -30.892623846,
+      "elevationM": 1429.082612,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 99,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 95.629232169,
+      "lon": -68.864274438,
+      "lat": -30.891852531,
+      "elevationM": 1431.789125,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 99.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 95.870111847,
+      "lon": -68.866735399,
+      "lat": -30.891081217,
+      "elevationM": 1434.495639,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 99.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 96.110991525,
+      "lon": -68.86919636,
+      "lat": -30.890309903,
+      "elevationM": 1437.202152,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 99.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 96.351871203,
+      "lon": -68.871657321,
+      "lat": -30.889538588,
+      "elevationM": 1439.908665,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 100,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 96.592750881,
+      "lon": -68.874118255,
+      "lat": -30.888767232,
+      "elevationM": 1442.615178,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 100.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 96.833630559,
+      "lon": -68.876578868,
+      "lat": -30.887995373,
+      "elevationM": 1445.321692,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 100.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 97.074510237,
+      "lon": -68.879039481,
+      "lat": -30.887223514,
+      "elevationM": 1448.028205,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 100.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 97.315389915,
+      "lon": -68.881500095,
+      "lat": -30.886451655,
+      "elevationM": 1450.734718,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 101,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 97.556269593,
+      "lon": -68.883960708,
+      "lat": -30.885679796,
+      "elevationM": 1453.441231,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 101.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 97.797149271,
+      "lon": -68.886421321,
+      "lat": -30.884907937,
+      "elevationM": 1456.147745,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 101.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 98.038028949,
+      "lon": -68.888885999,
+      "lat": -30.884145858,
+      "elevationM": 1458.854258,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 101.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 98.278908627,
+      "lon": -68.891350917,
+      "lat": -30.883384355,
+      "elevationM": 1461.560771,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 102,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 98.519788305,
+      "lon": -68.893812986,
+      "lat": -30.882616183,
+      "elevationM": 1464.267284,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 102.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 98.760667983,
+      "lon": -68.896273143,
+      "lat": -30.881843516,
+      "elevationM": 1466.973798,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 102.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 99.001547661,
+      "lon": -68.898732559,
+      "lat": -30.881069187,
+      "elevationM": 1469.680311,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 102.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 99.242427339,
+      "lon": -68.901193528,
+      "lat": -30.880298557,
+      "elevationM": 1472.386824,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 103,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 99.483307017,
+      "lon": -68.90365594,
+      "lat": -30.879531362,
+      "elevationM": 1475.093337,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 103.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 99.724186695,
+      "lon": -68.906117533,
+      "lat": -30.878762269,
+      "elevationM": 1477.799851,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 103.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 99.965066373,
+      "lon": -68.908575756,
+      "lat": -30.87798537,
+      "elevationM": 1480.506364,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 103.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 100.205946051,
+      "lon": -68.911033979,
+      "lat": -30.877208472,
+      "elevationM": 1483.212877,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 104,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 100.446825729,
+      "lon": -68.913492201,
+      "lat": -30.876431574,
+      "elevationM": 1485.91939,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 104.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 100.687705407,
+      "lon": -68.915952034,
+      "lat": -30.875658552,
+      "elevationM": 1488.625903,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 104.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 100.928585085,
+      "lon": -68.918411969,
+      "lat": -30.87488578,
+      "elevationM": 1491.332417,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 104.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 101.169464763,
+      "lon": -68.920871071,
+      "lat": -30.874111169,
+      "elevationM": 1494.03893,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 105,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 101.410344441,
+      "lon": -68.923330117,
+      "lat": -30.873336436,
+      "elevationM": 1496.745443,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 105.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 101.651224119,
+      "lon": -68.925789164,
+      "lat": -30.872561704,
+      "elevationM": 1499.451956,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 105.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 101.892103797,
+      "lon": -68.928249093,
+      "lat": -30.871789192,
+      "elevationM": 1502.15847,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 105.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 102.132983475,
+      "lon": -68.930709377,
+      "lat": -30.871017572,
+      "elevationM": 1504.864983,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 106,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 102.373863153,
+      "lon": -68.93316966,
+      "lat": -30.870245951,
+      "elevationM": 1507.571496,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 106.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 102.614742831,
+      "lon": -68.935629944,
+      "lat": -30.869474331,
+      "elevationM": 1510.278009,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 106.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 102.855622509,
+      "lon": -68.938090228,
+      "lat": -30.86870271,
+      "elevationM": 1512.984523,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 106.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 103.096502187,
+      "lon": -68.940550512,
+      "lat": -30.86793109,
+      "elevationM": 1515.691036,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 107,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 103.337381865,
+      "lon": -68.943009338,
+      "lat": -30.867156188,
+      "elevationM": 1518.397549,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 107.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 103.578261543,
+      "lon": -68.945205104,
+      "lat": -30.866029219,
+      "elevationM": 1521.104062,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 107.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 103.819141221,
+      "lon": -68.945868545,
+      "lat": -30.863864551,
+      "elevationM": 1523.810576,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 107.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 104.060020899,
+      "lon": -68.945984892,
+      "lat": -30.861627558,
+      "elevationM": 1526.517089,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 108,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 104.300900577,
+      "lon": -68.945882372,
+      "lat": -30.85938098,
+      "elevationM": 1529.223602,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 108.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 104.541780255,
+      "lon": -68.94625235,
+      "lat": -30.857174179,
+      "elevationM": 1531.930115,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 108.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 104.782659933,
+      "lon": -68.947311475,
+      "lat": -30.855118059,
+      "elevationM": 1534.636628,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 108.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 105.023539611,
+      "lon": -68.948399005,
+      "lat": -30.853072867,
+      "elevationM": 1537.343142,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 109,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 105.264419289,
+      "lon": -68.949505233,
+      "lat": -30.851034989,
+      "elevationM": 1540.049655,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 109.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 105.505298967,
+      "lon": -68.950458485,
+      "lat": -30.848945434,
+      "elevationM": 1542.756168,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 109.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 105.746178645,
+      "lon": -68.950888351,
+      "lat": -30.846730296,
+      "elevationM": 1545.462681,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 109.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 105.987058323,
+      "lon": -68.951196824,
+      "lat": -30.844497649,
+      "elevationM": 1548.169195,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 110,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 106.227938001,
+      "lon": -68.951505298,
+      "lat": -30.842265001,
+      "elevationM": 1550.875708,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 110.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 106.468817679,
+      "lon": -68.951816391,
+      "lat": -30.840032624,
+      "elevationM": 1553.582221,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 110.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 106.709697357,
+      "lon": -68.952130456,
+      "lat": -30.837800553,
+      "elevationM": 1556.288734,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 110.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 106.950577035,
+      "lon": -68.95244031,
+      "lat": -30.835568081,
+      "elevationM": 1558.995248,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 111,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 107.191456713,
+      "lon": -68.952758466,
+      "lat": -30.833336439,
+      "elevationM": 1561.701761,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 111.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 107.432336391,
+      "lon": -68.953077632,
+      "lat": -30.831104903,
+      "elevationM": 1564.408274,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 111.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 107.673216069,
+      "lon": -68.953401243,
+      "lat": -30.828873842,
+      "elevationM": 1567.114787,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 111.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 107.914095747,
+      "lon": -68.953718615,
+      "lat": -30.826642124,
+      "elevationM": 1569.821301,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 112,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 108.154975425,
+      "lon": -68.954032514,
+      "lat": -30.82441004,
+      "elevationM": 1572.527814,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 112.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 108.395855103,
+      "lon": -68.954349492,
+      "lat": -30.822178279,
+      "elevationM": 1575.234327,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 112.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 108.636734781,
+      "lon": -68.954666613,
+      "lat": -30.819946533,
+      "elevationM": 1577.94084,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 112.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 108.877614459,
+      "lon": -68.954983734,
+      "lat": -30.817714787,
+      "elevationM": 1580.647353,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 113,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 109.118494137,
+      "lon": -68.955300152,
+      "lat": -30.815482969,
+      "elevationM": 1583.353867,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 113.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 109.359373815,
+      "lon": -68.955615486,
+      "lat": -30.813251038,
+      "elevationM": 1586.06038,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 113.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 109.600253493,
+      "lon": -68.955932795,
+      "lat": -30.811019316,
+      "elevationM": 1588.766893,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 113.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 109.841133171,
+      "lon": -68.956254315,
+      "lat": -30.808788038,
+      "elevationM": 1591.473406,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 114,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 110.082012849,
+      "lon": -68.956568597,
+      "lat": -30.806556011,
+      "elevationM": 1594.17992,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 114.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 110.322892527,
+      "lon": -68.956874202,
+      "lat": -30.804323085,
+      "elevationM": 1596.886433,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 114.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 110.563772205,
+      "lon": -68.957179807,
+      "lat": -30.80209016,
+      "elevationM": 1599.592946,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 114.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 110.804651883,
+      "lon": -68.957498117,
+      "lat": -30.799858549,
+      "elevationM": 1602.299459,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 115,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 111.045531561,
+      "lon": -68.957817534,
+      "lat": -30.797627053,
+      "elevationM": 1605.005973,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 115.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 111.286411239,
+      "lon": -68.958136951,
+      "lat": -30.795395556,
+      "elevationM": 1607.712486,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 115.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 111.527290917,
+      "lon": -68.958456368,
+      "lat": -30.79316406,
+      "elevationM": 1610.418999,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 115.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 111.768170595,
+      "lon": -68.958774139,
+      "lat": -30.790932395,
+      "elevationM": 1613.125512,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 116,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 112.009050273,
+      "lon": -68.959090097,
+      "lat": -30.788700538,
+      "elevationM": 1615.832026,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 116.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 112.249929951,
+      "lon": -68.959406055,
+      "lat": -30.786468681,
+      "elevationM": 1618.538539,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 116.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 112.490809629,
+      "lon": -68.959729024,
+      "lat": -30.784237575,
+      "elevationM": 1621.245052,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 116.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 112.731689307,
+      "lon": -68.960059839,
+      "lat": -30.78200735,
+      "elevationM": 1623.951565,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 117,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 112.972568985,
+      "lon": -68.960381536,
+      "lat": -30.779776101,
+      "elevationM": 1626.658078,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 117.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 113.213448663,
+      "lon": -68.960706377,
+      "lat": -30.777545193,
+      "elevationM": 1629.364592,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 117.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 113.454328341,
+      "lon": -68.961010545,
+      "lat": -30.775312132,
+      "elevationM": 1632.071105,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 117.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 113.695208019,
+      "lon": -68.961319146,
+      "lat": -30.773079524,
+      "elevationM": 1634.777618,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 118,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 113.936087697,
+      "lon": -68.961632511,
+      "lat": -30.770847404,
+      "elevationM": 1637.484131,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 118.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 114.176967375,
+      "lon": -68.961937354,
+      "lat": -30.768614413,
+      "elevationM": 1640.190645,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 118.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 114.417847053,
+      "lon": -68.962267603,
+      "lat": -30.766384096,
+      "elevationM": 1642.897158,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 118.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 114.658726731,
+      "lon": -68.962587909,
+      "lat": -30.76415276,
+      "elevationM": 1645.603671,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 119,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 114.899606409,
+      "lon": -68.962895875,
+      "lat": -30.761920115,
+      "elevationM": 1648.310184,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 119.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 115.140486087,
+      "lon": -68.963198007,
+      "lat": -30.759686881,
+      "elevationM": 1651.016698,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 119.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 115.381365765,
+      "lon": -68.963480337,
+      "lat": -30.757451721,
+      "elevationM": 1653.723211,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 119.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 115.622245443,
+      "lon": -68.963573647,
+      "lat": -30.755210732,
+      "elevationM": 1656.429724,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 120,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 115.863125122,
+      "lon": -68.963293328,
+      "lat": -30.752975809,
+      "elevationM": 1659.136237,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 120.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 116.1040048,
+      "lon": -68.962967612,
+      "lat": -30.750745001,
+      "elevationM": 1661.842751,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 120.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 116.344884478,
+      "lon": -68.962649538,
+      "lat": -30.748513389,
+      "elevationM": 1664.549264,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 120.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 116.585764156,
+      "lon": -68.962338672,
+      "lat": -30.74628102,
+      "elevationM": 1667.255777,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 121,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 116.826643834,
+      "lon": -68.962027807,
+      "lat": -30.744048651,
+      "elevationM": 1669.96229,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 121.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 117.067523512,
+      "lon": -68.961716941,
+      "lat": -30.741816281,
+      "elevationM": 1672.668804,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 121.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 117.30840319,
+      "lon": -68.961406075,
+      "lat": -30.739583912,
+      "elevationM": 1675.375317,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 121.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 117.549282868,
+      "lon": -68.961090724,
+      "lat": -30.737352015,
+      "elevationM": 1678.08183,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 122,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 117.790162546,
+      "lon": -68.96076531,
+      "lat": -30.735121181,
+      "elevationM": 1680.788343,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 122.25,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 118.031042224,
+      "lon": -68.960476295,
+      "lat": -30.732886654,
+      "elevationM": 1683.494856,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 122.5,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 118.271921902,
+      "lon": -68.960797889,
+      "lat": -30.730703434,
+      "elevationM": 1686.20137,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 122.75,
+      "geometrySegmentId": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD"
+    },
+    {
+      "distanceKm": 118.286097635,
+      "lon": -68.9608727,
+      "lat": -30.7305878,
+      "elevationM": 1686.360648,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 122.764712463,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 118.51280158,
+      "lon": -68.959299862,
+      "lat": -30.732197347,
+      "elevationM": 1688.907883,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 123,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 118.753681258,
+      "lon": -68.957663982,
+      "lat": -30.733951667,
+      "elevationM": 1691.614396,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 123.25,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 118.994560936,
+      "lon": -68.955743453,
+      "lat": -30.735005954,
+      "elevationM": 1694.320909,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 123.5,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 119.235440614,
+      "lon": -68.954200806,
+      "lat": -30.733235383,
+      "elevationM": 1697.027423,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 123.75,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 119.476320292,
+      "lon": -68.953646769,
+      "lat": -30.731159427,
+      "elevationM": 1699.733936,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 119.5,
+      "lon": -68.95366858,
+      "lat": -30.730939204,
+      "elevationM": 1700,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124.024576283,
+      "geometrySegmentId": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS"
+    },
+    {
+      "distanceKm": 119.69363271,
+      "lon": -68.9519658,
+      "lat": -30.7310231,
+      "elevationM": 1700,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124.225540423,
+      "geometrySegmentId": "hualilan-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH"
+    },
+    {
+      "distanceKm": 119.71719997,
+      "lon": -68.951814581,
+      "lat": -30.731200558,
+      "elevationM": 1700,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124.25,
+      "geometrySegmentId": "hualilan-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH"
+    },
+    {
+      "distanceKm": 119.958079648,
+      "lon": -68.950268981,
+      "lat": -30.733014346,
+      "elevationM": 1700,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124.5,
+      "geometrySegmentId": "hualilan-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH"
+    },
+    {
+      "distanceKm": 120,
+      "lon": -68.95,
+      "lat": -30.73333,
+      "elevationM": 1700,
+      "segmentId": "hualilan-04",
+      "geometryChainageKm": 124.543507564,
+      "geometrySegmentId": "hualilan-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH"
+    }
+  ]
+}

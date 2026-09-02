@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "sanjuan.corridor-metadata/v2",
+  "id": "hualilan",
+  "name": "San Juan → Hualilán",
+  "origin": {
+    "id": "san-juan",
+    "name": "San Juan",
+    "lat": -31.5375,
+    "lon": -68.5364
+  },
+  "destination": {
+    "id": "hualilan",
+    "name": "Hualilán",
+    "lat": -30.73333,
+    "lon": -68.95
+  },
+  "geometryClass": "RECONSTRUCTED_ACCESS",
+  "totalDistanceKm": 120,
+  "segments": [
+    {
+      "id": "hualilan-01",
+      "corridorId": "hualilan",
+      "startKm": 0,
+      "endKm": 52,
+      "distanceKm": 52,
+      "elevationMinM": 650,
+      "elevationMaxM": 940,
+      "roadClass": "pavedLowland",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "hualilan-02",
+      "corridorId": "hualilan",
+      "startKm": 52,
+      "endKm": 75,
+      "distanceKm": 23,
+      "elevationMinM": 940,
+      "elevationMaxM": 1200,
+      "roadClass": "pavedLowland",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "hualilan-03",
+      "corridorId": "hualilan",
+      "startKm": 75,
+      "endKm": 119.5,
+      "distanceKm": 44.5,
+      "elevationMinM": 1200,
+      "elevationMaxM": 1700,
+      "roadClass": "mountainRoad",
+      "geometryConfidence": "RECONSTRUCTED_ACCESS",
+      "environmentNodeIds": []
+    },
+    {
+      "id": "hualilan-04",
+      "corridorId": "hualilan",
+      "startKm": 119.5,
+      "endKm": 120,
+      "distanceKm": 0.5,
+      "elevationMinM": 1700,
+      "elevationMaxM": 1700,
+      "roadClass": "approach",
+      "geometryConfidence": "APPROXIMATE_APPROACH",
+      "environmentNodeIds": []
+    }
+  ],
+  "nodes": [],
+  "evidenceRefs": [
+    "challenger-hualilan-access",
+    "hualilan-route-reconstruction",
+    "hualilan-profile-derived",
+    "hualilan-route-geometry-build-v2",
+    "hualilan-dnv-road-geometry-v2",
+    "hualilan-ign-road-geometry-v2",
+    "hualilan-osm-access-geometry-v2"
+  ],
+  "retrievedAt": "2026-09-02T02:02:45.989Z",
+  "limitations": [
+    "The corridor is reconstructed from a published RN40 → RP436 → RN149 access description and public geographic anchors.",
+    "It is not an operator-verified turn-by-turn route and does not report current road condition, authorization or transitability.",
+    "The final approach is intentionally classified APPROXIMATE_APPROACH.",
+    "V2 geometry combines frozen official-road snapshots, publicly mapped access geometry and explicit derived connectors; it is not current operator navigation."
+  ],
+  "evidence": [
+    {
+      "id": "challenger-hualilan-access",
+      "role": "PRIMARY",
+      "sourceName": "Challenger Gold — Hualilan Project",
+      "sourceUrl": "https://challengergold.com/projects/argentina/hualilan-project/",
+      "retrievedAt": "2026-08-30",
+      "method": "Published access description and ~120 km distance used to constrain the corridor story.",
+      "limitations": [
+        "Sealed-road access description is not an exact operator route trace or live road-status source."
+      ]
+    },
+    {
+      "id": "hualilan-route-reconstruction",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Hualilán route reconstruction",
+      "retrievedAt": "2026-08-30",
+      "method": "Polyline reconstructed from San Juan, Talacasto, public road-chain context and project-location anchors; intermediate geometry is schematic.",
+      "limitations": [
+        "Not suitable for navigation, engineering or access authorization."
+      ]
+    },
+    {
+      "id": "hualilan-profile-derived",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Hualilán analytical profile",
+      "retrievedAt": "2026-08-30",
+      "method": "Anchor elevations interpolated along versioned route distance.",
+      "limitations": [
+        "Not an engineering-grade DEM survey."
+      ]
+    }
+  ],
+  "geometryVersion": "v2",
+  "geometryMeasuredChainageKm": 124.543508,
+  "geometrySourceIds": [
+    "hualilan-derived-geometry-v2",
+    "dnv-rutas-nacionales-20260830",
+    "ign-rutas-provinciales-2016-20260830",
+    "osm-hualilan-access-v2"
+  ]
+}
