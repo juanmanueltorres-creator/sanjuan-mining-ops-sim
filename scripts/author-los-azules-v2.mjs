@@ -1,0 +1,430 @@
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { haversineMeters } from './lib/road-geometry.mjs';
+
+const JUNCTION_TOLERANCE_M = 0.5;
+const LOS_AZULES_ORIGIN = [-68.5364, -31.5375];
+const LOS_AZULES_CALINGASTA = [-69.427381783, -31.335410441];
+const LOS_AZULES_DESTINATION = [-70.22138, -31.11277];
+
+export const LOS_AZULES_SOURCE_SELECTION = {
+  dnv: [
+    { id: 'vial_nacional.2175', expectedRoute: 'A014', entry: [-68.55289386, -31.5383514], exit: [-68.5174353, -31.51626151] },
+    { id: 'vial_nacional.2570', expectedRoute: '40', entry: [-68.5174353, -31.51626151], exit: [-68.51746356, -31.51616267] },
+    { id: 'vial_nacional.2565', expectedRoute: '40', entry: [-68.51746356, -31.51616267], exit: [-68.5179294, -31.5146699] },
+    { id: 'vial_nacional.1192', expectedRoute: '40', entry: [-68.5179294, -31.5146699], exit: [-68.51796578, -31.51445853] },
+    { id: 'vial_nacional.2201', expectedRoute: '40', entry: [-68.51796578, -31.51445853], exit: [-68.51929325, -31.46124165] },
+    { id: 'vial_nacional.1174', expectedRoute: '40', entry: [-68.51929325, -31.46124165], exit: [-68.518468, -31.4488493] },
+    { id: 'vial_nacional.1175', expectedRoute: '40', entry: [-68.518468, -31.4488493], exit: [-68.519234, -31.4466004] },
+    { id: 'vial_nacional.1172', expectedRoute: '40', entry: [-68.519234, -31.4466004], exit: [-68.6383556, -31.0989982] },
+    { id: 'vial_nacional.280', expectedRoute: '149', entry: [-68.8027955, -30.9856283], exit: [-68.8050273, -30.9858314] },
+    { id: 'vial_nacional.1869', expectedRoute: '149', entry: [-68.8050273, -30.9858314], exit: [-69.4437769, -31.5625244] },
+  ],
+  ign: [
+    { id: 'vial_provincial.10291', expectedRoute: '436', entry: [-68.6383556, -31.0989982], exit: [-68.6391483, -31.0977201] },
+    { id: 'vial_provincial.10290', expectedRoute: '436', entry: [-68.6391483, -31.0977201], exit: [-68.8027446, -30.9874966] },
+    { id: 'vial_provincial.10289', expectedRoute: '436', entry: [-68.8027446, -30.9874966], exit: [-68.8027955, -30.9856283] },
+    { id: 'vial_provincial.10272', expectedRoute: '406', entry: [-69.4437769, -31.5625244], exit: [-69.4277838, -31.3473333] },
+  ],
+  osm: [
+    { id: 'osm-way-179986953', expectedRef: 'RP406', entry: [-69.4277838, -31.3473333], exit: [-69.4540162, -31.3603801] },
+    { id: 'osm-way-996528070', expectedRef: 'RP437', entry: [-69.4540162, -31.3603801], exit: [-69.722331, -31.3946038] },
+    { id: 'osm-way-1436597152', expectedRef: 'RP437', entry: [-69.722331, -31.3946038], exit: [-69.7225497, -31.3942356] },
+    { id: 'osm-way-996528083', expectedRef: 'RP437', entry: [-69.7225497, -31.3942356], exit: [-69.7226907, -31.3937787] },
+    { id: 'osm-way-1436646663', expectedRef: 'RP437', entry: [-69.7226907, -31.3937787], exit: [-69.7712376, -31.3795931] },
+    { id: 'osm-way-1436646662', expectedRef: 'RP437', entry: [-69.7712376, -31.3795931], exit: [-69.7713623, -31.3795244] },
+    { id: 'osm-way-1436828911', expectedRef: 'RP437', entry: [-69.7713623, -31.3795244], exit: [-69.7742535, -31.3773893] },
+    { id: 'osm-way-1436828910', expectedRef: 'RP437', entry: [-69.7742535, -31.3773893], exit: [-69.7745685, -31.377555] },
+    { id: 'osm-way-1436828909', expectedRef: 'RP437', entry: [-69.7745685, -31.377555], exit: [-69.8218542, -31.3636506] },
+    { id: 'osm-way-1436828908', expectedRef: 'RP437', entry: [-69.8218542, -31.3636506], exit: [-69.8234984, -31.3632636] },
+    { id: 'osm-way-1436828902', expectedRef: 'RP437', entry: [-69.8234984, -31.3632636], exit: [-69.9646886, -31.325875] },
+    { id: 'osm-way-1436828898', expectedRef: 'RP437', entry: [-69.9646886, -31.325875], exit: [-69.9648978, -31.3259953] },
+    { id: 'osm-way-1441747900', expectedRef: 'RP437', entry: [-69.9648978, -31.3259953], exit: [-70.1106705, -31.2667708] },
+    { id: 'osm-way-1441747899', expectedRef: 'RP437', entry: [-70.1106705, -31.2667708], exit: [-70.1107126, -31.2667318] },
+    { id: 'osm-way-1441747905', expectedRef: 'RP437', entry: [-70.1107126, -31.2667318], exit: [-70.2288633, -31.1674636] },
+    { id: 'osm-way-1442787217', expectedHighway: 'unclassified', entry: [-70.2288633, -31.1674636], exit: [-70.2212325, -31.1199149] },
+    { id: 'osm-way-1444386972', expectedHighway: 'track', entry: [-70.2212325, -31.1199149], exit: [-70.2203822, -31.1161514] },
+    { id: 'osm-way-1444392118', expectedHighway: 'track', entry: [-70.2203822, -31.1161514], exit: [-70.2209401, -31.1126311] },
+  ],
+};
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function featureCoordinates(feature) {
+  const geometry = feature?.geometry;
+  assert(geometry, `feature ${feature?.id ?? '(missing)'}: geometry required`);
+  if (geometry.type === 'LineString') return geometry.coordinates.map((coordinate) => coordinate.slice(0, 2));
+  if (geometry.type === 'MultiLineString' && geometry.coordinates.length === 1) {
+    return geometry.coordinates[0].map((coordinate) => coordinate.slice(0, 2));
+  }
+  throw new Error(`feature ${feature?.id ?? '(missing)'}: one LineString path required`);
+}
+
+function coordinateIndex(coordinates, target, label) {
+  let best = null;
+  for (let index = 0; index < coordinates.length; index += 1) {
+    const distanceM = haversineMeters(coordinates[index], target);
+    if (!best || distanceM < best.distanceM) best = { index, distanceM };
+  }
+  if (!best || best.distanceM > JUNCTION_TOLERANCE_M) {
+    throw new Error(`${label}: source junction is absent (nearest ${best ? best.distanceM.toFixed(3) : 'n/a'} m)`);
+  }
+  return best.index;
+}
+
+function lineLengthKm(coordinates) {
+  let meters = 0;
+  for (let index = 1; index < coordinates.length; index += 1) {
+    meters += haversineMeters(coordinates[index - 1], coordinates[index]);
+  }
+  return Math.round((meters / 1000) * 1e6) / 1e6;
+}
+
+function assertExpectedProperty(rawFeature, selection, expectedKey, propertyKey, label) {
+  if (selection[expectedKey] == null) return;
+  const actual = rawFeature.properties?.[propertyKey];
+  if (String(actual ?? '').trim() !== String(selection[expectedKey]).trim()) {
+    throw new Error(`${selection.id}: ${label} mismatch; expected ${selection[expectedKey]}, found ${String(actual)}`);
+  }
+}
+
+export function clipSourceFeature(rawFeature, selection, corridorId) {
+  assert(rawFeature?.type === 'Feature', `${selection.id}: source Feature required`);
+  const rawId = String(rawFeature.id ?? rawFeature.properties?.sourceFeatureId ?? '');
+  assert(rawId === selection.id, `${selection.id}: source feature id mismatch`);
+
+  assertExpectedProperty(rawFeature, selection, 'expectedRoute', 'designacion_de_red_vial', 'route designation');
+  assertExpectedProperty(rawFeature, selection, 'expectedRef', 'ref', 'road ref');
+  assertExpectedProperty(rawFeature, selection, 'expectedHighway', 'highway', 'highway class');
+
+  const coordinates = featureCoordinates(rawFeature);
+  const entryIndex = coordinateIndex(coordinates, selection.entry, `${selection.id} entry junction`);
+  const exitIndex = coordinateIndex(coordinates, selection.exit, `${selection.id} exit junction`);
+  assert(entryIndex !== exitIndex, `${selection.id}: source junctions must define a non-zero path`);
+
+  const low = Math.min(entryIndex, exitIndex);
+  const high = Math.max(entryIndex, exitIndex);
+  const clipped = coordinates.slice(low, high + 1);
+  if (entryIndex > exitIndex) clipped.reverse();
+
+  assert(haversineMeters(clipped[0], selection.entry) <= JUNCTION_TOLERANCE_M, `${selection.id}: entry junction orientation failed`);
+  assert(haversineMeters(clipped.at(-1), selection.exit) <= JUNCTION_TOLERANCE_M, `${selection.id}: exit junction orientation failed`);
+
+  return {
+    type: 'Feature',
+    id: selection.id,
+    properties: {
+      ...(rawFeature.properties ?? {}),
+      sourceFeatureId: selection.id,
+      selectedForCorridor: corridorId,
+      selectionMethod: 'reviewed source-junction clip between pinned coordinates',
+      selectionLengthKm: lineLengthKm(clipped),
+      sourceGeometryClipped: true,
+    },
+    geometry: { type: 'LineString', coordinates: clipped },
+  };
+}
+
+function featureIndex(collection, label) {
+  assert(collection?.type === 'FeatureCollection' && Array.isArray(collection.features), `${label}: FeatureCollection required`);
+  return new Map(collection.features.map((feature) => [String(feature.id ?? feature.properties?.sourceFeatureId ?? ''), feature]));
+}
+
+function selectGroup(collection, descriptors, label) {
+  const index = featureIndex(collection, label);
+  return descriptors.map((descriptor) => {
+    const feature = index.get(descriptor.id);
+    assert(feature, `${label}: reviewed source feature ${descriptor.id} is absent`);
+    return clipSourceFeature(feature, descriptor, 'los-azules');
+  });
+}
+
+function route(features, designation) {
+  return features.filter((feature) => String(feature.properties?.designacion_de_red_vial ?? '') === designation);
+}
+
+function assertGroupContinuity(groups) {
+  const ordered = groups.flat();
+  for (let index = 1; index < ordered.length; index += 1) {
+    const previous = ordered[index - 1].geometry.coordinates.at(-1);
+    const current = ordered[index].geometry.coordinates[0];
+    const gapM = haversineMeters(previous, current);
+    assert(gapM <= JUNCTION_TOLERANCE_M, `Los Azules reviewed source chain gap ${gapM.toFixed(3)} m before ${ordered[index].id}`);
+  }
+}
+
+export function selectLosAzulesSources({ dnv, ign, osm }) {
+  const selected = {
+    dnv: selectGroup(dnv, LOS_AZULES_SOURCE_SELECTION.dnv, 'Los Azules DNV source'),
+    ign: selectGroup(ign, LOS_AZULES_SOURCE_SELECTION.ign, 'Los Azules IGN source'),
+    osm: selectGroup(osm, LOS_AZULES_SOURCE_SELECTION.osm, 'Los Azules OSM source'),
+  };
+
+  const dnvRegional = selected.dnv.filter((feature) => String(feature.properties?.designacion_de_red_vial ?? '') !== '149');
+  const dnvRn149 = route(selected.dnv, '149');
+  const ignRp436 = route(selected.ign, '436');
+  const ignRp406 = route(selected.ign, '406');
+  assert(dnvRegional.length > 0 && dnvRn149.length > 0 && ignRp436.length > 0 && ignRp406.length > 0 && selected.osm.length > 0,
+    'Los Azules reviewed source groups are incomplete');
+  assertGroupContinuity([dnvRegional, ignRp436, dnvRn149, ignRp406, selected.osm]);
+  return selected;
+}
+
+function sourceById(inventory, id) {
+  const source = inventory?.sources?.find((candidate) => candidate.id === id);
+  assert(source, `Los Azules inventory source ${id} is required`);
+  return source;
+}
+
+function sourceRecord(source, { id = source.id, snapshotPath, featureIds, role, format }) {
+  return {
+    id,
+    provider: source.provider,
+    datasetName: source.resourceName ?? source.id,
+    sourceUrl: source.sourceUrl,
+    ...(source.catalogUrl ? { catalogUrl: source.catalogUrl } : {}),
+    ...(source.resourceId ? { catalogResourceId: source.resourceId } : {}),
+    ...(source.requestUrl ? { requestUrl: source.requestUrl } : {}),
+    snapshotPath,
+    retrievedAt: source.retrievedAt,
+    role,
+    format,
+    ...(source.license ? { license: source.license } : {}),
+    ...(source.attribution ? { attribution: source.attribution } : {}),
+    featureIds,
+    limitations: format === 'OSM'
+      ? [
+          'Publicly mapped Los Azules access geometry only; not operator-supplied navigation or authorization evidence.',
+          'OSM tags and geometry do not establish current road condition, closure, safety or transitability.',
+        ]
+      : [
+          'Frozen corridor-only source extract; not a live road-status or navigation feed.',
+          'Published reference geometry may be stale relative to current road works.',
+        ],
+  };
+}
+
+function ids(features) {
+  return features.map((feature) => String(feature.id));
+}
+
+function routeIds(features, designation) {
+  return route(features, designation).map((feature) => String(feature.id));
+}
+
+function endpoints(features) {
+  assert(Array.isArray(features) && features.length > 0, 'Selected feature group must not be empty');
+  return {
+    start: features[0].geometry.coordinates[0],
+    end: features.at(-1).geometry.coordinates.at(-1),
+  };
+}
+
+export function buildLosAzulesAuthoringBundle({
+  selected,
+  inventory,
+  acquisition = {},
+  origin = LOS_AZULES_ORIGIN,
+  calingasta = LOS_AZULES_CALINGASTA,
+  destination = LOS_AZULES_DESTINATION,
+}) {
+  assert(inventory?.corridorId === 'los-azules', 'Los Azules source inventory required');
+  assert(selected?.dnv?.length > 0 && selected?.ign?.length > 0 && selected?.osm?.length > 0,
+    'Los Azules reviewed DNV, IGN and OSM selections are required');
+
+  const dnvRegional = selected.dnv.filter((feature) => String(feature.properties?.designacion_de_red_vial ?? '') !== '149');
+  const dnvRn149 = route(selected.dnv, '149');
+  const ignRp436 = route(selected.ign, '436');
+  const ignRp406 = route(selected.ign, '406');
+  assert(dnvRegional.length > 0, 'Los Azules DNV selection must include a regional leg');
+  assert(dnvRn149.length > 0, 'Los Azules DNV selection must include RN149');
+  assert(ignRp436.length > 0, 'Los Azules IGN selection must include RP436');
+  assert(ignRp406.length > 0, 'Los Azules IGN selection must include RP406');
+
+  const dnvInventory = sourceById(inventory, 'dnv-rutas-nacionales-20260830');
+  const ignInventory = sourceById(inventory, 'ign-rutas-provinciales-2016-20260830');
+  const osmInventory = sourceById(inventory, 'osm-road-access-los-azules-v2');
+  const generatedAt = inventory.generatedAt;
+
+  const dnvSourceId = dnvInventory.id;
+  const ignSourceId = ignInventory.id;
+  const osmSourceId = 'osm-los-azules-access-v2';
+  const derivedSourceId = 'los-azules-derived-geometry-v2';
+  const firstSource = endpoints(dnvRegional).start;
+  const rn40End = endpoints(dnvRegional).end;
+  const rp436End = endpoints(ignRp436).end;
+  const rn149End = endpoints(dnvRn149).end;
+  const lastMappedAccess = endpoints(selected.osm).end;
+
+  const manifest = {
+    schemaVersion: 'sanjuan.road-geometry-sources/v2',
+    corridorId: 'los-azules',
+    generatedAt,
+    acquisition: {
+      ...(Number.isFinite(acquisition.workflowRunId) ? { workflowRunId: acquisition.workflowRunId } : {}),
+      ...(Number.isFinite(acquisition.artifactId) ? { artifactId: acquisition.artifactId } : {}),
+      ...(acquisition.artifactName ? { artifactName: acquisition.artifactName } : {}),
+      ...(acquisition.artifactDigest ? { artifactDigest: acquisition.artifactDigest } : {}),
+      ...(acquisition.headSha ? { headSha: acquisition.headSha } : {}),
+    },
+    guards: {
+      anchorDefaultMaxDistanceKm: 2,
+      sourceConnectionToleranceM: 250,
+      maxUndocumentedGapKm: 2,
+      maxDerivedChordKm: 2,
+      chainageMinKm: 330,
+      chainageMaxKm: 370,
+    },
+    anchors: [
+      { id: 'san-juan', lat: origin[1], lon: origin[0], operationalKm: 0, maxDistanceToRouteKm: 2 },
+      { id: 'rn40-rp436-junction', lat: rn40End[1], lon: rn40End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-dnv-road-geometry-v2', 'los-azules-ign-road-geometry-v2'] },
+      { id: 'rp436-rn149-junction', lat: rp436End[1], lon: rp436End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-ign-road-geometry-v2', 'los-azules-dnv-road-geometry-v2'] },
+      { id: 'rn149-rp406-junction', lat: rn149End[1], lon: rn149End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['los-azules-dnv-road-geometry-v2', 'los-azules-ign-road-geometry-v2'] },
+      { id: 'calingasta', lat: calingasta[1], lon: calingasta[0], operationalKm: 164, maxDistanceToRouteKm: 2, evidenceRefs: ['calingasta-public-locality'] },
+      { id: 'los-azules', lat: destination[1], lon: destination[0], operationalKm: 276, maxDistanceToRouteKm: 2 },
+    ],
+    sources: [
+      sourceRecord(dnvInventory, { snapshotPath: 'source-snapshots/dnv-national-roads.v1.geojson', featureIds: ids(selected.dnv), role: 'PRIMARY', format: 'GeoJSON' }),
+      sourceRecord(ignInventory, { snapshotPath: 'source-snapshots/ign-provincial-roads.v1.geojson', featureIds: ids(selected.ign), role: 'PRIMARY', format: 'GeoJSON' }),
+      sourceRecord(osmInventory, { id: osmSourceId, snapshotPath: 'source-snapshots/osm-access.v1.geojson', featureIds: ids(selected.osm), role: 'FALLBACK', format: 'OSM' }),
+      {
+        id: derivedSourceId,
+        provider: 'San Juan Mining Ops Sim',
+        datasetName: 'Explicit Los Azules corridor connectors',
+        sourceUrl: 'public/data/corridors/los-azules/sources.v2.json',
+        retrievedAt: generatedAt,
+        role: 'FALLBACK',
+        format: 'GeoJSON',
+        featureIds: ['los-azules-origin-connector-v2', 'los-azules-project-approach-v2'],
+        limitations: [
+          'These geometries are explicit derived connectors, not source road features.',
+          'They only connect the scenario origin and project-location anchor to the reviewed source-backed path.',
+        ],
+      },
+    ],
+    evidence: [
+      {
+        id: 'los-azules-dnv-road-geometry-v2', role: 'PRIMARY', sourceName: 'DNV / Datos Argentina national-road geometry snapshot',
+        sourceUrl: dnvInventory.catalogUrl ?? dnvInventory.sourceUrl, retrievedAt: generatedAt,
+        method: 'Exact reviewed DNV feature ids clipped between pinned source junctions for A014, RN40 and RN149.',
+        ...(dnvInventory.license ? { license: dnvInventory.license } : {}),
+        limitations: ['Reference geometry only; not a live road-status, navigation, closure or authorization source.'],
+      },
+      {
+        id: 'los-azules-ign-road-geometry-v2', role: 'PRIMARY', sourceName: 'IGN / Datos Argentina provincial-road geometry snapshot',
+        sourceUrl: ignInventory.catalogUrl ?? ignInventory.sourceUrl, retrievedAt: generatedAt,
+        method: 'Exact reviewed IGN feature ids clipped between pinned source junctions for RP436 and RP406.',
+        ...(ignInventory.license ? { license: ignInventory.license } : {}),
+        limitations: ['Published reference geometry; not a live road-status, navigation, closure or authorization source.'],
+      },
+      {
+        id: 'los-azules-osm-access-geometry-v2', role: 'PRIMARY', sourceName: 'OpenStreetMap Los Azules access geometry snapshot',
+        sourceUrl: 'https://www.openstreetmap.org/copyright', retrievedAt: generatedAt,
+        method: 'Reviewed OSM ways retain the mapped RP406 handoff, RP437 / Camino a Los Azules and final publicly mapped access tracks toward the project anchor.',
+        license: 'ODbL 1.0',
+        limitations: ['Publicly mapped access geometry is not operator navigation, access authorization, road condition or a safety assertion.'],
+      },
+      {
+        id: 'los-azules-route-geometry-build-v2', role: 'DERIVED', sourceName: 'San Juan Mining Ops Sim — Los Azules V0.2A route assembly',
+        retrievedAt: generatedAt,
+        method: 'Deterministic reviewed source-feature sequence with explicit origin and final project-anchor connectors; no runtime automatic routing.',
+        limitations: ['Derived connectors are not source road geometry.', 'The complete corridor remains conservative RECONSTRUCTED_ACCESS at corridor level.'],
+      },
+    ],
+    routeSegments: [
+      {
+        id: 'los-azules-origin-connector-v2', geometryClass: 'RECONSTRUCTED_ACCESS', sourceDatasetId: derivedSourceId, sourceFeatureIds: [],
+        evidenceRefs: ['los-azules-route-geometry-build-v2'],
+        derivedGeometry: { type: 'LineString', coordinates: [origin, firstSource] },
+        method: 'Straight derived connector from the San Juan scenario origin to the reviewed A014 source path.',
+        limitations: ['Explicit derived connector; not asserted as public-road source geometry.'],
+      },
+      { id: 'los-azules-a014-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: routeIds(dnvRegional, 'A014'), evidenceRefs: ['los-azules-dnv-road-geometry-v2'], label: 'A014' },
+      { id: 'los-azules-rn40-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: routeIds(dnvRegional, '40'), evidenceRefs: ['los-azules-dnv-road-geometry-v2'], label: 'RN 40' },
+      { id: 'los-azules-rp436-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: ignSourceId, sourceFeatureIds: ids(ignRp436), evidenceRefs: ['los-azules-ign-road-geometry-v2'], label: 'RP 436' },
+      { id: 'los-azules-rn149-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: ids(dnvRn149), evidenceRefs: ['los-azules-dnv-road-geometry-v2'], label: 'RN 149' },
+      { id: 'los-azules-rp406-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: ignSourceId, sourceFeatureIds: ids(ignRp406), evidenceRefs: ['los-azules-ign-road-geometry-v2'], label: 'RP 406' },
+      {
+        id: 'los-azules-osm-access-v2', geometryClass: 'RECONSTRUCTED_ACCESS', sourceDatasetId: osmSourceId, sourceFeatureIds: ids(selected.osm),
+        evidenceRefs: ['los-azules-osm-access-geometry-v2'], label: 'Publicly mapped RP437 / Camino a Los Azules access',
+        limitations: ['OSM-mapped access only; not operator navigation, access authorization or a current road-status feed.'],
+      },
+      {
+        id: 'los-azules-project-approach-v2', geometryClass: 'APPROXIMATE_APPROACH', sourceDatasetId: derivedSourceId, sourceFeatureIds: [],
+        evidenceRefs: ['los-azules-route-geometry-build-v2'],
+        derivedGeometry: { type: 'LineString', coordinates: [lastMappedAccess, destination] },
+        method: 'Straight connector from the end of the reviewed OSM access to the published Los Azules project-location anchor.',
+        limitations: ['Approximate final approach to the project-location anchor; not operator navigation or access authorization.'],
+      },
+    ],
+  };
+
+  return {
+    manifest,
+    snapshots: {
+      dnv: { type: 'FeatureCollection', features: selected.dnv },
+      ign: { type: 'FeatureCollection', features: selected.ign },
+      osm: { type: 'FeatureCollection', features: selected.osm },
+    },
+  };
+}
+
+async function readJson(filePath) {
+  return JSON.parse(await readFile(filePath, 'utf8'));
+}
+
+async function writeJson(filePath, value) {
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+export async function authorLosAzulesV2({ acquisitionDir, outputDir, acquisition = {} }) {
+  const [dnv, ign, osm, inventory] = await Promise.all([
+    readJson(path.join(acquisitionDir, 'dnv-national-roads.v1.geojson')),
+    readJson(path.join(acquisitionDir, 'ign-provincial-roads.v1.geojson')),
+    readJson(path.join(acquisitionDir, 'osm-access.v1.geojson')),
+    readJson(path.join(acquisitionDir, 'source-inventory.json')),
+  ]);
+  const selected = selectLosAzulesSources({ dnv, ign, osm });
+  const bundle = buildLosAzulesAuthoringBundle({ selected, inventory, acquisition });
+
+  await Promise.all([
+    writeJson(path.join(outputDir, 'source-snapshots', 'dnv-national-roads.v1.geojson'), bundle.snapshots.dnv),
+    writeJson(path.join(outputDir, 'source-snapshots', 'ign-provincial-roads.v1.geojson'), bundle.snapshots.ign),
+    writeJson(path.join(outputDir, 'source-snapshots', 'osm-access.v1.geojson'), bundle.snapshots.osm),
+    writeJson(path.join(outputDir, 'sources.v2.json'), bundle.manifest),
+  ]);
+  return bundle;
+}
+
+function cliArg(args, name) {
+  const index = args.indexOf(name);
+  return index >= 0 ? args[index + 1] : undefined;
+}
+
+const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : '';
+if (invokedPath === fileURLToPath(import.meta.url)) {
+  const args = process.argv.slice(2);
+  const acquisitionDir = cliArg(args, '--acquisition-dir');
+  const outputDir = cliArg(args, '--output-dir') ?? path.join('public', 'data', 'corridors', 'los-azules');
+  if (!acquisitionDir) throw new Error('--acquisition-dir is required');
+  const workflowRunId = Number(cliArg(args, '--workflow-run-id'));
+  const artifactId = Number(cliArg(args, '--artifact-id'));
+  const acquisition = {
+    ...(Number.isFinite(workflowRunId) ? { workflowRunId } : {}),
+    ...(Number.isFinite(artifactId) ? { artifactId } : {}),
+    ...(cliArg(args, '--artifact-name') ? { artifactName: cliArg(args, '--artifact-name') } : {}),
+    ...(cliArg(args, '--artifact-digest') ? { artifactDigest: cliArg(args, '--artifact-digest') } : {}),
+    ...(cliArg(args, '--head-sha') ? { headSha: cliArg(args, '--head-sha') } : {}),
+  };
+  const bundle = await authorLosAzulesV2({ acquisitionDir, outputDir, acquisition });
+  console.log(JSON.stringify({
+    corridorId: bundle.manifest.corridorId,
+    dnvFeatureCount: bundle.snapshots.dnv.features.length,
+    ignFeatureCount: bundle.snapshots.ign.features.length,
+    osmFeatureCount: bundle.snapshots.osm.features.length,
+  }, null, 2));
+}

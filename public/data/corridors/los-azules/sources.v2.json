@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "sanjuan.road-geometry-sources/v2",
+  "corridorId": "los-azules",
+  "generatedAt": "2026-09-02T03:38:55.649Z",
+  "acquisition": {
+    "workflowRunId": 33587802404,
+    "artifactId": 9830687067,
+    "artifactName": "v02a-los-azules-road-sources",
+    "artifactDigest": "911bf0e44162f0114b18caa852367c55523deb8ff16085d3b8dbf87653e92445",
+    "headSha": "fb34fbc5e6145a677a2331a3cdd76d8a2c5b5234"
+  },
+  "guards": {
+    "anchorDefaultMaxDistanceKm": 2,
+    "sourceConnectionToleranceM": 250,
+    "maxUndocumentedGapKm": 2,
+    "maxDerivedChordKm": 2,
+    "chainageMinKm": 330,
+    "chainageMaxKm": 370
+  },
+  "anchors": [
+    {
+      "id": "san-juan",
+      "lat": -31.5375,
+      "lon": -68.5364,
+      "operationalKm": 0,
+      "maxDistanceToRouteKm": 2
+    },
+    {
+      "id": "rn40-rp436-junction",
+      "lat": -31.0989982,
+      "lon": -68.6383556,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "los-azules-dnv-road-geometry-v2",
+        "los-azules-ign-road-geometry-v2"
+      ]
+    },
+    {
+      "id": "rp436-rn149-junction",
+      "lat": -30.9856283,
+      "lon": -68.8027955,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "los-azules-ign-road-geometry-v2",
+        "los-azules-dnv-road-geometry-v2"
+      ]
+    },
+    {
+      "id": "rn149-rp406-junction",
+      "lat": -31.5625244,
+      "lon": -69.4437769,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "los-azules-dnv-road-geometry-v2",
+        "los-azules-ign-road-geometry-v2"
+      ]
+    },
+    {
+      "id": "calingasta",
+      "lat": -31.335410441,
+      "lon": -69.427381783,
+      "operationalKm": 164,
+      "maxDistanceToRouteKm": 2,
+      "evidenceRefs": [
+        "calingasta-public-locality"
+      ]
+    },
+    {
+      "id": "los-azules",
+      "lat": -31.11277,
+      "lon": -70.22138,
+      "operationalKm": 276,
+      "maxDistanceToRouteKm": 2
+    }
+  ],
+  "sources": [
+    {
+      "id": "dnv-rutas-nacionales-20260830",
+      "provider": "Dirección Nacional de Vialidad / Datos Argentina",
+      "datasetName": "Rutas Nacionales Archivo \"Shape\" de rutas nacionales. Fuente: Dirección Nacional de Vialidad.",
+      "sourceUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_nacional",
+      "catalogUrl": "https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b",
+      "catalogResourceId": "d58b91ee-c46a-4260-8d89-69438417d73b",
+      "requestUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte%3Avial_nacional&outputFormat=application%2Fjson&maxFeatures=10000&bbox=-70.4%2C-31.8%2C-68.3%2C-30.85%2CEPSG%3A4326",
+      "snapshotPath": "source-snapshots/dnv-national-roads.v1.geojson",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "role": "PRIMARY",
+      "format": "GeoJSON",
+      "license": "Otra (Abierta)",
+      "featureIds": [
+        "vial_nacional.2175",
+        "vial_nacional.2570",
+        "vial_nacional.2565",
+        "vial_nacional.1192",
+        "vial_nacional.2201",
+        "vial_nacional.1174",
+        "vial_nacional.1175",
+        "vial_nacional.1172",
+        "vial_nacional.280",
+        "vial_nacional.1869"
+      ],
+      "limitations": [
+        "Frozen corridor-only source extract; not a live road-status or navigation feed.",
+        "Published reference geometry may be stale relative to current road works."
+      ]
+    },
+    {
+      "id": "ign-rutas-provinciales-2016-20260830",
+      "provider": "Instituto Geográfico Nacional / Datos Argentina",
+      "datasetName": "Rutas Provinciales Archivo \"GeoJSON\" de rutas Provinciales. Instituto Geográfico Nacional.",
+      "sourceUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_provincial",
+      "catalogUrl": "https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "catalogResourceId": "903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "requestUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte%3Avial_provincial&outputFormat=application%2Fjson&maxFeatures=10000&bbox=-70.4%2C-31.8%2C-68.3%2C-30.85%2CEPSG%3A4326",
+      "snapshotPath": "source-snapshots/ign-provincial-roads.v1.geojson",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "role": "PRIMARY",
+      "format": "GeoJSON",
+      "license": "Otra (Abierta)",
+      "featureIds": [
+        "vial_provincial.10291",
+        "vial_provincial.10290",
+        "vial_provincial.10289",
+        "vial_provincial.10272"
+      ],
+      "limitations": [
+        "Frozen corridor-only source extract; not a live road-status or navigation feed.",
+        "Published reference geometry may be stale relative to current road works."
+      ]
+    },
+    {
+      "id": "osm-los-azules-access-v2",
+      "provider": "OpenStreetMap via Overpass API",
+      "datasetName": "osm-road-access-los-azules-v2",
+      "sourceUrl": "https://overpass-api.de/api/interpreter",
+      "snapshotPath": "source-snapshots/osm-access.v1.geojson",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "role": "FALLBACK",
+      "format": "OSM",
+      "license": "ODbL 1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "featureIds": [
+        "osm-way-179986953",
+        "osm-way-996528070",
+        "osm-way-1436597152",
+        "osm-way-996528083",
+        "osm-way-1436646663",
+        "osm-way-1436646662",
+        "osm-way-1436828911",
+        "osm-way-1436828910",
+        "osm-way-1436828909",
+        "osm-way-1436828908",
+        "osm-way-1436828902",
+        "osm-way-1436828898",
+        "osm-way-1441747900",
+        "osm-way-1441747899",
+        "osm-way-1441747905",
+        "osm-way-1442787217",
+        "osm-way-1444386972",
+        "osm-way-1444392118"
+      ],
+      "limitations": [
+        "Publicly mapped Los Azules access geometry only; not operator-supplied navigation or authorization evidence.",
+        "OSM tags and geometry do not establish current road condition, closure, safety or transitability."
+      ]
+    },
+    {
+      "id": "los-azules-derived-geometry-v2",
+      "provider": "San Juan Mining Ops Sim",
+      "datasetName": "Explicit Los Azules corridor connectors",
+      "sourceUrl": "public/data/corridors/los-azules/sources.v2.json",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "role": "FALLBACK",
+      "format": "GeoJSON",
+      "featureIds": [
+        "los-azules-origin-connector-v2",
+        "los-azules-project-approach-v2"
+      ],
+      "limitations": [
+        "These geometries are explicit derived connectors, not source road features.",
+        "They only connect the scenario origin and project-location anchor to the reviewed source-backed path."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "los-azules-dnv-road-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "DNV / Datos Argentina national-road geometry snapshot",
+      "sourceUrl": "https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "method": "Exact reviewed DNV feature ids clipped between pinned source junctions for A014, RN40 and RN149.",
+      "license": "Otra (Abierta)",
+      "limitations": [
+        "Reference geometry only; not a live road-status, navigation, closure or authorization source."
+      ]
+    },
+    {
+      "id": "los-azules-ign-road-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "IGN / Datos Argentina provincial-road geometry snapshot",
+      "sourceUrl": "https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "method": "Exact reviewed IGN feature ids clipped between pinned source junctions for RP436 and RP406.",
+      "license": "Otra (Abierta)",
+      "limitations": [
+        "Published reference geometry; not a live road-status, navigation, closure or authorization source."
+      ]
+    },
+    {
+      "id": "los-azules-osm-access-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "OpenStreetMap Los Azules access geometry snapshot",
+      "sourceUrl": "https://www.openstreetmap.org/copyright",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "method": "Reviewed OSM ways retain the mapped RP406 handoff, RP437 / Camino a Los Azules and final publicly mapped access tracks toward the project anchor.",
+      "license": "ODbL 1.0",
+      "limitations": [
+        "Publicly mapped access geometry is not operator navigation, access authorization, road condition or a safety assertion."
+      ]
+    },
+    {
+      "id": "los-azules-route-geometry-build-v2",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Los Azules V0.2A route assembly",
+      "retrievedAt": "2026-09-02T03:38:55.649Z",
+      "method": "Deterministic reviewed source-feature sequence with explicit origin and final project-anchor connectors; no runtime automatic routing.",
+      "limitations": [
+        "Derived connectors are not source road geometry.",
+        "The complete corridor remains conservative RECONSTRUCTED_ACCESS at corridor level."
+      ]
+    }
+  ],
+  "routeSegments": [
+    {
+      "id": "los-azules-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS",
+      "sourceDatasetId": "los-azules-derived-geometry-v2",
+      "sourceFeatureIds": [],
+      "evidenceRefs": [
+        "los-azules-route-geometry-build-v2"
+      ],
+      "derivedGeometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -68.5364,
+            -31.5375
+          ],
+          [
+            -68.55289386,
+            -31.5383514
+          ]
+        ]
+      },
+      "method": "Straight derived connector from the San Juan scenario origin to the reviewed A014 source path.",
+      "limitations": [
+        "Explicit derived connector; not asserted as public-road source geometry."
+      ]
+    },
+    {
+      "id": "los-azules-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.2175"
+      ],
+      "evidenceRefs": [
+        "los-azules-dnv-road-geometry-v2"
+      ],
+      "label": "A014"
+    },
+    {
+      "id": "los-azules-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.2570",
+        "vial_nacional.2565",
+        "vial_nacional.1192",
+        "vial_nacional.2201",
+        "vial_nacional.1174",
+        "vial_nacional.1175",
+        "vial_nacional.1172"
+      ],
+      "evidenceRefs": [
+        "los-azules-dnv-road-geometry-v2"
+      ],
+      "label": "RN 40"
+    },
+    {
+      "id": "los-azules-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "ign-rutas-provinciales-2016-20260830",
+      "sourceFeatureIds": [
+        "vial_provincial.10291",
+        "vial_provincial.10290",
+        "vial_provincial.10289"
+      ],
+      "evidenceRefs": [
+        "los-azules-ign-road-geometry-v2"
+      ],
+      "label": "RP 436"
+    },
+    {
+      "id": "los-azules-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.280",
+        "vial_nacional.1869"
+      ],
+      "evidenceRefs": [
+        "los-azules-dnv-road-geometry-v2"
+      ],
+      "label": "RN 149"
+    },
+    {
+      "id": "los-azules-rp406-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "ign-rutas-provinciales-2016-20260830",
+      "sourceFeatureIds": [
+        "vial_provincial.10272"
+      ],
+      "evidenceRefs": [
+        "los-azules-ign-road-geometry-v2"
+      ],
+      "label": "RP 406"
+    },
+    {
+      "id": "los-azules-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS",
+      "sourceDatasetId": "osm-los-azules-access-v2",
+      "sourceFeatureIds": [
+        "osm-way-179986953",
+        "osm-way-996528070",
+        "osm-way-1436597152",
+        "osm-way-996528083",
+        "osm-way-1436646663",
+        "osm-way-1436646662",
+        "osm-way-1436828911",
+        "osm-way-1436828910",
+        "osm-way-1436828909",
+        "osm-way-1436828908",
+        "osm-way-1436828902",
+        "osm-way-1436828898",
+        "osm-way-1441747900",
+        "osm-way-1441747899",
+        "osm-way-1441747905",
+        "osm-way-1442787217",
+        "osm-way-1444386972",
+        "osm-way-1444392118"
+      ],
+      "evidenceRefs": [
+        "los-azules-osm-access-geometry-v2"
+      ],
+      "label": "Publicly mapped RP437 / Camino a Los Azules access",
+      "limitations": [
+        "OSM-mapped access only; not operator navigation, access authorization or a current road-status feed."
+      ]
+    },
+    {
+      "id": "los-azules-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH",
+      "sourceDatasetId": "los-azules-derived-geometry-v2",
+      "sourceFeatureIds": [],
+      "evidenceRefs": [
+        "los-azules-route-geometry-build-v2"
+      ],
+      "derivedGeometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -70.2209401,
+            -31.1126311
+          ],
+          [
+            -70.22138,
+            -31.11277
+          ]
+        ]
+      },
+      "method": "Straight connector from the end of the reviewed OSM access to the published Los Azules project-location anchor.",
+      "limitations": [
+        "Approximate final approach to the project-location anchor; not operator navigation or access authorization."
+      ]
+    }
+  ]
+}

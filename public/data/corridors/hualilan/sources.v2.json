@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "sanjuan.road-geometry-sources/v2",
+  "corridorId": "hualilan",
+  "generatedAt": "2026-09-02T02:02:45.989Z",
+  "acquisition": {
+    "workflowRunId": 33581698513,
+    "artifactId": 9828611093,
+    "artifactName": "v02a-hualilan-road-sources",
+    "artifactDigest": "sha256:3989e643c89399293b9bb6fe09bfc50273bd034060df1e2924a0f652306c1bc3",
+    "headSha": "f3d2a2f4c4d3cf344aada342bf896b5bb7d0a729"
+  },
+  "guards": {
+    "anchorDefaultMaxDistanceKm": 2,
+    "sourceConnectionToleranceM": 250,
+    "maxUndocumentedGapKm": 2,
+    "maxDerivedChordKm": 2,
+    "chainageMinKm": 115,
+    "chainageMaxKm": 135
+  },
+  "anchors": [
+    {
+      "id": "san-juan",
+      "lat": -31.5375,
+      "lon": -68.5364,
+      "operationalKm": 0,
+      "maxDistanceToRouteKm": 2
+    },
+    {
+      "id": "rn40-rp436-junction",
+      "lat": -31.0989982,
+      "lon": -68.6383556,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "hualilan-dnv-road-geometry-v2",
+        "hualilan-ign-road-geometry-v2"
+      ]
+    },
+    {
+      "id": "rp436-rn149-junction",
+      "lat": -30.9856283,
+      "lon": -68.8027955,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "hualilan-ign-road-geometry-v2",
+        "hualilan-dnv-road-geometry-v2"
+      ]
+    },
+    {
+      "id": "rn149-osm-access-junction",
+      "lat": -30.7305878,
+      "lon": -68.9608727,
+      "maxDistanceToRouteKm": 0.25,
+      "evidenceRefs": [
+        "hualilan-dnv-road-geometry-v2",
+        "hualilan-osm-access-geometry-v2"
+      ]
+    },
+    {
+      "id": "hualilan",
+      "lat": -30.73333,
+      "lon": -68.95,
+      "operationalKm": 120,
+      "maxDistanceToRouteKm": 2
+    }
+  ],
+  "sources": [
+    {
+      "id": "dnv-rutas-nacionales-20260830",
+      "provider": "Dirección Nacional de Vialidad / Datos Argentina",
+      "datasetName": "Rutas Nacionales Archivo \"Shape\" de rutas nacionales. Fuente: Dirección Nacional de Vialidad.",
+      "sourceUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_nacional",
+      "catalogUrl": "https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b",
+      "catalogResourceId": "d58b91ee-c46a-4260-8d89-69438417d73b",
+      "requestUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte%3Avial_nacional&outputFormat=application%2Fjson&maxFeatures=10000&bbox=-69.25%2C-31.75%2C-68.35%2C-30.55%2CEPSG%3A4326",
+      "snapshotPath": "source-snapshots/dnv-national-roads.v1.geojson",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "role": "PRIMARY",
+      "format": "GeoJSON",
+      "license": "Otra (Abierta)",
+      "featureIds": [
+        "vial_nacional.2175",
+        "vial_nacional.2570",
+        "vial_nacional.2565",
+        "vial_nacional.1192",
+        "vial_nacional.2201",
+        "vial_nacional.1174",
+        "vial_nacional.1175",
+        "vial_nacional.1172",
+        "vial_nacional.280",
+        "vial_nacional.1870"
+      ],
+      "limitations": [
+        "Frozen corridor-only source extract; not a live road-status or navigation feed.",
+        "Published reference geometry may be stale relative to current road works."
+      ]
+    },
+    {
+      "id": "ign-rutas-provinciales-2016-20260830",
+      "provider": "Instituto Geográfico Nacional / Datos Argentina",
+      "datasetName": "Rutas Provinciales Archivo \"GeoJSON\" de rutas Provinciales. Instituto Geográfico Nacional.",
+      "sourceUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte:vial_provincial",
+      "catalogUrl": "https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "catalogResourceId": "903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "requestUrl": "https://wms.ign.gob.ar/geoserver/transporte/ows?service=WFS&request=GetFeature&version=1.0.0&typeName=transporte%3Avial_provincial&outputFormat=application%2Fjson&maxFeatures=10000&bbox=-69.25%2C-31.75%2C-68.35%2C-30.55%2CEPSG%3A4326",
+      "snapshotPath": "source-snapshots/ign-provincial-roads.v1.geojson",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "role": "PRIMARY",
+      "format": "GeoJSON",
+      "license": "Otra (Abierta)",
+      "featureIds": [
+        "vial_provincial.10291",
+        "vial_provincial.10290",
+        "vial_provincial.10289"
+      ],
+      "limitations": [
+        "Frozen corridor-only source extract; not a live road-status or navigation feed.",
+        "Published reference geometry may be stale relative to current road works."
+      ]
+    },
+    {
+      "id": "osm-hualilan-access-v2",
+      "provider": "OpenStreetMap via Overpass API",
+      "datasetName": "osm-road-access-hualilan-v2",
+      "sourceUrl": "https://overpass-api.de/api/interpreter",
+      "snapshotPath": "source-snapshots/osm-access.v1.geojson",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "role": "FALLBACK",
+      "format": "OSM",
+      "license": "ODbL 1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "featureIds": [
+        "osm-way-408648158",
+        "osm-way-644573146"
+      ],
+      "limitations": [
+        "Publicly mapped Hualilan access geometry only; not operator-supplied navigation or authorization evidence.",
+        "OSM tags and geometry do not establish current road condition, closure, safety or transitability."
+      ]
+    },
+    {
+      "id": "hualilan-derived-geometry-v2",
+      "provider": "San Juan Mining Ops Sim",
+      "datasetName": "Explicit Hualilan corridor connectors",
+      "sourceUrl": "public/data/corridors/hualilan/sources.v2.json",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "role": "FALLBACK",
+      "format": "GeoJSON",
+      "featureIds": [
+        "hualilan-origin-connector-v2",
+        "hualilan-project-approach-v2"
+      ],
+      "limitations": [
+        "These geometries are explicit derived connectors, not source road features.",
+        "They only connect the scenario origin and project-location anchor to the reviewed source-backed path."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "hualilan-dnv-road-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "DNV / Datos Argentina national-road geometry snapshot",
+      "sourceUrl": "https://datos.transporte.gob.ar/dataset/rutas-nacionales/archivo/d58b91ee-c46a-4260-8d89-69438417d73b",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "method": "Exact reviewed DNV feature ids clipped between pinned source junctions for A014, RN40 and RN149.",
+      "license": "Otra (Abierta)",
+      "limitations": [
+        "Reference geometry only; not a live road-status, navigation, closure or authorization source."
+      ]
+    },
+    {
+      "id": "hualilan-ign-road-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "IGN / Datos Argentina provincial-road geometry snapshot",
+      "sourceUrl": "https://datos.transporte.gob.ar/dataset/rutas-provinciales/archivo/903edc8b-da5b-4f3e-b555-eef41b89c3f3",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "method": "Exact reviewed IGN feature ids clipped between pinned source junctions for RP436.",
+      "license": "Otra (Abierta)",
+      "limitations": [
+        "Published reference geometry; not a live road-status, navigation, closure or authorization source."
+      ]
+    },
+    {
+      "id": "hualilan-osm-access-geometry-v2",
+      "role": "PRIMARY",
+      "sourceName": "OpenStreetMap Hualilan access geometry snapshot",
+      "sourceUrl": "https://www.openstreetmap.org/copyright",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "method": "Reviewed OSM ways 408648158 and 644573146 retain the publicly mapped access from RN149 toward Hualilan.",
+      "license": "ODbL 1.0",
+      "limitations": [
+        "Publicly mapped access geometry is not operator navigation, access authorization, road condition or a safety assertion."
+      ]
+    },
+    {
+      "id": "hualilan-route-geometry-build-v2",
+      "role": "DERIVED",
+      "sourceName": "San Juan Mining Ops Sim — Hualilan V0.2A route assembly",
+      "retrievedAt": "2026-09-02T02:02:45.989Z",
+      "method": "Deterministic reviewed source-feature sequence with explicit origin and final project-anchor connectors; no runtime automatic routing.",
+      "limitations": [
+        "Derived connectors are not source road geometry.",
+        "The complete corridor remains conservative RECONSTRUCTED_ACCESS at corridor level."
+      ]
+    }
+  ],
+  "routeSegments": [
+    {
+      "id": "hualilan-origin-connector-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS",
+      "sourceDatasetId": "hualilan-derived-geometry-v2",
+      "sourceFeatureIds": [],
+      "evidenceRefs": [
+        "hualilan-route-geometry-build-v2"
+      ],
+      "derivedGeometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -68.5364,
+            -31.5375
+          ],
+          [
+            -68.55289386,
+            -31.5383514
+          ]
+        ]
+      },
+      "method": "Straight derived connector from the San Juan scenario origin to the reviewed A014 source path.",
+      "limitations": [
+        "Explicit derived connector; not asserted as public-road source geometry."
+      ]
+    },
+    {
+      "id": "hualilan-a014-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.2175"
+      ],
+      "evidenceRefs": [
+        "hualilan-dnv-road-geometry-v2"
+      ],
+      "label": "A014"
+    },
+    {
+      "id": "hualilan-rn40-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.2570",
+        "vial_nacional.2565",
+        "vial_nacional.1192",
+        "vial_nacional.2201",
+        "vial_nacional.1174",
+        "vial_nacional.1175",
+        "vial_nacional.1172"
+      ],
+      "evidenceRefs": [
+        "hualilan-dnv-road-geometry-v2"
+      ],
+      "label": "RN 40"
+    },
+    {
+      "id": "hualilan-rp436-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "ign-rutas-provinciales-2016-20260830",
+      "sourceFeatureIds": [
+        "vial_provincial.10291",
+        "vial_provincial.10290",
+        "vial_provincial.10289"
+      ],
+      "evidenceRefs": [
+        "hualilan-ign-road-geometry-v2"
+      ],
+      "label": "RP 436"
+    },
+    {
+      "id": "hualilan-rn149-public-v2",
+      "geometryClass": "PUBLIC_ROAD",
+      "sourceDatasetId": "dnv-rutas-nacionales-20260830",
+      "sourceFeatureIds": [
+        "vial_nacional.280",
+        "vial_nacional.1870"
+      ],
+      "evidenceRefs": [
+        "hualilan-dnv-road-geometry-v2"
+      ],
+      "label": "RN 149"
+    },
+    {
+      "id": "hualilan-osm-access-v2",
+      "geometryClass": "RECONSTRUCTED_ACCESS",
+      "sourceDatasetId": "osm-hualilan-access-v2",
+      "sourceFeatureIds": [
+        "osm-way-408648158",
+        "osm-way-644573146"
+      ],
+      "evidenceRefs": [
+        "hualilan-osm-access-geometry-v2"
+      ],
+      "label": "Publicly mapped Hualilan access",
+      "limitations": [
+        "OSM-mapped access only; not operator navigation, access authorization or a current road-status feed."
+      ]
+    },
+    {
+      "id": "hualilan-project-approach-v2",
+      "geometryClass": "APPROXIMATE_APPROACH",
+      "sourceDatasetId": "hualilan-derived-geometry-v2",
+      "sourceFeatureIds": [],
+      "evidenceRefs": [
+        "hualilan-route-geometry-build-v2"
+      ],
+      "derivedGeometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -68.9519658,
+            -30.7310231
+          ],
+          [
+            -68.95,
+            -30.73333
+          ]
+        ]
+      },
+      "method": "Straight connector from the end of the reviewed OSM access to the published project-location anchor.",
+      "limitations": [
+        "Approximate final approach to the project-location anchor; not operator navigation or access authorization."
+      ]
+    }
+  ]
+}
