@@ -1,17 +1,24 @@
 name: V0.2A Los Azules road-source authoring
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - feat/v0.2a-route-refinement
     paths:
       - .github/workflows/v02a-los-azules-authoring.yml
+      - scripts/acquire-road-sources.mjs
+      - scripts/author-los-azules-v2.mjs
+      - scripts/author-los-azules-v2.test.mjs
+      - scripts/build-road-geometry.mjs
+      - scripts/validate-road-geometry.mjs
+      - scripts/lib/road-geometry.mjs
 
 permissions:
   contents: read
 
 jobs:
-  acquire:
+  author-build-validate:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -26,12 +33,61 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Test Los Azules authoring
+        run: node --test scripts/author-los-azules-v2.test.mjs
+
       - name: Acquire Los Azules sources
         run: npm run acquire:road-sources -- los-azules
 
-      - name: Upload authoring artifact
+      - name: Upload raw source artifact
+        id: upload-sources
         uses: actions/upload-artifact@v4
         with:
           name: v02a-los-azules-road-sources
           path: artifacts/road-geometry-acquisition-los-azules/
+          if-no-files-found: error
+
+      - name: Author Los Azules V2 source bundle
+        run: >-
+          node scripts/author-los-azules-v2.mjs
+          --acquisition-dir artifacts/road-geometry-acquisition-los-azules
+          --output-dir public/data/corridors/los-azules
+          --workflow-run-id ${{ github.run_id }}
+          --artifact-id ${{ steps.upload-sources.outputs.artifact-id }}
+          --artifact-name v02a-los-azules-road-sources
+          --artifact-digest ${{ steps.upload-sources.outputs.artifact-digest }}
+          --head-sha ${{ github.sha }}
+
+      - name: Build Los Azules V2 first pass
+        run: |
+          npm run build:road-geometry -- los-azules
+          sha256sum \
+            public/data/corridors/los-azules/metadata.v2.json \
+            public/data/corridors/los-azules/corridor.v2.geojson \
+            public/data/corridors/los-azules/segments.v2.geojson \
+            public/data/corridors/los-azules/route-samples.v2.json \
+            > /tmp/los-azules-build-1.sha256
+
+      - name: Build Los Azules V2 second pass and verify determinism
+        run: |
+          npm run build:road-geometry -- los-azules
+          sha256sum -c /tmp/los-azules-build-1.sha256
+
+      - name: Validate Los Azules V2
+        run: |
+          mkdir -p artifacts/los-azules-v2
+          npm run validate:road-geometry -- los-azules | tee artifacts/los-azules-v2/validation.txt
+
+      - name: Upload Los Azules V2 candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: v02a-los-azules-v2-candidate
+          path: |
+            public/data/corridors/los-azules/sources.v2.json
+            public/data/corridors/los-azules/source-snapshots/
+            public/data/corridors/los-azules/metadata.v2.json
+            public/data/corridors/los-azules/corridor.v2.geojson
+            public/data/corridors/los-azules/segments.v2.geojson
+            public/data/corridors/los-azules/route-samples.v2.json
+            artifacts/los-azules-v2/validation.txt
           if-no-files-found: error
