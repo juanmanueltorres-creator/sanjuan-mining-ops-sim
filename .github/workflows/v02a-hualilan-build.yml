@@ -8,7 +8,7 @@ on:
       - .github/workflows/v02a-hualilan-build.yml
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 jobs:
@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: feat/v0.2a-route-refinement
+          fetch-depth: 1
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -111,23 +112,26 @@ jobs:
             scripts/build-road-geometry.test.mjs \
             scripts/validate-road-geometry.test.mjs
 
-      - name: Collect authored V2 bundle
+      - name: Commit exact authored bundle
         shell: bash
         run: |
           set -euo pipefail
-          cp public/data/corridors/hualilan/sources.v2.json artifacts/v02a-hualilan-v2-authored/
-          cp public/data/corridors/hualilan/metadata.v2.json artifacts/v02a-hualilan-v2-authored/
-          cp public/data/corridors/hualilan/corridor.v2.geojson artifacts/v02a-hualilan-v2-authored/
-          cp public/data/corridors/hualilan/segments.v2.geojson artifacts/v02a-hualilan-v2-authored/
-          cp public/data/corridors/hualilan/route-samples.v2.json artifacts/v02a-hualilan-v2-authored/
-          mkdir -p artifacts/v02a-hualilan-v2-authored/source-snapshots
-          cp public/data/corridors/hualilan/source-snapshots/dnv-national-roads.v1.geojson artifacts/v02a-hualilan-v2-authored/source-snapshots/
-          cp public/data/corridors/hualilan/source-snapshots/ign-provincial-roads.v1.geojson artifacts/v02a-hualilan-v2-authored/source-snapshots/
-          cp public/data/corridors/hualilan/source-snapshots/osm-access.v1.geojson artifacts/v02a-hualilan-v2-authored/source-snapshots/
-
-      - name: Upload authored Hualilan V2 bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: v02a-hualilan-v2-authored
-          path: artifacts/v02a-hualilan-v2-authored/
-          if-no-files-found: error
+          paths=(
+            public/data/corridors/hualilan/sources.v2.json
+            public/data/corridors/hualilan/source-snapshots/dnv-national-roads.v1.geojson
+            public/data/corridors/hualilan/source-snapshots/ign-provincial-roads.v1.geojson
+            public/data/corridors/hualilan/source-snapshots/osm-access.v1.geojson
+            public/data/corridors/hualilan/metadata.v2.json
+            public/data/corridors/hualilan/corridor.v2.geojson
+            public/data/corridors/hualilan/segments.v2.geojson
+            public/data/corridors/hualilan/route-samples.v2.json
+          )
+          git add -- "${paths[@]}"
+          git diff --cached --check
+          printf '%s\n' "${paths[@]}" | sort > /tmp/expected-paths.txt
+          git diff --cached --name-only | sort > /tmp/staged-paths.txt
+          diff -u /tmp/expected-paths.txt /tmp/staged-paths.txt
+          git config user.name 'Juan Manuel Torres'
+          git config user.email 'juan.manuel.torres@mi.unc.edu.ar'
+          git commit -m 'feat: add reproducible Hualilan V2 road geometry'
+          git push origin HEAD:feat/v0.2a-route-refinement
