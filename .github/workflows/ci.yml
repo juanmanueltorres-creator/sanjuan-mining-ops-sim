@@ -32,8 +32,11 @@ jobs:
       - name: Validate road context
         run: npm run validate:road-context
 
-      - name: Validate Veladero V2 geometry
-        run: npm run validate:road-geometry -- veladero
+      - name: Validate active V2 geometry
+        run: |
+          npm run validate:road-geometry -- hualilan
+          npm run validate:road-geometry -- veladero
+          npm run validate:road-geometry -- los-azules
 
       - name: Audit provenance claims
         run: npm run audit:claims
