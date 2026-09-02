@@ -100,7 +100,7 @@ describe('Los Azules V2 authoring contract', () => {
     }, 'los-azules')).toThrow(/route designation/i);
   });
 
-  it('preserves 0→164→276 operational calibration and never promotes OSM access to PUBLIC_ROAD', () => {
+  it('preserves 0→164→276 operational calibration without a duplicate RP406→OSM handoff anchor and never promotes OSM access to PUBLIC_ROAD', () => {
     const selected = {
       dnv: [
         feature('dnv-regional', '40', [[-68.55, -31.53], [-68.80, -30.98]]),
@@ -141,6 +141,7 @@ describe('Los Azules V2 authoring contract', () => {
       expect.objectContaining({ id: 'calingasta', operationalKm: 164 }),
       expect.objectContaining({ id: 'los-azules', operationalKm: 276 }),
     ]);
+    expect(bundle.manifest.anchors.map((anchor) => anchor.id)).not.toContain('rp406-osm-access-junction');
     expect(bundle.manifest.routeSegments.some((segment) => segment.sourceDatasetId === 'osm-los-azules-access-v2' && segment.geometryClass === 'PUBLIC_ROAD')).toBe(false);
     expect(bundle.manifest.routeSegments.find((segment) => segment.sourceDatasetId === 'osm-los-azules-access-v2')?.geometryClass).toBe('RECONSTRUCTED_ACCESS');
     expect(bundle.manifest.routeSegments.at(-1)?.geometryClass).toBe('APPROXIMATE_APPROACH');
