@@ -1,6 +1,6 @@
 # V0.2 — Territorial Operations UI
 
-**Status:** draft for user review; implementation not started  
+**Status:** approved for implementation planning; implementation not started  
 **Date:** 2026-09-01  
 **Product:** San Juan Mining Ops Sim
 
