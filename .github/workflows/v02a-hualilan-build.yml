@@ -1,0 +1,66 @@
+name: V0.2A Hualilan V2 build
+
+on:
+  push:
+    branches:
+      - feat/v0.2a-route-refinement
+    paths:
+      - .github/workflows/v02a-hualilan-build.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build-hualilan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: First deterministic build
+        run: |
+          npm run build:road-geometry -- hualilan
+          mkdir -p artifacts/v02a-hualilan-v2
+          sha256sum \
+            public/data/corridors/hualilan/metadata.v2.json \
+            public/data/corridors/hualilan/corridor.v2.geojson \
+            public/data/corridors/hualilan/segments.v2.geojson \
+            public/data/corridors/hualilan/route-samples.v2.json \
+            > artifacts/v02a-hualilan-v2/sha-before.txt
+
+      - name: Second deterministic build
+        run: |
+          npm run build:road-geometry -- hualilan
+          sha256sum \
+            public/data/corridors/hualilan/metadata.v2.json \
+            public/data/corridors/hualilan/corridor.v2.geojson \
+            public/data/corridors/hualilan/segments.v2.geojson \
+            public/data/corridors/hualilan/route-samples.v2.json \
+            > artifacts/v02a-hualilan-v2/sha-after.txt
+          diff -u artifacts/v02a-hualilan-v2/sha-before.txt artifacts/v02a-hualilan-v2/sha-after.txt
+
+      - name: Validate Hualilan V2
+        run: npm run validate:road-geometry -- hualilan | tee artifacts/v02a-hualilan-v2/validation.txt
+
+      - name: Collect V2 bundle
+        run: |
+          cp public/data/corridors/hualilan/metadata.v2.json artifacts/v02a-hualilan-v2/
+          cp public/data/corridors/hualilan/corridor.v2.geojson artifacts/v02a-hualilan-v2/
+          cp public/data/corridors/hualilan/segments.v2.geojson artifacts/v02a-hualilan-v2/
+          cp public/data/corridors/hualilan/route-samples.v2.json artifacts/v02a-hualilan-v2/
+
+      - name: Upload Hualilan V2 bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: v02a-hualilan-v2
+          path: artifacts/v02a-hualilan-v2/
+          if-no-files-found: error
