@@ -47,9 +47,9 @@ export type CorridorAssetVersion = 'v1' | 'v2';
 export type CorridorAssetOverrides = Partial<Record<CorridorId, CorridorAssetVersion>>;
 
 export const DEFAULT_CORRIDOR_ASSET_VERSIONS: Record<CorridorId, CorridorAssetVersion> = {
-  hualilan: 'v1',
+  hualilan: 'v2',
   veladero: 'v2',
-  'los-azules': 'v1',
+  'los-azules': 'v2',
 };
 
 const GEOMETRY_SOURCE_ROLES = new Set<GeometrySourceRole>(['PRIMARY', 'CORROBORATION', 'FALLBACK']);
@@ -313,9 +313,6 @@ export async function loadStaticOperationData(
   }
 
   const versions = { ...DEFAULT_CORRIDOR_ASSET_VERSIONS, ...overrides };
-  if (versions.hualilan !== 'v1' || versions['los-azules'] !== 'v1') {
-    throw new Error('V2 corridor assets are supported only for Veladero in V0.1');
-  }
 
   const corridors: CorridorDefinition[] = [];
   const evidence: EvidenceRef[] = [...projectRegistry.provenance];
@@ -361,8 +358,6 @@ export async function loadStaticOperationData(
       evidence.push(...corridorEvidence);
       continue;
     }
-
-    if (id !== 'veladero') throw new Error(`V2 assets are unsupported for ${id}`);
 
     const [metadataRaw, geometryRaw, profileRaw, routeSamplesRaw, segmentsRaw, sourcesRaw] = await Promise.all([
       fetchJson(fetcher, `${base}/metadata.v2.json`),
