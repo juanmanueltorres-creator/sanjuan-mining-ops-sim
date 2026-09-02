@@ -34,4 +34,27 @@ describe('VehiclePanel ETA semantics', () => {
     expect(screen.getByText('00:35 +1d')).toBeVisible();
     expect(screen.queryByText('23:59')).not.toBeInTheDocument();
   });
+
+  it('keeps the outbound corridor label in project-bound order', () => {
+    render(
+      <VehiclePanel
+        vehicle={vehicle({ state: 'EN_ROUTE', direction: 'TO_PROJECT' })}
+        corridorName="San Juan → Calingasta → Los Azules"
+      />,
+    );
+
+    expect(screen.getByText('San Juan → Calingasta → Los Azules')).toBeVisible();
+  });
+
+  it('reverses the corridor label when the vehicle is returning to base', () => {
+    render(
+      <VehiclePanel
+        vehicle={vehicle({ state: 'RETURNING', direction: 'RETURN_TO_BASE' })}
+        corridorName="San Juan → Calingasta → Los Azules"
+      />,
+    );
+
+    expect(screen.getByText('Los Azules → Calingasta → San Juan')).toBeVisible();
+    expect(screen.queryByText('San Juan → Calingasta → Los Azules')).not.toBeInTheDocument();
+  });
 });
