@@ -4,8 +4,7 @@
 
 San Juan Mining Ops Sim is a deterministic 3D browser simulation for exploring planned mining mobilizations across San Juan, Argentina. It combines sourced territorial context, versioned road/access geometry, analytical elevation, time, modelled weather-at-passage and explicit provenance in one map-first operational scene.
 
-**Current published model on `main`: V0.1.**  
-**Candidate in this branch: V0.1.1 — Terrain + Road Context.**
+**Current published model on `main`: V0.2B — active V2 corridors + regional readability.**
 
 ---
 
@@ -25,9 +24,10 @@ It includes:
 - route position, analytical elevation, ETA/state and project context;
 - versioned modelled weather-at-passage;
 - deterministic synthetic background traffic;
-- evidence-aware Veladero road geometry;
+- evidence-aware V2 road/access geometry for **Hualilán, Veladero and Los Azules**;
 - optional Cesium terrain for visual topographic relief;
 - a checked-in IGN road-context layer used only as subdued cartographic reference;
+- distance-aware regional marker styling and selected-unit emphasis;
 - a visible Sources / Limitations surface.
 
 The same run, scenario and simulation time produce the same operational snapshot.
@@ -77,22 +77,24 @@ If required evidence cannot be resolved, the application fails closed or labels 
 
 ---
 
-## Veladero V0.1 — evidence-aware road geometry
+## V0.2A — evidence-aware road geometry across all active corridors
 
-V0.1 upgrades Veladero from sparse V1 chords to a denser **official-first hybrid reference geometry** while preserving the existing synthetic operational model.
+V0.2A generalizes the deterministic V2 road-geometry pipeline beyond Veladero and activates V2 assets for all three operational corridors while preserving the existing synthetic operational model.
 
-The operational axis remains fixed:
+The operational axes remain fixed and separate from measured physical chainage:
 
-```text
-San Juan 0 km → Tudcum 205 km → Veladero 360 km
-```
+| Corridor | Operational axis | Physical chainage | Vertices | Samples | Geometry segments |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Hualilán | San Juan `0` → Hualilán `120 km` | `124.543508 km` | 2,019 | 509 | 7 |
+| Veladero | San Juan `0` → Tudcum `205` → Veladero `360 km` | `365.904918 km` | 641 | 1,482 | 11 |
+| Los Azules | San Juan `0` → Calingasta `164` → Los Azules `276 km` | `349.549778 km` | 9,354 | 1,412 | 8 |
 
-The physical line is built from frozen reference geometry:
+The physical lines are built deterministically from frozen reference geometry:
 
 - **DNV / Datos Argentina** national-road sections;
 - **IGN / Datos Argentina** provincial-road sections;
-- **OpenStreetMap / Overpass** for publicly mapped high-mountain access where official vector coverage is insufficient;
-- explicit derived connectors where source chains do not meet or the project anchor must be connected.
+- **OpenStreetMap / Overpass** for publicly mapped access where official vector coverage is insufficient;
+- explicit derived connectors where source chains do not meet or a project anchor must be connected.
 
 Rendered sections keep their evidence class visible:
 
@@ -102,17 +104,41 @@ Rendered sections keep their evidence class visible:
 | `RECONSTRUCTED_ACCESS` | reconstructed or fallback access geometry |
 | `APPROXIMATE_APPROACH` | approximate connection to the project reference |
 
-The complete Veladero corridor remains conservatively classified as `RECONSTRUCTED_ACCESS`.
+Important boundaries remain unchanged:
 
-The V0.1 geometry contains 641 vertices and measures 365.904918 km physically, but **physical chainage does not redefine the synthetic 360 km operational axis**. Schedule, speeds, events, ETA and operational-state semantics remain unchanged.
+- physical chainage does **not** redefine the synthetic operational distance axis;
+- the browser performs **no runtime pathfinding or automatic routing**;
+- OSM access geometry is never promoted to `PUBLIC_ROAD` merely because it is mapped;
+- schedule, speeds, events, ETA and state-machine semantics remain separate from road-geometry provenance;
+- V2 geometry is reference geometry, not operator-verified navigation.
 
-See [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) for geometry QA and regression evidence.
+The V2 builder and validator are generic across active corridors. CI validates continuity, anchor calibration, explicit source gaps, derived connectors, geometry classes and provenance for Hualilán, Veladero and Los Azules.
+
+See [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) for the original Veladero acceptance model and [`docs/data-sources.md`](docs/data-sources.md) for source/limitation boundaries.
 
 ---
 
-## V0.1.1 — terrain + road context
+## V0.2B — regional readability
 
-V0.1.1 adds spatial reading without changing the simulation contract. Three concepts remain deliberately separate:
+V0.2B is a bounded presentation-only follow-up after V2 activation.
+
+At province scale:
+
+- operational vehicle points use Cesium distance-aware scaling instead of keeping constant visual weight;
+- the selected vehicle retains stronger size/outline emphasis;
+- synthetic background traffic is visually more subordinate;
+- corridor styling strengthens the evidence-class hierarchy without changing geometry;
+- no clustering or positional offsets are used.
+
+This is presentation logic only. Vehicle coordinates, movement, ETA, schedule, state transitions, modelled environment, traffic calibration and route data are unchanged.
+
+The production-browser Cesium/WebGL smoke was performed after the V0.2B Pages deploy to verify the actual regional marker balance that tokenless CI cannot render.
+
+---
+
+## Terrain + road context
+
+The V0.1.1 terrain/context slice remains part of the current published application. It adds spatial reading without changing the simulation contract. Three concepts remain deliberately separate:
 
 ```text
 Analytical elevation → checked-in profile/route samples; simulation/context semantics.
@@ -133,7 +159,7 @@ The optional layer is frozen at:
 - `public/data/context/roads-context.v1.geojson`;
 - `public/data/context/roads-context.v1.json`.
 
-The artifact contains **5,012 features** selected by feature-bbox intersection around the active-corridor route-sample bounding box expanded by exactly **0.25°**. Selected source coordinates are preserved rather than simplified for V0.1.1.
+The artifact contains **5,012 features** selected by feature-bbox intersection around the active-corridor route-sample bounding box expanded by exactly **0.25°**. Selected source coordinates are preserved rather than simplified for the original context slice.
 
 Provider attribution is kept explicit:
 
@@ -245,24 +271,33 @@ The repository treats checked-in data, visual-context artifacts and provenance c
 npm test -- --run
 npm run validate:data
 npm run validate:road-context
+npm run validate:road-geometry -- hualilan
 npm run validate:road-geometry -- veladero
+npm run validate:road-geometry -- los-azules
 npm run audit:claims
 npm run build
 npm run qa:visual
 ```
 
-Normal pull-request CI intentionally runs **without** a terrain token so the ellipsoid fallback stays continuously verified. Real WebGL terrain acceptance is recorded separately in the V0.1.1 acceptance record.
+`validate:data` also gates the active corridor selection and expects:
+
+```text
+hualilan=v2, veladero=v2, los-azules=v2
+```
+
+Normal pull-request CI intentionally runs **without** a terrain token so the ellipsoid/WebGL-fallback path stays continuously verified. Real Cesium terrain and marker-balance smoke tests are post-deploy browser checks.
 
 The suite checks, among other things:
 
 - territorial and corridor artifacts;
 - immutable run/environment linkage;
 - evidence references;
-- Veladero V2 geometry continuity and provenance;
-- V1 ↔ V2 behavioral equivalence at acceptance checkpoints;
+- V2 geometry continuity and provenance for all three active corridors;
+- operational-anchor calibration independent from physical chainage;
 - terrain runtime/fallback behavior and analytical-vs-visual height separation;
 - road-context schema/provenance pairing and optional failure behavior;
 - contextual-road visual hierarchy beneath the operational corridor;
+- regional marker scaling and selected-vehicle emphasis contracts;
 - sensitive wording that could overstate safety, telemetry or route authority;
 - desktop, tablet and mobile UI layouts.
 
@@ -302,15 +337,16 @@ Third-party source terms continue to apply. The repository's MIT license does no
 
 ### Published on `main`
 
-**V0.1** — deterministic external-mobilization simulation with evidence-aware Veladero road geometry.
+**V0.2B** — deterministic external-mobilization simulation with:
 
-### Candidate PR
+- V2 evidence-aware road/access geometry active for Hualilán, Veladero and Los Azules;
+- preserved operational distance semantics for all corridors;
+- optional Cesium World Terrain and checked-in IGN road context;
+- modelled weather-at-passage and synthetic background traffic;
+- regional distance-aware vehicle styling and selected-unit emphasis;
+- explicit provenance and limitation surfaces.
 
-**V0.1.1 — Terrain + Road Context** is implemented on `feat/v0.1.1-terrain-road-context` and remains unmerged.
-
-Pre-merge automated acceptance has passed, including the tokenless fallback gate and a separate real-WebGL terrain smoke. The final GitHub Pages production-browser smoke remains a **post-merge/deploy check** and is not claimed by the branch acceptance record.
-
-V0.2 remains out of scope for this release.
+V0.2A geometry activation and V0.2B regional-readability work are merged and deployed. There is no separate candidate release described by this README.
 
 ---
 
@@ -318,8 +354,8 @@ V0.2 remains out of scope for this release.
 
 - [`docs/data-sources.md`](docs/data-sources.md) — source and limitation registry
 - [`docs/qa/v0-acceptance.md`](docs/qa/v0-acceptance.md) — deterministic V0 acceptance
-- [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) — V0.1 road-geometry QA
-- [`docs/qa/v0-1-1-terrain-road-context-acceptance.md`](docs/qa/v0-1-1-terrain-road-context-acceptance.md) — V0.1.1 terrain/context pre-merge acceptance
+- [`docs/qa/v0-1-road-geometry-acceptance.md`](docs/qa/v0-1-road-geometry-acceptance.md) — original Veladero V2 road-geometry QA model
+- [`docs/qa/v0-1-1-terrain-road-context-acceptance.md`](docs/qa/v0-1-1-terrain-road-context-acceptance.md) — terrain/context acceptance
 - [`docs/superpowers/specs/`](docs/superpowers/specs/) — approved design documents
 - [`docs/superpowers/plans/`](docs/superpowers/plans/) — implementation plans
 
