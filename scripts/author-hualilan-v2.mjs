@@ -199,10 +199,14 @@ export function buildHualilanAuthoringBundle({
   assert(inventory?.corridorId === 'hualilan', 'Hualilan source inventory required');
   assert(selected?.dnv?.length > 0 && selected?.ign?.length > 0 && selected?.osm?.length > 0, 'Hualilan reviewed DNV, IGN and OSM selections are required');
 
-  const dnvFirst = selected.dnv.filter((feature) => !['149'].includes(String(feature.properties?.designacion_de_red_vial ?? '')));
+  const dnvRegional = selected.dnv.filter((feature) => String(feature.properties?.designacion_de_red_vial ?? '') !== '149');
   const dnvLast = selected.dnv.filter((feature) => String(feature.properties?.designacion_de_red_vial ?? '') === '149');
-  assert(dnvFirst.length > 0 && dnvLast.length > 0, 'Hualilan DNV selection must include regional and RN149 legs');
-  assertGroupContinuity([dnvFirst, selected.ign, dnvLast, selected.osm]);
+  const hasRn149 = dnvLast.length > 0;
+  const dnvFirst = hasRn149 ? dnvRegional : selected.dnv;
+  assert(dnvFirst.length > 0, 'Hualilan DNV selection must include at least one reviewed regional leg');
+  assertGroupContinuity(hasRn149
+    ? [dnvFirst, selected.ign, dnvLast, selected.osm]
+    : [dnvFirst, selected.ign, selected.osm]);
 
   const dnvInventory = sourceById(inventory, 'dnv-rutas-nacionales-20260830');
   const ignInventory = sourceById(inventory, 'ign-rutas-provinciales-2016-20260830');
@@ -217,7 +221,7 @@ export function buildHualilanAuthoringBundle({
   const lastMappedAccess = endpoints(selected.osm).end;
   const rn40End = endpoints(dnvFirst).end;
   const rp436End = endpoints(selected.ign).end;
-  const rn149End = endpoints(dnvLast).end;
+  const rn149End = hasRn149 ? endpoints(dnvLast).end : null;
 
   const manifest = {
     schemaVersion: 'sanjuan.road-geometry-sources/v2',
@@ -241,8 +245,12 @@ export function buildHualilanAuthoringBundle({
     anchors: [
       { id: 'san-juan', lat: origin[1], lon: origin[0], operationalKm: 0, maxDistanceToRouteKm: 2 },
       { id: 'rn40-rp436-junction', lat: rn40End[1], lon: rn40End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-dnv-road-geometry-v2', 'hualilan-ign-road-geometry-v2'] },
-      { id: 'rp436-rn149-junction', lat: rp436End[1], lon: rp436End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-ign-road-geometry-v2', 'hualilan-dnv-road-geometry-v2'] },
-      { id: 'rn149-osm-access-junction', lat: rn149End[1], lon: rn149End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-dnv-road-geometry-v2', 'hualilan-osm-access-geometry-v2'] },
+      ...(hasRn149 ? [
+        { id: 'rp436-rn149-junction', lat: rp436End[1], lon: rp436End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-ign-road-geometry-v2', 'hualilan-dnv-road-geometry-v2'] },
+        { id: 'rn149-osm-access-junction', lat: rn149End[1], lon: rn149End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-dnv-road-geometry-v2', 'hualilan-osm-access-geometry-v2'] },
+      ] : [
+        { id: 'rp436-osm-access-junction', lat: rp436End[1], lon: rp436End[0], maxDistanceToRouteKm: 0.25, evidenceRefs: ['hualilan-ign-road-geometry-v2', 'hualilan-osm-access-geometry-v2'] },
+      ]),
       { id: 'hualilan', lat: destination[1], lon: destination[0], operationalKm: 120, maxDistanceToRouteKm: 2 },
     ],
     sources: [
@@ -304,7 +312,7 @@ export function buildHualilanAuthoringBundle({
       { id: 'hualilan-a014-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: routeIds(dnvFirst, 'A014'), evidenceRefs: ['hualilan-dnv-road-geometry-v2'], label: 'A014' },
       { id: 'hualilan-rn40-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: routeIds(dnvFirst, '40'), evidenceRefs: ['hualilan-dnv-road-geometry-v2'], label: 'RN 40' },
       { id: 'hualilan-rp436-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: ignSourceId, sourceFeatureIds: ids(selected.ign), evidenceRefs: ['hualilan-ign-road-geometry-v2'], label: 'RP 436' },
-      { id: 'hualilan-rn149-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: ids(dnvLast), evidenceRefs: ['hualilan-dnv-road-geometry-v2'], label: 'RN 149' },
+      ...(hasRn149 ? [{ id: 'hualilan-rn149-public-v2', geometryClass: 'PUBLIC_ROAD', sourceDatasetId: dnvSourceId, sourceFeatureIds: ids(dnvLast), evidenceRefs: ['hualilan-dnv-road-geometry-v2'], label: 'RN 149' }] : []),
       {
         id: 'hualilan-osm-access-v2', geometryClass: 'RECONSTRUCTED_ACCESS', sourceDatasetId: osmSourceId, sourceFeatureIds: ids(selected.osm),
         evidenceRefs: ['hualilan-osm-access-geometry-v2'], label: 'Publicly mapped Hualilan access',
