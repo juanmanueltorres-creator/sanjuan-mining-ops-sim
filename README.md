@@ -1,5 +1,7 @@
 # San Juan Mining Ops Sim
 
+🌐 **Live demo:** https://juanmanueltorres-creator.github.io/sanjuan-mining-ops-sim/
+
 > **Real territory · modelled environment · synthetic operation.**
 
 San Juan Mining Ops Sim is a deterministic 3D browser simulation for exploring planned mining mobilizations across San Juan, Argentina. It combines sourced territorial context, versioned road/access geometry, analytical elevation, time, modelled weather-at-passage and explicit provenance in one map-first operational scene.
